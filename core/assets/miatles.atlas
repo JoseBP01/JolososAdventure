@@ -1,0 +1,55 @@
+
+miatles.png
+size: 512, 512
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Pepper publish.
+  rotate: false
+  xy: 2, 15
+  size: 180, 128
+  orig: 180, 128
+  offset: 0, 0
+  index: -1
+badlogic
+  rotate: false
+  xy: 2, 145
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+walking
+  rotate: false
+  xy: 2, 2
+  size: 9, 11
+  orig: 9, 11
+  offset: 0, 0
+  index: 0
+walking
+  rotate: false
+  xy: 184, 131
+  size: 7, 12
+  orig: 7, 12
+  offset: 0, 0
+  index: 2
+walking
+  rotate: false
+  xy: 260, 375
+  size: 7, 12
+  orig: 7, 12
+  offset: 0, 0
+  index: 3
+walking
+  rotate: false
+  xy: 310, 390
+  size: 7, 11
+  orig: 7, 11
+  offset: 0, 0
+  index: 1
+walking-12px
+  rotate: false
+  xy: 260, 389
+  size: 48, 12
+  orig: 48, 12
+  offset: 0, 0
+  index: -1

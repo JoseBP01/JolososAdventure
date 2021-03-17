@@ -28,7 +28,7 @@ public class Assets extends AssetManager {
     }
 
     void loadAnimations(){
-        caminar = new Animation<TextureRegion>(0.1f, atlas.findRegions("kid"));
+        caminar = new Animation<TextureRegion>(0.1f, atlas.findRegions("walking"));
 
     }
 }
