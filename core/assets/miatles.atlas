@@ -6,18 +6,53 @@ filter: Nearest, Nearest
 repeat: none
 Pepper publish.
   rotate: false
-  xy: 2, 15
+  xy: 2, 49
   size: 180, 128
   orig: 180, 128
   offset: 0, 0
   index: -1
 badlogic
   rotate: false
-  xy: 2, 145
+  xy: 2, 179
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
+hpBar
+  rotate: false
+  xy: 260, 403
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+hpBar
+  rotate: false
+  xy: 2, 15
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+hpBar
+  rotate: false
+  xy: 184, 145
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+hpBar
+  rotate: false
+  xy: 260, 369
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+hpBar
+  rotate: false
+  xy: 294, 403
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
 walking
   rotate: false
   xy: 2, 2
@@ -34,21 +69,21 @@ walking
   index: 2
 walking
   rotate: false
-  xy: 260, 375
+  xy: 218, 165
   size: 7, 12
   orig: 7, 12
   offset: 0, 0
   index: 3
 walking
   rotate: false
-  xy: 310, 390
+  xy: 260, 356
   size: 7, 11
   orig: 7, 11
   offset: 0, 0
   index: 1
 walking-12px
   rotate: false
-  xy: 260, 389
+  xy: 36, 35
   size: 48, 12
   orig: 48, 12
   offset: 0, 0

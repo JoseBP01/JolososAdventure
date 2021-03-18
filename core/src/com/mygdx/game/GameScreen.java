@@ -4,18 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen extends BaseScreen{
     Personaje personaje;
+    HpBarra hpBarra;
     Stage stage;
 
     public OrthographicCamera camera;
     public Viewport viewport;
-    public int SCENE_WIDTH = 384;
-    public int SCENE_HEIGHT = 256;
+    public int SCENE_WIDTH = 640;
+    public int SCENE_HEIGHT = 480;
 
     public GameScreen(JadventureMain game) {
         super(game);
@@ -23,14 +26,18 @@ public class GameScreen extends BaseScreen{
 
     @Override
     public void show () {
-        camera = new OrthographicCamera();
-        camera.position.set(SCENE_WIDTH/2, SCENE_HEIGHT/2, 0);
-        viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, camera);
-        viewport.apply();
+
+
 
         Gdx.input.setInputProcessor(stage = new Stage());
 
         stage.addActor(personaje = new Personaje());
+        stage.addActor(hpBarra = new HpBarra());
+
+        camera = new OrthographicCamera();
+        camera.position.set(personaje.getX(), personaje.getY(), 0);
+        viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, camera);
+        viewport.apply();
     }
 
     @Override
@@ -39,11 +46,19 @@ public class GameScreen extends BaseScreen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            personaje.estado= Personaje.Estados.Caminando;
             personaje.moveBy(-personaje.vx, 0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+
+        }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            personaje.estado= Personaje.Estados.Caminando;
             personaje.moveBy(personaje.vx, 0);
-        }
+        }else if(Gdx.input.isKeyPressed(Input.Keys.W)){
+            personaje.estado= Personaje.Estados.Caminando;
+            personaje.moveBy(0, personaje.vy);
+        }else if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            personaje.estado= Personaje.Estados.Caminando;
+            personaje.moveBy(0, -personaje.vy);
+        }else personaje.estado= Personaje.Estados.Quieto;
 
         stage.getBatch().setProjectionMatrix(camera.combined);
         stage.act();
