@@ -28,6 +28,6 @@ public class HpBarra extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-       batch.draw(Assets.barraHp.getKeyFrame(estadoBarra),getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+//       batch.draw(Assets.barraHp.getKeyFrame(estadoBarra),getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 }

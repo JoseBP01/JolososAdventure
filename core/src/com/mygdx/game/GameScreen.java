@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -46,19 +44,25 @@ public class GameScreen extends BaseScreen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            personaje.estado= Personaje.Estados.Caminando;
+            personaje.direccion = Personaje.Direccion.Izquerda;
+            personaje.setState(Personaje.State.Caminando);
             personaje.moveBy(-personaje.vx, 0);
 
         }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            personaje.estado= Personaje.Estados.Caminando;
+            personaje.direccion = Personaje.Direccion.Derecha;
+            personaje.setState(Personaje.State.Caminando);
             personaje.moveBy(personaje.vx, 0);
         }else if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            personaje.estado= Personaje.Estados.Caminando;
+            personaje.direccion = Personaje.Direccion.Arriba;
+            personaje.setState(Personaje.State.Caminando);
             personaje.moveBy(0, personaje.vy);
         }else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            personaje.estado= Personaje.Estados.Caminando;
+            personaje.direccion = Personaje.Direccion.Abajo;
+            personaje.setState(Personaje.State.Caminando);
             personaje.moveBy(0, -personaje.vy);
-        }else personaje.estado= Personaje.Estados.Quieto;
+        }else{
+            personaje.estado= Personaje.State.Quieto;
+        }
 
         stage.getBatch().setProjectionMatrix(camera.combined);
         stage.act();

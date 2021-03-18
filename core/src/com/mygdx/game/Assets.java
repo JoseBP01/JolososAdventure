@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Assets extends AssetManager {
 
 
-    public TextureAtlas atlas;
-    public static Animation<TextureRegion> caminar;
-    public static Animation<TextureRegion> quieto;
-    public static Animation<TextureRegion> barraHp;
+    public static TextureAtlas atlas;
 
     public void load(){
         load("miatles.atlas", TextureAtlas.class);
@@ -24,17 +21,12 @@ public class Assets extends AssetManager {
 
         if(update){
             atlas = get("miatles.atlas", TextureAtlas.class);
-
-            loadAnimations();
         }
         return update;
     }
 
-    void loadAnimations(){
-        caminar = new Animation<TextureRegion>(0.1f, atlas.findRegions("walking"));
-        quieto = new Animation<TextureRegion>(0.1f, atlas.findRegions("walking"));
-        barraHp = new Animation<TextureRegion>(0.1f, atlas.findRegions("hpBar"));
 
-
+    public static Animation<TextureRegion> getAnimation(String name, float time, Animation.PlayMode playMode){
+        return new Animation<>(time, atlas.findRegions(name), playMode);
     }
 }
