@@ -9,7 +9,7 @@ import com.mygdx.game.JadventureMain;
 import com.mygdx.game.Map;
 import com.mygdx.game.Personaje.HpBarra;
 import com.mygdx.game.Personaje.Personaje;
-import com.mygdx.game.mywidgets.MyScreen;
+import com.mygdx.game.Base.MyScreen;
 
 public class GameScreen extends MyScreen {
     Personaje personaje;
