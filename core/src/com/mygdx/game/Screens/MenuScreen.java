@@ -9,27 +9,26 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mygdx.game.Base.BaseScreen;
+import com.mygdx.game.Base.MyScreen;
 import com.mygdx.game.JadventureMain;
 
-public class MenuScreen extends BaseScreen {
-
-    Stage stage;
+public class MenuScreen extends MyScreen {
 
     public MenuScreen(JadventureMain game) {
         super(game);
     }
 
+    Stage stage;
+
     @Override
     public void show() {
         super.show();
         ImageButton.ImageButtonStyle buttonStartStyle = new ImageButton.ImageButtonStyle();
-        buttonStartStyle.up = new TextureRegionDrawable(new TextureRegion(new Texture("button_start_up.png")));
-        buttonStartStyle.over = new TextureRegionDrawable(new TextureRegion(new Texture("button_start_over.png")));
-
+        buttonStartStyle.up = new TextureRegionDrawable(new TextureRegion(new Texture("boton_start.png")));
         ImageButton buttonStart = new ImageButton(buttonStartStyle);
-        buttonStart.setPosition(280, 200);
-        buttonStart.setSize(24*3, 10*3);
+
+        buttonStart.setPosition(200, 200);
+        buttonStart.setSize(64*3, 64*3);
         buttonStart.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -38,26 +37,8 @@ public class MenuScreen extends BaseScreen {
             }
         });
 
-        // Boton QUIT
-        ImageButton.ImageButtonStyle buttonQuitStyle = new ImageButton.ImageButtonStyle();
-        buttonQuitStyle.up = new TextureRegionDrawable(new TextureRegion(new Texture("button_quit_up.png")));
-        buttonQuitStyle.over = new TextureRegionDrawable(new TextureRegion(new Texture("button_quit_over.png")));
-
-        ImageButton buttonQuit = new ImageButton(buttonQuitStyle);
-        buttonQuit.setPosition(280, 160);
-        buttonQuit.setSize(24*3, 10*3);
-        buttonQuit.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
-                System.exit(0);
-                return true;
-            }
-        });
-
         Gdx.input.setInputProcessor(stage = new Stage());
         stage.addActor(buttonStart);
-        stage.addActor(buttonQuit);
     }
 
     @Override

@@ -2,12 +2,22 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.JadventureMain;
+import com.mygdx.game.Map;
+import com.mygdx.game.Personaje.HpBarra;
+import com.mygdx.game.Personaje.Personaje;
 import com.mygdx.game.mywidgets.MyScreen;
 
 public class GameScreen extends MyScreen {
     Personaje personaje;
     HpBarra hpBarra;
     Map map;
+    private World world;
+    private SpriteBatch spriteBatch;
+
     public GameScreen(JadventureMain game) {
         super(game);
     }
@@ -43,13 +53,13 @@ public class GameScreen extends MyScreen {
         }else if(Gdx.input.isKeyPressed(Input.Keys.W)){
             personaje.setDireccion(Personaje.Direccion.Arriba);
             personaje.setState(Personaje.State.Caminando);
-            personaje.moveBy(0, personaje.vy);
+            personaje.moveBy(0, personaje.getVy());
         }else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            personaje.direccion = Personaje.Direccion.Abajo;
+            personaje.setDireccion(Personaje.Direccion.Abajo);
             personaje.setState(Personaje.State.Caminando);
-            personaje.moveBy(0, -personaje.vy);
+            personaje.moveBy(0, -personaje.getVy());
         }else{
-            personaje.estado= Personaje.State.Quieto;
+            personaje.setState(Personaje.State.Quieto);
         }
 
 
