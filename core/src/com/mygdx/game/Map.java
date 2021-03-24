@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,6 +15,9 @@ public class Map extends Actor {
     TiledMap map;
     MapRenderer mapRenderer;
     OrthographicCamera camera;
+    TiledMapTileLayer layerGround;
+    //https://github.com/gerardfp/MarioLibGDX/blob/master/core/src/com/mygdx/game/Map.java
+    //https://github.com/gerardfp/GdxWebSockets/tree/master/core/src/com/mygdx/game
 
 
     public Map(OrthographicCamera camera) {
