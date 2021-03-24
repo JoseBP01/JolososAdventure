@@ -36,7 +36,8 @@ public class GameScreen extends MyScreen {
     @Override
     public void render (float delta) {
         super.render(delta);
-
+        camera.position.set(personaje.getX(),personaje.getY(),0);
+        camera.update();
         spriteBatch = new SpriteBatch();
 
 
