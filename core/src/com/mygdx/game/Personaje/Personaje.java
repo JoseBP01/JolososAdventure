@@ -1,10 +1,13 @@
-package com.mygdx.game;
+package com.mygdx.game.Personaje;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.game.Assets;
 
 public class Personaje extends Actor {
 
@@ -32,19 +35,38 @@ public class Personaje extends Actor {
         Arriba
     }
 
-    float stateTime;
-    float vx = 5;
-    float vy = 5;
-    State estado;
-    Direccion direccion;
-    int vidas = 4;
+    private float stateTime;
+    private float vx = 5;
+    private float vy = 5;
+    private State estado;
+    private Direccion direccion;
+    private int vidas = 4;
+    private Circle hitBox;
+    BodyDef bodyDef = new BodyDef();
 
-
-    Personaje(){
+    public Personaje(World world){
         setSize(40,40);
         setOrigin(Align.center);
         estado = State.Quieto;
         direccion = Direccion.Derecha;
+        hitBox = new Circle(getX(),getY(), 32);
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        Body body = world.createBody(bodyDef);
+
+        CircleShape circle = new CircleShape();
+        circle.setRadius(6f);
+
+// Create a fixture definition to apply our shape to
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circle;
+        fixtureDef.density = 0.5f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.restitution = 0.6f; // Make it bounce a little bit
+
+
+// Create our fixture and attach it to the body
+        Fixture fixture = body.createFixture(fixtureDef);
+        circle.dispose();
     }
 
     @Override
@@ -61,7 +83,7 @@ public class Personaje extends Actor {
         batch.draw(currentAnimation.getKeyFrame(stateTime), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 
-    void setState(State state){
+    public void setState(State state){
         estado = state;
         switch (estado){
             case Caminando:
@@ -111,5 +133,49 @@ public class Personaje extends Actor {
 
     public void daño_recivido(){
         vidas--;
+    }
+
+    public float getStateTime() {
+        return stateTime;
+    }
+
+    public void setStateTime(float stateTime) {
+        this.stateTime = stateTime;
+    }
+
+    public float getVx() {
+        return vx;
+    }
+
+    public void setVx(float vx) {
+        this.vx = vx;
+    }
+
+    public float getVy() {
+        return vy;
+    }
+
+    public void setVy(float vy) {
+        this.vy = vy;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public int getVidas() {
+        return vidas;
+    }
+
+    public void setVidas(int vidas) {
+        this.vidas = vidas;
+    }
+
+    public Circle getHitBox() {
+        return hitBox;
     }
 }

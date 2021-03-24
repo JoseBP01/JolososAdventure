@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Screens;
 
 import com.mygdx.game.mywidgets.MyScreen;
 
@@ -14,6 +14,6 @@ public class LoadScreen extends MyScreen {
             return;
         }
 
-        setScreen(new GameScreen(game));
+        setScreen(new MenuScreen(game));
     }
 }

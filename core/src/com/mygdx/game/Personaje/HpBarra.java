@@ -1,18 +1,14 @@
-package com.mygdx.game;
+package com.mygdx.game.Personaje;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 
 public class HpBarra extends Actor {
     public int vidas;
     private int estadoBarra;
 
-    HpBarra(){
+    public HpBarra(){
         setSize(150,150);
         setOrigin(Align.top);
         vidas = 4;

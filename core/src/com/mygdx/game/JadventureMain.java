@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.mygdx.game.Screens.LoadScreen;
 
 public class JadventureMain extends Game {
 	public Assets assets;
