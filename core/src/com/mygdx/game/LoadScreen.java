@@ -1,14 +1,8 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.utils.Align;
+import com.mygdx.game.mywidgets.MyScreen;
 
-public class LoadScreen extends BaseScreen {
+public class LoadScreen extends MyScreen {
 
     public LoadScreen(JadventureMain si) {
         super(si);
