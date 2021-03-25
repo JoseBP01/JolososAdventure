@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
@@ -55,6 +54,7 @@ public class Personaje extends Actor {
         direccion = Direccion.Derecha;
         hitBox = new Circle(getX(),getY(), 32);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
@@ -63,42 +63,46 @@ public class Personaje extends Actor {
 // Create a fixture definition to apply our shape to
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
-        fixtureDef.density = 0.5f;
-        fixtureDef.friction = 0.4f;
+        fixtureDef.density = 0.80f;
+        fixtureDef.friction = 1.00f;
         fixtureDef.restitution = 0.6f; // Make it bounce a little bit
         fixtureDef.filter.categoryBits = 1;
+
 
 // Create our fixture and attach it to the body
         body.createFixture(fixtureDef).setUserData(this);
         circle.dispose();
     }
 
-    Vector2 vel = body.getLinearVelocity();
-    Vector2 pos = body.getPosition();
     public void izquierda() {
         setDireccion(Direccion.Izquerda);
         setState(State.Caminando);
-        body.applyForce(-1.0f, 0.0f, getX(), getY(), true);
+//        body.applyForce(-1.0f, 0.0f, bodyDef.position.x, bodyDef.position.y, true);
+//        body.applyLinearImpulse(-20.00f, 0, body.getPosition().x, body.getPosition().y, true);
+        body.setLinearVelocity(-300,0);
     }
 
     public void derecha(){
         setDireccion(Direccion.Derecha);
         setState(Personaje.State.Caminando);
-        body.applyForce(1.0f, 0.0f, getX(), getY(), true);
-
+//        body.applyForce(1.0f, 0.0f, bodyDef.position.x, bodyDef.position.y, true);
+//        body.applyLinearImpulse(20.00f, 0, body.getPosition().x, body.getPosition().y, true);
+        body.setLinearVelocity(300,0);
     }
 
     public void arriba(){
         setDireccion(Direccion.Arriba);
         setState(State.Caminando);
-        body.applyForce(0.0f, -1.0f, getX(), getY(), true);
+//        body.applyForce(0.0f, -1.0f,bodyDef.position.x, bodyDef.position.y, true);
+        body.setLinearVelocity(0,300);
 
     }
 
     public void abajo(){
         setDireccion(Direccion.Abajo);
         setState(State.Caminando);
-        body.applyForce(0.0f, 1.0f, getX(), getY(), true);
+//        body.applyForce(0.0f, 1.0f,bodyDef.position.x, bodyDef.position.y, true);
+        body.setLinearVelocity(0,-300);
 
     }
 
@@ -118,6 +122,7 @@ public class Personaje extends Actor {
             moveBy(0, -getVy());
         }else{
             setState(Personaje.State.Quieto);
+            body.setLinearVelocity(0,0);
         }
 
     }
@@ -135,6 +140,7 @@ public class Personaje extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
+        System.out.println("POS PERSONAJE " + getX() + " : " + getY());
         batch.draw(currentAnimation.getKeyFrame(stateTime), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 
