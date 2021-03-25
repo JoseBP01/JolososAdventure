@@ -58,7 +58,7 @@ public class Personaje extends Actor {
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(6f);
+        circle.setRadius(12f);
 
 // Create a fixture definition to apply our shape to
         FixtureDef fixtureDef = new FixtureDef();

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Base.MyScreen;
+import com.mygdx.game.Base.NpcBase;
 import com.mygdx.game.JContactListener;
 import com.mygdx.game.JadventureMain;
 import com.mygdx.game.Map;
@@ -14,6 +15,7 @@ public class GameScreen extends MyScreen {
     Personaje personaje;
     HpBarra hpBarra;
     Map map;
+    NpcBase npc;
     private World world;
     private SpriteBatch spriteBatch;
 
@@ -50,5 +52,10 @@ public class GameScreen extends MyScreen {
 
         personaje.manejarTeclas();
 
+    }
+
+    public void addNpc(float x, float y) {
+        npc = new NpcBase(world,x, y);
+        stage.addActor(npc);
     }
 }

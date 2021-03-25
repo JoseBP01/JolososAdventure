@@ -27,10 +27,16 @@ public class Map extends Actor {
     }
 
     public void loadObjects(GameScreen gameScreen){
-        for (MapObject mapObject: map.getLayers().get("npc").getObjects()){
+        for (MapObject mapObject: map.getLayers().get("personaje").getObjects()){
             float x = (Float) mapObject.getProperties().get("x") * Config.UNIT_SCALE;
             float y = (Float) mapObject.getProperties().get("y") * Config.UNIT_SCALE;
             gameScreen.addPersonaje(x, y);
+        }
+
+        for (MapObject mapObject: map.getLayers().get("npc").getObjects()){
+            float x = (Float) mapObject.getProperties().get("x") * Config.UNIT_SCALE;
+            float y = (Float) mapObject.getProperties().get("y") * Config.UNIT_SCALE;
+            gameScreen.addNpc(x, y);
         }
     }
 
