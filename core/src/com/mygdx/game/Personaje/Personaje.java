@@ -1,9 +1,12 @@
 package com.mygdx.game.Personaje;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
@@ -19,8 +22,6 @@ public class Personaje extends Actor {
     private static Animation<TextureRegion> quietoDerecha = Assets.getAnimation("quietoDerecha", 0.3f, Animation.PlayMode.NORMAL);
     private static Animation<TextureRegion> quietoArriba = Assets.getAnimation("quietoArriba", 0.3f, Animation.PlayMode.NORMAL);
     private static Animation<TextureRegion> quietoAbajo = Assets.getAnimation("quietoAbajo", 0.3f, Animation.PlayMode.NORMAL);
-
-
 
     private Animation<TextureRegion> currentAnimation = Assets.getAnimation("quietoDerecha", 0.3f, Animation.PlayMode.NORMAL);
 
@@ -43,15 +44,18 @@ public class Personaje extends Actor {
     private int vidas = 4;
     private Circle hitBox;
     BodyDef bodyDef = new BodyDef();
+    public Body body;
 
-    public Personaje(World world){
+
+    public Personaje(World world, float x, float y){
         setSize(40,40);
         setOrigin(Align.center);
+        setPosition(x,y);
         estado = State.Quieto;
         direccion = Direccion.Derecha;
         hitBox = new Circle(getX(),getY(), 32);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        Body body = world.createBody(bodyDef);
+        body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
         circle.setRadius(6f);
@@ -62,17 +66,68 @@ public class Personaje extends Actor {
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.4f;
         fixtureDef.restitution = 0.6f; // Make it bounce a little bit
-
+        fixtureDef.filter.categoryBits = 1;
 
 // Create our fixture and attach it to the body
-        Fixture fixture = body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
         circle.dispose();
     }
+
+    Vector2 vel = body.getLinearVelocity();
+    Vector2 pos = body.getPosition();
+    public void izquierda() {
+        setDireccion(Direccion.Izquerda);
+        setState(State.Caminando);
+        body.applyForce(-1.0f, 0.0f, getX(), getY(), true);
+    }
+
+    public void derecha(){
+        setDireccion(Direccion.Derecha);
+        setState(Personaje.State.Caminando);
+        body.applyForce(1.0f, 0.0f, getX(), getY(), true);
+
+    }
+
+    public void arriba(){
+        setDireccion(Direccion.Arriba);
+        setState(State.Caminando);
+        body.applyForce(0.0f, -1.0f, getX(), getY(), true);
+
+    }
+
+    public void abajo(){
+        setDireccion(Direccion.Abajo);
+        setState(State.Caminando);
+        body.applyForce(0.0f, 1.0f, getX(), getY(), true);
+
+    }
+
+    public void manejarTeclas() {
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+
+            izquierda();
+        }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            derecha();
+            moveBy(getVx(), 0);
+
+        }else if(Gdx.input.isKeyPressed(Input.Keys.W)){
+            arriba();
+            moveBy(0, getVy());
+        }else if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            abajo();
+            moveBy(0, -getVy());
+        }else{
+            setState(Personaje.State.Quieto);
+        }
+
+    }
+
+
 
     @Override
     public void act(float delta) {
         super.act(delta);
-
+        setPosition(body.getPosition().x, body.getPosition().y);
         stateTime += delta;
     }
 

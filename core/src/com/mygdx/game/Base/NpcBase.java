@@ -16,12 +16,13 @@ public class NpcBase extends Actor {
     Circle areaInteractuar;
     private float x,y,size;
 
-    public NpcBase() {
+    public NpcBase(float x, float y) {
         this.numeroSprite = (int) (Math.random()*1);
-        x = (int) (Math.random()*640+1);
-        y = (int) (Math.random()*480+1);
+        this.x = x;
+        this.y = y;
         size = 64;
-        areaInteractuar = new Circle(x,y, 50);
+
+        //poner el category bits 2
     }
 
     public void comprobarDialogo(Personaje personaje){
