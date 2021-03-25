@@ -54,6 +54,7 @@ public class Personaje extends Actor {
         direccion = Direccion.Derecha;
         hitBox = new Circle(getX(),getY(), 32);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
@@ -139,6 +140,7 @@ public class Personaje extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
+        System.out.println("POS PERSONAJE " + getX() + " : " + getY());
         batch.draw(currentAnimation.getKeyFrame(stateTime), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 
