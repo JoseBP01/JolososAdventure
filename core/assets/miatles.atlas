@@ -13,56 +13,56 @@ Pepper publish.
   index: -1
 caminandoAbajo
   rotate: false
-  xy: 218, 219
+  xy: 70, 106
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 0
 quietoAbajo
   rotate: false
-  xy: 218, 219
+  xy: 70, 106
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 1
+caminandoAbajo
+  rotate: false
+  xy: 184, 168
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: 1
+caminandoAbajo
+  rotate: false
+  xy: 218, 219
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: 2
 caminandoAbajo
   rotate: false
   xy: 2, 20
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
-  index: 1
+  index: 3
 caminandoAbajo
   rotate: false
   xy: 17, 38
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
-  index: 2
+  index: 4
 caminandoAbajo
   rotate: false
   xy: 51, 72
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
-  index: 3
-caminandoAbajo
-  rotate: false
-  xy: 85, 106
-  size: 12, 16
-  orig: 12, 16
-  offset: 0, 0
-  index: 4
-caminandoAbajo
-  rotate: false
-  xy: 184, 150
-  size: 12, 16
-  orig: 12, 16
-  offset: 0, 0
   index: 5
 quietoAbajo
   rotate: false
-  xy: 184, 150
+  xy: 51, 72
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
@@ -83,42 +83,42 @@ quietoArriba
   index: 0
 caminandoArriba
   rotate: false
-  xy: 199, 168
+  xy: 84, 106
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 0
 quietoArriba
   rotate: false
-  xy: 199, 168
+  xy: 84, 106
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 1
 caminandoArriba
   rotate: false
-  xy: 218, 201
+  xy: 184, 150
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 1
 caminandoArriba
   rotate: false
-  xy: 2, 2
+  xy: 198, 168
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 2
 caminandoArriba
   rotate: false
-  xy: 16, 20
+  xy: 218, 201
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 3
 caminandoArriba
   rotate: false
-  xy: 99, 106
+  xy: 2, 2
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
@@ -132,98 +132,63 @@ caminandoDerecha
   index: 3
 caminandoDerecha
   rotate: false
-  xy: 36, 72
-  size: 13, 16
-  orig: 13, 16
-  offset: 0, 0
-  index: 4
-caminandoDerecha
-  rotate: false
-  xy: 184, 132
+  xy: 16, 20
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 1
 caminandoDerecha
   rotate: false
-  xy: 198, 150
+  xy: 98, 106
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 2
 caminandoDerecha
   rotate: false
-  xy: 127, 106
+  xy: 16, 2
   size: 11, 16
   orig: 11, 16
   offset: 0, 0
   index: 0
 quietoDerecha
   rotate: false
-  xy: 127, 106
+  xy: 16, 2
   size: 11, 16
   orig: 11, 16
   offset: 0, 0
   index: 1
-caminandoDerecha
-  rotate: false
-  xy: 140, 106
-  size: 11, 16
-  orig: 11, 16
-  offset: 0, 0
-  index: 5
-quietoDerecha
-  rotate: false
-  xy: 140, 106
-  size: 11, 16
-  orig: 11, 16
-  offset: 0, 0
-  index: 0
 caminandoIzquierda
   rotate: false
-  xy: 70, 106
+  xy: 36, 72
   size: 13, 16
   orig: 13, 16
   offset: 0, 0
   index: 3
 caminandoIzquierda
   rotate: false
-  xy: 184, 168
-  size: 13, 16
-  orig: 13, 16
-  offset: 0, 0
-  index: 4
-caminandoIzquierda
-  rotate: false
-  xy: 16, 2
+  xy: 184, 132
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 1
 caminandoIzquierda
   rotate: false
-  xy: 113, 106
+  xy: 198, 150
   size: 12, 16
   orig: 12, 16
   offset: 0, 0
   index: 2
 caminandoIzquierda
   rotate: false
-  xy: 198, 132
-  size: 12, 16
-  orig: 12, 16
-  offset: 0, 0
-  index: 5
-caminandoIzquierda
-  rotate: false
-  xy: 153, 106
+  xy: 112, 106
   size: 11, 16
   orig: 11, 16
   offset: 0, 0
   index: 0
 quietoIzquierda
   rotate: false
-  xy: 153, 106
+  xy: 112, 106
   size: 11, 16
   orig: 11, 16
   offset: 0, 0
@@ -263,9 +228,16 @@ hpBar
   orig: 32, 32
   offset: 0, 0
   index: 4
+quietoDerecha
+  rotate: false
+  xy: 198, 132
+  size: 11, 16
+  orig: 11, 16
+  offset: 0, 0
+  index: 0
 quietoIzquierda
   rotate: false
-  xy: 166, 106
+  xy: 125, 106
   size: 11, 16
   orig: 11, 16
   offset: 0, 0
