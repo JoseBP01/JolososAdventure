@@ -3,15 +3,12 @@ package com.mygdx.game.Personaje;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
+import com.mygdx.game.Base.MyActor;
 
-public class Personaje extends Actor {
+public class Personaje extends MyActor {
 
     private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("caminandoIzquierda", 0.3f, Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> animacionCaminarDerecha = Assets.getAnimation("caminandoDerecha", 0.3f, Animation.PlayMode.LOOP);
@@ -22,7 +19,7 @@ public class Personaje extends Actor {
     private static final Animation<TextureRegion> quietoArriba = Assets.getAnimation("quietoArriba", 0.3f, Animation.PlayMode.NORMAL);
     private static final Animation<TextureRegion> quietoAbajo = Assets.getAnimation("quietoAbajo", 0.3f, Animation.PlayMode.NORMAL);
 
-    private Animation<TextureRegion> currentAnimation = Assets.getAnimation("quietoDerecha", 0.3f, Animation.PlayMode.NORMAL);
+
 
     public enum State {
         Quieto,
@@ -35,65 +32,34 @@ public class Personaje extends Actor {
         Arriba
     }
 
-
     private float vx = 5;
     private float vy = 5;
     private State estado;
     private Direccion direccion;
     private int vidas = 4;
-    private final Circle hitBox;
-    BodyDef bodyDef = new BodyDef();
-    public Body body;
 
+    public Personaje(Fixture fixture) {
+        super(fixture);
 
-    public Personaje(World world, float x, float y){
-        setSize(40,40);
-        setOrigin(Align.center);
-        setPosition(x,y);
-        estado = State.Quieto;
-        direccion = Direccion.Derecha;
-        hitBox = new Circle(getX(),getY(), 32);
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x, y);
-        body = world.createBody(bodyDef);
+        currentAnimation = Assets.getAnimation("quietoDerecha", 0.3f, Animation.PlayMode.NORMAL);
 
-        CircleShape circle = new CircleShape();
-        circle.setRadius(12f);
-
-// Create a fixture definition to apply our shape to
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = circle;
-        fixtureDef.density = 0.80f;
-        fixtureDef.friction = 1.00f;
-        fixtureDef.restitution = 0.6f; // Make it bounce a little bit
-        fixtureDef.filter.categoryBits = 1;
-
-
-// Create our fixture and attach it to the body
-        body.createFixture(fixtureDef).setUserData(this);
-        circle.dispose();
     }
 
     public void izquierda() {
         setDireccion(Direccion.Izquerda);
         setState(State.Caminando);
-//        body.applyForce(-1.0f, 0.0f, bodyDef.position.x, bodyDef.position.y, true);
-//        body.applyLinearImpulse(-20.00f, 0, body.getPosition().x, body.getPosition().y, true);
         body.setLinearVelocity(-300,0);
     }
 
     public void derecha(){
         setDireccion(Direccion.Derecha);
         setState(Personaje.State.Caminando);
-//        body.applyForce(1.0f, 0.0f, bodyDef.position.x, bodyDef.position.y, true);
-//        body.applyLinearImpulse(20.00f, 0, body.getPosition().x, body.getPosition().y, true);
         body.setLinearVelocity(300,0);
     }
 
     public void arriba(){
         setDireccion(Direccion.Arriba);
         setState(State.Caminando);
-//        body.applyForce(0.0f, -1.0f,bodyDef.position.x, bodyDef.position.y, true);
         body.setLinearVelocity(0,300);
 
     }
@@ -101,7 +67,6 @@ public class Personaje extends Actor {
     public void abajo(){
         setDireccion(Direccion.Abajo);
         setState(State.Caminando);
-//        body.applyForce(0.0f, 1.0f,bodyDef.position.x, bodyDef.position.y, true);
         body.setLinearVelocity(0,-300);
 
     }
@@ -124,20 +89,6 @@ public class Personaje extends Actor {
             setState(Personaje.State.Quieto);
             body.setLinearVelocity(0,0);
         }
-
-    }
-
-
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        setPosition(body.getPosition().x, body.getPosition().y);
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
     }
 
     public void setState(State state){
@@ -224,9 +175,5 @@ public class Personaje extends Actor {
 
     public void setVidas(int vidas) {
         this.vidas = vidas;
-    }
-
-    public Circle getHitBox() {
-        return hitBox;
     }
 }

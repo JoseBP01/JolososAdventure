@@ -33,10 +33,11 @@ public class LoadScreen extends MyScreen {
         if(!assets.update()){
             return;
         }
-        setScreen(new MenuScreen(game));
-        spriteBatch.begin();
-
-        spriteBatch.draw(background, 0, 0, 640, 480);
-        spriteBatch.end();
+        setScreen(new GameScreen(game));
+//        setScreen(new MenuScreen(game));
+//        spriteBatch.begin();
+//
+//        spriteBatch.draw(background, 0, 0, 640, 480);
+//        spriteBatch.end();
     }
 }
