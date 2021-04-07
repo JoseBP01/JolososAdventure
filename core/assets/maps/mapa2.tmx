@@ -271,7 +271,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="Object Layer 1">
+ <objectgroup id="6" name="objetos">
   <object id="1" name="casa" x="62" y="416" width="446" height="192"/>
   <object id="2" name="tierra" x="304" y="738" width="170" height="174">
    <ellipse/>
