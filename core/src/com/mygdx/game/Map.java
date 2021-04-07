@@ -16,9 +16,6 @@ public class Map extends Actor {
     MapRenderer mapRenderer;
     OrthographicCamera camera;
     TiledMapTileLayer layerGround;
-    //https://github.com/gerardfp/MarioLibGDX/blob/master/core/src/com/mygdx/game/Map.java
-    //https://github.com/gerardfp/GdxWebSockets/tree/master/core/src/com/mygdx/game
-
 
     public Map(OrthographicCamera camera) {
         this.camera = camera;
