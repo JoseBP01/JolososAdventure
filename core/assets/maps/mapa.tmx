@@ -170,6 +170,6 @@
   <object id="9" name="arbol" x="736.766" y="481.378" width="62.4689" height="62.4689"/>
   <object id="10" name="arbol" x="705.531" y="126.775" width="60.6316" height="66.1435"/>
   <object id="6" name="personaje" x="137.799" y="165.359" width="69.8182" height="90.0287"/>
-  <object id="7" name="arbol" x="845.167" y="202.105" width="64.3062" height="99.2153"/>
+  <object id="7" name="npc" x="845.167" y="202.105" width="64.3062" height="99.2153"/>
  </objectgroup>
 </map>
