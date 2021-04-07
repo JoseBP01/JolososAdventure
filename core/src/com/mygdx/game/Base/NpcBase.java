@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.Assets;
 
-public class NpcBase extends Actor {
+public class NpcBase extends MyActor {
 
     String[] spriteNpc = {"dancerA", "dancerB"};
     int numeroSprite;
@@ -20,11 +19,12 @@ public class NpcBase extends Actor {
     Vector2 vector2 = new Vector2();
 
     public NpcBase(World world,float x, float y) {
+        super(world,x,y);
         this.numeroSprite = (int) (Math.random()*1);
         this.x = x;
         this.y = y;
         size = 64;
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
         CircleShape circle = new CircleShape();
@@ -51,9 +51,5 @@ public class NpcBase extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(NpcA.getKeyFrame(0), x, y, size, size);
     }
-
-
-
 }
