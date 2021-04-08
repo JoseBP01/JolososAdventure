@@ -86,9 +86,6 @@
 </data>
  </layer>
  <objectgroup id="11" name="objects">
-  <object id="1" name="tierra" type="object" x="897.333" y="545.333">
-   <polygon points="0,0 32,30.6667 413.333,30.6667 448,0 414.667,-33.3333 32,-32"/>
-  </object>
   <object id="5" name="casa" type="object" x="1188" y="352">
    <polygon points="0,0 252,0 250,-130 -2,-128"/>
   </object>
