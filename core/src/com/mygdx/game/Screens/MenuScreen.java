@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mygdx.game.Base.MyScreen;
+import com.mygdx.game.MyWidgets.MyScreen;
 import com.mygdx.game.JadventureMain;
 
 public class MenuScreen extends MyScreen {

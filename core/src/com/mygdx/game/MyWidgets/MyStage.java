@@ -1,4 +1,4 @@
-package com.mygdx.game.Base;
+package com.mygdx.game.MyWidgets;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;

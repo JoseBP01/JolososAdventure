@@ -1,9 +1,9 @@
-package com.mygdx.game.Personaje;
+package com.mygdx.game.Actors;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.mygdx.game.Base.MyActor;
+import com.mygdx.game.MyWidgets.MyActor;
 
 public class Casa extends MyActor {
 
@@ -20,6 +20,6 @@ public class Casa extends MyActor {
     @Override
     public void define(Fixture fixture) {
         super.define(fixture);
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        body.setType(BodyDef.BodyType.KinematicBody);
     }
 }

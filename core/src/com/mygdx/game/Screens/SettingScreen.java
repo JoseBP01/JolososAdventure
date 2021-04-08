@@ -1,6 +1,6 @@
 package com.mygdx.game.Screens;
 
-import com.mygdx.game.Base.MyScreen;
+import com.mygdx.game.MyWidgets.MyScreen;
 import com.mygdx.game.JadventureMain;
 
 public class SettingScreen extends MyScreen {
