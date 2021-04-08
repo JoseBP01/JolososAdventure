@@ -142,9 +142,6 @@
 </data>
  </layer>
  <objectgroup id="11" name="objetos">
-  <object id="21" name="puerta" x="1760" y="641.333">
-   <polygon points="0,0 1.33333,-97.3333 64.6667,-97.3333 64,-4"/>
-  </object>
   <object id="1" name="tierra" x="897.333" y="545.333">
    <polygon points="0,0 32,30.6667 413.333,30.6667 448,0 414.667,-33.3333 32,-32"/>
   </object>
@@ -157,18 +154,6 @@
   <object id="5" name="casa" x="1188" y="352">
    <polygon points="0,0 252,0 250,-130 -2,-128"/>
   </object>
-  <object id="15" name="agua" x="1568.5" y="0">
-   <polygon points="0,0 -2,287 256,287.5 255.5,0.5"/>
-  </object>
-  <object id="18" x="451.5" y="576">
-   <polygon points="0,0 -1,-98 221,-95.5 220,93 62,94 60,-1.5"/>
-  </object>
-  <object id="19" name="agua" x="451.5" y="576">
-   <polygon points="0,0 -1,-98 221,-95.5 220,93 62,94 60,-1.5"/>
-  </object>
-  <object id="8" name="arbol" x="384" y="602.641" width="64.3062" height="62.4689"/>
-  <object id="9" name="arbol" x="736.766" y="481.378" width="62.4689" height="62.4689"/>
-  <object id="10" name="arbol" x="705.531" y="126.775" width="60.6316" height="66.1435"/>
   <object id="6" name="personaje" x="137.799" y="165.359" width="69.8182" height="90.0287"/>
   <object id="7" name="npc" x="845.167" y="202.105" width="64.3062" height="99.2153"/>
  </objectgroup>
