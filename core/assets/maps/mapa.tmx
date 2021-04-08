@@ -97,7 +97,7 @@
   <object id="33" name="agua" type="object" x="449" y="480" width="223" height="93"/>
   <object id="34" name="agua" type="object" x="513" y="574" width="161" height="98"/>
   <object id="36" name="agua" type="object" x="1570" y="2" width="255" height="285"/>
-  <object id="38" name="puerta" type="puerta" x="1764" y="552" width="58" height="88"/>
+  <object id="38" name="puerta" type="object" x="1764" y="552" width="58" height="88"/>
   <object id="39" name="pared" type="object" x="0" y="764" width="1826" height="64"/>
   <object id="40" name="pared" type="object" x="-86" y="2" width="90" height="762"/>
   <object id="41" name="pared" type="object" x="2" y="-100" width="1826" height="100"/>
