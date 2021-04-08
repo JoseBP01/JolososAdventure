@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
+import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.MyWidgets.MyWorld;
 
@@ -17,7 +18,8 @@ public class Npc extends MyActor {
     public Npc(Fixture fixture, MapObject mapObject) {
         super(fixture);
         numeroSprite= (int) (Math.random()*1);
-        setSize(32,32);
+        setWidth(((float) mapObject.getProperties().get("width"))* Config.UNIT_SCALE);
+        setHeight((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE);
 
         currentAnimation = Assets.getAnimation(spriteNpc[numeroSprite], 0.3f, Animation.PlayMode.NORMAL);
     }

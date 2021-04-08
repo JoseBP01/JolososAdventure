@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
 import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.Config;
+import com.mygdx.game.MyWidgets.MyWorld;
 
 public class Personaje extends MyActor {
 
@@ -47,6 +48,7 @@ public class Personaje extends MyActor {
         currentAnimation = Assets.getAnimation("quietoDerecha", 0.3f, Animation.PlayMode.NORMAL);
         direccion = Direccion.Derecha;
         estado = State.Quieto;
+        fixture.getFilterData().categoryBits= MyWorld.PERSONAJE_BIT;
 
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
@@ -56,6 +58,7 @@ public class Personaje extends MyActor {
     @Override
     public void defineBody() {
         body.setType(BodyDef.BodyType.DynamicBody);
+        body.setGravityScale(0);
     }
 
     public void izquierda() {
@@ -68,7 +71,6 @@ public class Personaje extends MyActor {
         setDireccion(Direccion.Derecha);
         setState(Personaje.State.Caminando);
         body.setLinearVelocity(300,0);
-        System.out.println("Movimiento nigdes");
     }
 
     public void arriba(){
@@ -92,7 +94,6 @@ public class Personaje extends MyActor {
         }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
             derecha();
             moveBy(getVx(), 0);
-            System.out.println("derecha");
 
         }else if(Gdx.input.isKeyPressed(Input.Keys.W)){
             arriba();

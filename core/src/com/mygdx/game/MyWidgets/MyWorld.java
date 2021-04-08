@@ -14,15 +14,22 @@ import java.util.List;
 
 public class MyWorld extends Group {
 
+    private Map map;
     OrthographicCamera camera;
 
     public static final short TIERRA_BIT = 1;
     public static final short CASA_BIT = 2;
     public static final short NPC_BIT = 4;
     public static final short PERSONAJE_BIT = 8;
+    public static final short PUERTA_BIT = 16;
+
+    // 000000001
+    // 000000010
+    // 000000100
 
     private final Box2DDebugRenderer debugRenderer;
 
+    MyWorld myWorld = this;
     public Personaje personaje;
     public List<Npc> npcs = new ArrayList<>();
     public List<Casa> casas = new ArrayList<>();
@@ -47,9 +54,17 @@ public class MyWorld extends Group {
 
                 int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
                 switch (cDef) {
-                    case PERSONAJE_BIT | TIERRA_BIT:
+                    case PERSONAJE_BIT | NPC_BIT:
                         break;
-                    case NPC_BIT | TIERRA_BIT:
+                    case PERSONAJE_BIT | PUERTA_BIT:
+                        System.out.println("colision puerta");
+                        removeActor(map);
+                        arboles.clear();
+
+                        map = new Map(camera,"maps/mapa2.tmx");
+                        map.loadObjects(myWorld);
+                        addActor(map);
+
                         break;
                 }
 
@@ -68,7 +83,7 @@ public class MyWorld extends Group {
             }
         });
 
-        Map map = new Map(camera);
+        map = new Map(camera,"maps/mapa.tmx");
         map.loadObjects(this);
         addActor(map);
     }

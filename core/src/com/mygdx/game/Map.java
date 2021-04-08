@@ -14,15 +14,16 @@ import net.dermetfan.gdx.physics.box2d.Box2DMapObjectParser;
 
 public class Map extends Actor {
     TiledMap map;
+    TmxMapLoader loader;
     MapRenderer mapRenderer;
     OrthographicCamera camera;
     //https://github.com/gerardfp/MarioLibGDX/blob/master/core/src/com/mygdx/game/Map.java
     //https://github.com/gerardfp/GdxWebSockets/tree/master/core/src/com/mygdx/game
 
 
-    public Map(OrthographicCamera camera) {
+    public Map(OrthographicCamera camera, String mapLoader) {
         this.camera = camera;
-        map = new TmxMapLoader().load("maps/mapa.tmx");
+        map = new TmxMapLoader().load(mapLoader);
         mapRenderer = new OrthogonalTiledMapRenderer(map, Config.UNIT_SCALE);
     }
 
