@@ -89,8 +89,8 @@
   <object id="5" name="casa" type="object" x="1188" y="352">
    <polygon points="0,0 252,0 250,-130 -2,-128"/>
   </object>
-  <object id="6" name="personaje" type="object" x="96" y="127.36" width="32" height="32"/>
-  <object id="7" name="npc" type="object" x="845.167" y="202.105" width="64.3062" height="99.2153"/>
+  <object id="6" name="personaje" type="object" x="96" y="127.36" width="48" height="48"/>
+  <object id="7" name="npc" type="object" x="845.167" y="202.105" width="48" height="48"/>
   <object id="29" name="arbol" type="object" x="706" y="130" width="63" height="60"/>
   <object id="30" name="arbol" type="object" x="736" y="477" width="64" height="65"/>
   <object id="32" name="arbol" type="object" x="385" y="608" width="62" height="64"/>
