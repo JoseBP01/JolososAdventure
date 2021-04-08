@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.Base.NpcBase;
+import com.mygdx.game.Personaje.Npc;
 import com.mygdx.game.Personaje.Personaje;
 
 public class JContactListener implements ContactListener {
@@ -12,7 +12,7 @@ public class JContactListener implements ContactListener {
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
         if(a.getFilterData().categoryBits == 2){
-            NpcBase npc = (NpcBase) a.getUserData();
+            Npc npc = (Npc) a.getUserData();
         }
 
         if (b.getFilterData().categoryBits ==1){
