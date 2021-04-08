@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.game.Map;
 import com.mygdx.game.Personaje.Casa;
+import com.mygdx.game.Personaje.EnemigoBase;
 import com.mygdx.game.Personaje.Npc;
 import com.mygdx.game.Personaje.Personaje;
 
@@ -27,6 +28,7 @@ public class MyWorld extends Group {
     public Personaje personaje;
     public List<Npc> npcs = new ArrayList<>();
     public List<Casa> casas = new ArrayList<>();
+    public List<EnemigoBase> enemigos = new ArrayList<>();
 
     public World world;
 
@@ -90,6 +92,12 @@ public class MyWorld extends Group {
         fixture.setDensity(0.5f);
         fixture.setFriction(0.1f);
         fixture.setRestitution(0.5f);
+    }
+
+    public void addEnemigo(Fixture fixture){
+        EnemigoBase enemigoBase = new EnemigoBase(fixture);
+        enemigos.add(enemigoBase);
+        addActor(enemigoBase);
     }
 
     @Override
