@@ -3,8 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.Personaje.Npc;
-import com.mygdx.game.Personaje.Personaje;
+import com.mygdx.game.Actors.Npc;
+import com.mygdx.game.Actors.Personaje;
 
 public class JContactListener implements ContactListener {
     @Override

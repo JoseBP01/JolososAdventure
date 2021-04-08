@@ -1,4 +1,4 @@
-package com.mygdx.game.Base;
+package com.mygdx.game.MyWidgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -40,6 +40,7 @@ public class MyScreen implements Screen {
 
     @Override public void show() {}
     @Override public void render(float delta) {
+
         Gdx.gl.glClearColor(1, 1, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.getBatch().setProjectionMatrix(camera.combined);

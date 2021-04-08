@@ -1,10 +1,9 @@
-package com.mygdx.game.Base;
+package com.mygdx.game.MyWidgets;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class MyActor extends Actor {
 
     private float stateTime;
-    public BodyDef bodyDef;
     public Body body;
     public Animation<TextureRegion> currentAnimation;
 
@@ -33,7 +31,9 @@ public class MyActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(currentAnimation.getKeyFrame(getStateTime()), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        if(currentAnimation != null) {
+            batch.draw(currentAnimation.getKeyFrame(getStateTime()), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        }
     }
 
     public void define(Fixture fixture){

@@ -1,15 +1,13 @@
-package com.mygdx.game.Base;
+package com.mygdx.game.MyWidgets;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.mygdx.game.Actors.*;
 import com.mygdx.game.Map;
-import com.mygdx.game.Personaje.Casa;
-import com.mygdx.game.Personaje.EnemigoBase;
-import com.mygdx.game.Personaje.Npc;
-import com.mygdx.game.Personaje.Personaje;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,10 @@ public class MyWorld extends Group {
     public Personaje personaje;
     public List<Npc> npcs = new ArrayList<>();
     public List<Casa> casas = new ArrayList<>();
-    public List<EnemigoBase> enemigos = new ArrayList<>();
+    public List<Enemigo> enemigos = new ArrayList<>();
+    public List<Arbol> arboles = new ArrayList<>();
+    public List<Puerta> puertas = new ArrayList<>();
+    public List<Agua> aguaList = new ArrayList<>();
 
     public World world;
 
@@ -72,12 +73,12 @@ public class MyWorld extends Group {
         addActor(map);
     }
 
-    public void addPersonaje(Fixture fixture) {
-        addActor(personaje = new Personaje(fixture));
+    public void addPersonaje(Fixture fixture, MapObject mapObject) {
+        addActor(personaje = new Personaje(fixture,mapObject));
     }
 
-    public void addNpc(Fixture fixture) {
-        Npc npc = new Npc(fixture);
+    public void addNpc(Fixture fixture, MapObject mapObject) {
+        Npc npc = new Npc(fixture,mapObject);
         npcs.add(npc);
         addActor(npc);
     }
@@ -95,9 +96,27 @@ public class MyWorld extends Group {
     }
 
     public void addEnemigo(Fixture fixture){
-        EnemigoBase enemigoBase = new EnemigoBase(fixture);
+        Enemigo enemigoBase = new Enemigo(fixture);
         enemigos.add(enemigoBase);
         addActor(enemigoBase);
+    }
+
+    public void addPuerta(Fixture fixture){
+        Puerta puerta = new Puerta(fixture);
+        puertas.add(puerta);
+        addActor(puerta);
+    }
+
+    public void addArbol(Fixture fixture){
+        Arbol arbol = new Arbol(fixture);
+        arboles.add(arbol);
+        addActor(arbol);
+    }
+
+    public void addAgua(Fixture fixture){
+        Agua agua = new Agua(fixture);
+        aguaList.add(agua);
+        addActor(agua);
     }
 
     @Override

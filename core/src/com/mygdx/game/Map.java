@@ -9,7 +9,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.Base.MyWorld;
+import com.mygdx.game.MyWidgets.MyWorld;
 import net.dermetfan.gdx.physics.box2d.Box2DMapObjectParser;
 
 public class Map extends Actor {
@@ -27,24 +27,34 @@ public class Map extends Actor {
     }
 
     public void loadObjects(MyWorld myWorld){
-        Box2DMapObjectParser box2DMapObjectParser = new Box2DMapObjectParser(); // TODO: UnitScale
+        Box2DMapObjectParser box2DMapObjectParser = new Box2DMapObjectParser(Config.UNIT_SCALE); // TODO: UnitScale
 
         box2DMapObjectParser.setListener(new Box2DMapObjectParser.Listener.Adapter() {
             @Override
             public void created(Fixture fixture, MapObject mapObject) {
                 super.created(fixture, mapObject);
+                System.out.println("CREANDO " + mapObject.getName());
                 switch (mapObject.getName()) {
                     case "personaje":
-                        myWorld.addPersonaje(fixture);
+                        myWorld.addPersonaje(fixture,mapObject);
                         break;
                     case "npc":
-                        myWorld.addNpc(fixture);
+                        myWorld.addNpc(fixture,mapObject);
                         break;
                     case "casa":
                         myWorld.addCasa(fixture);
                         break;
                     case "tierra":
                         myWorld.addTierra(fixture);
+                        break;
+                    case "arbol":
+                        myWorld.addArbol(fixture);
+                        break;
+                    case "puerta":
+                        myWorld.addPuerta(fixture);
+                        break;
+                    case "agua":
+                        myWorld.addAgua(fixture);
                         break;
                 }
             }

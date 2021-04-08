@@ -1,7 +1,7 @@
 package com.mygdx.game.Screens;
 
-import com.mygdx.game.Base.MyScreen;
-import com.mygdx.game.Base.MyWorld;
+import com.mygdx.game.MyWidgets.MyScreen;
+import com.mygdx.game.MyWidgets.MyWorld;
 import com.mygdx.game.JadventureMain;
 
 public class GameScreen extends MyScreen {
@@ -26,6 +26,5 @@ public class GameScreen extends MyScreen {
             camera.update();
             myWorld.personaje.manejarTeclas();
         }
-
     }
 }

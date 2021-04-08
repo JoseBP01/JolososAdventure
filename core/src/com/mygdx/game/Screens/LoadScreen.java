@@ -3,7 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.game.Base.MyScreen;
+import com.mygdx.game.MyWidgets.MyScreen;
 import com.mygdx.game.JadventureMain;
 
 public class LoadScreen extends MyScreen {
