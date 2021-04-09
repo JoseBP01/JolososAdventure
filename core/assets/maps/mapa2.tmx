@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="25" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="16">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="25" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="21">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="1" name="suelito" width="25" height="50">
   <data encoding="csv">
@@ -272,26 +272,31 @@
 </data>
  </layer>
  <objectgroup id="6" name="objetos">
-  <object id="1" name="casa" x="62" y="416" width="446" height="192"/>
-  <object id="2" name="tierra" x="304" y="738" width="170" height="174">
+  <object id="1" name="casa" type="object" x="62" y="416" width="446" height="192"/>
+  <object id="2" name="tierra" type="object" x="304" y="738" width="170" height="174">
    <ellipse/>
   </object>
-  <object id="5" name="tierra" x="128" y="1530">
+  <object id="5" name="tierra" type="object" x="128" y="1530">
    <polygon points="0,0 -2,-184 196,-186 190,4"/>
   </object>
-  <object id="6" name="tierra" x="482" y="1370">
+  <object id="6" name="tierra" type="object" x="482" y="1370">
    <polygon points="0,0 0,-184 194,-180 192,6"/>
   </object>
-  <object id="7" name="agua" x="388" y="1590">
+  <object id="7" name="agua" type="object" x="388" y="1590">
    <polygon points="0,0 -2,-208 410,-212 406,10"/>
   </object>
-  <object id="8" name="arbol" x="96" y="1244" width="62" height="64"/>
-  <object id="9" name="arbol" x="514" y="990" width="62" height="66"/>
-  <object id="10" name="arbol" x="192" y="868" width="66" height="58"/>
-  <object id="11" name="arbol" x="130" y="800" width="64" height="64"/>
-  <object id="12" name="personaje" x="92" y="92" width="48" height="48"/>
-  <object id="13" name="npc" x="82" y="312" width="48" height="48"/>
-  <object id="14" name="enemigo" x="220" y="1060" width="48" height="48"/>
-  <object id="15" name="enemigo" x="90" y="1054" width="48" height="48"/>
+  <object id="8" name="arbol" type="object" x="96" y="1244" width="62" height="64"/>
+  <object id="9" name="arbol" type="object" x="514" y="990" width="62" height="66"/>
+  <object id="10" name="arbol" type="object" x="192" y="868" width="66" height="58"/>
+  <object id="11" name="arbol" type="object" x="130" y="800" width="64" height="64"/>
+  <object id="12" name="personaje" type="object" x="92" y="92" width="48" height="48"/>
+  <object id="13" name="npc" type="object" x="82" y="312" width="48" height="48"/>
+  <object id="14" name="enemigo" type="object" x="220" y="1060" width="48" height="48"/>
+  <object id="15" name="enemigo" type="object" x="90" y="1054" width="48" height="48"/>
+  <object id="16" name="pared" type="object" x="-1" y="-94" width="800" height="96"/>
+  <object id="17" name="pared" type="object" x="804" y="8" width="36" height="1378"/>
+  <object id="18" name="pared" type="object" x="-41" y="8" width="42" height="1586"/>
+  <object id="19" name="pared" type="object" x="2" y="1594" width="386" height="64"/>
+  <object id="20" name="entrada" type="object" x="70" y="591" width="370" height="26"/>
  </objectgroup>
 </map>
