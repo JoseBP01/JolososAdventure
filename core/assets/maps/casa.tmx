@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="13">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="14">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="3" name="cesped" width="25" height="25">
   <data encoding="csv">
@@ -96,10 +96,10 @@
   <object id="6" name="pared" type="object" x="537.369" y="2.72086" width="43.5337" height="155.089"/>
   <object id="7" name="pared" type="object" x="695.179" y="-1.36043" width="50.3359" height="157.81"/>
   <object id="8" name="pared" type="object" x="-42.1733" y="159.17" width="42.1733" height="636.681"/>
-  <object id="9" name="sillas" type="onject" x="76.184" y="311.538" width="242.156" height="238.075"/>
+  <object id="9" name="sillas" type="object" x="76.184" y="311.538" width="242.156" height="238.075"/>
   <object id="10" name="sillas" type="object" x="390.61" y="310.9" width="239.435" height="227.192"/>
   <object id="11" name="escalera" type="object" x="0" y="640.762" width="62.5797" height="28.569"/>
-  <object id="12" x="606.751" y="701.981" width="48" height="48"/>
+  <object id="12" name="personaje" type="object" x="606.751" y="701.981" width="48" height="48"/>
  </objectgroup>
  <layer id="5" name="cruz" width="25" height="25">
   <data encoding="csv">
