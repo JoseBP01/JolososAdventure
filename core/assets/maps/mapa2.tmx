@@ -289,9 +289,9 @@
   <object id="9" name="arbol" x="514" y="990" width="62" height="66"/>
   <object id="10" name="arbol" x="192" y="868" width="66" height="58"/>
   <object id="11" name="arbol" x="130" y="800" width="64" height="64"/>
-  <object id="12" name="personaje" x="92" y="92" width="66" height="98"/>
-  <object id="13" name="npc" x="82" y="312" width="78" height="94"/>
-  <object id="14" name="enemigo" x="220" y="1060" width="70" height="92"/>
-  <object id="15" name="enemigo" x="90" y="1054" width="70" height="100"/>
+  <object id="12" name="personaje" x="92" y="92" width="48" height="48"/>
+  <object id="13" name="npc" x="82" y="312" width="48" height="48"/>
+  <object id="14" name="enemigo" x="220" y="1060" width="48" height="48"/>
+  <object id="15" name="enemigo" x="90" y="1054" width="48" height="48"/>
  </objectgroup>
 </map>
