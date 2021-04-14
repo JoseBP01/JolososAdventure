@@ -118,7 +118,7 @@ public class Personaje extends MyActor {
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             ataque();
-//            if ()
+//            if (getVx()==)
         }
         else{
             setState(Personaje.State.Quieto);
