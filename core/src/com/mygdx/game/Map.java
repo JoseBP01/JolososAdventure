@@ -34,7 +34,7 @@ public class Map extends Actor {
             @Override
             public void created(Fixture fixture, MapObject mapObject) {
                 super.created(fixture, mapObject);
-                System.out.println("CREANDO " + mapObject.getName());
+               // System.out.println("CREANDO " + mapObject.getName());
                 switch (mapObject.getName()) {
                     case "personaje":
                         myWorld.addPersonaje(fixture,mapObject);
@@ -51,11 +51,28 @@ public class Map extends Actor {
                     case "arbol":
                         myWorld.addArbol(fixture);
                         break;
-                    case "puerta":
-                        myWorld.addPuerta(fixture);
+                    case "puertamap2":
+                        myWorld.addPuerta(fixture,"maps/mapa2.tmx", mapObject.getName());
+                        break;
+                    case "puertamap1":
+                    case "salidajesus1":
+                    case "salidasotano1":
+                        myWorld.addPuerta(fixture,"maps/mapa.tmx", mapObject.getName());
+                        break;
+                    case "puertasotano":
+                        myWorld.addPuerta(fixture,"maps/sotano.tmx", mapObject.getName());
+                        break;
+                    case "puertajesus1":
+                        myWorld.addPuerta(fixture,"maps/casa.tmx", mapObject.getName());
                         break;
                     case "agua":
                         myWorld.addAgua(fixture);
+                        break;
+                    case "pared":
+                        myWorld.addPared(fixture);
+                        break;
+                    case "sillas":
+                        myWorld.addSillas(fixture);
                         break;
                 }
             }

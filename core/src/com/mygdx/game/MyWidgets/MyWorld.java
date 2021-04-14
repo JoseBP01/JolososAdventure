@@ -37,14 +37,25 @@ public class MyWorld extends Group {
     public List<Arbol> arboles = new ArrayList<>();
     public List<Puerta> puertas = new ArrayList<>();
     public List<Agua> aguaList = new ArrayList<>();
+    public List<Pared> paredes = new ArrayList<>();
+    public List<Sillas> sillasList = new ArrayList<>();
+    Puerta puertaCambio;
 
     public World world;
+    boolean reloadMap;
+
 
     public MyWorld(OrthographicCamera camera) {
         this.camera = camera;
-
-        world = new World(new Vector2(0, -80), true);
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+
+        initWorld("maps/mapa.tmx");
+
+    }
+
+    void initWorld (String mapName){
+        world = new World(new Vector2(0, -80), true);
+
 
         world.setContactListener(new ContactListener() {
             @Override
@@ -55,17 +66,22 @@ public class MyWorld extends Group {
                 int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
                 switch (cDef) {
                     case PERSONAJE_BIT | NPC_BIT:
-                        break;
-                    case PERSONAJE_BIT | PUERTA_BIT:
-                        System.out.println("colision puerta");
-                        removeActor(map);
-                        arboles.clear();
-
-                        map = new Map(camera,"maps/mapa2.tmx");
-                        map.loadObjects(myWorld);
-                        addActor(map);
 
                         break;
+
+                    case PUERTA_BIT | PERSONAJE_BIT:
+
+                        if (fixB.getFilterData().categoryBits == PUERTA_BIT){
+                            puertaCambio = (Puerta) fixB.getBody().getUserData();
+                            reloadMap = true;
+                            System.out.println("COLISION CON PUERTA " + puertaCambio);
+                        } else {
+                            puertaCambio = (Puerta) fixA.getBody().getUserData();
+                            reloadMap = true;
+                            System.out.println("COLISION CON PUERTA " + puertaCambio);
+                        }
+                        break;
+
                 }
 
             }
@@ -83,12 +99,67 @@ public class MyWorld extends Group {
             }
         });
 
-        map = new Map(camera,"maps/mapa.tmx");
+        map = new Map(camera,mapName);
         map.loadObjects(this);
         addActor(map);
+        camera.position.set(personaje.getX(),personaje.getY(),0);
+
+    }
+
+    void clearMyWorld() {
+
+        for (Arbol arbol:arboles){
+            world.destroyBody(arbol.body);
+            arbol.clearActions();
+            removeActor(arbol);
+        }
+        arboles.clear();
+
+        for (Npc npc: npcs){
+            world.destroyBody(npc.body);
+            npc.clearActions();
+            removeActor(npc);
+        }
+        npcs.clear();
+
+        for (Agua agua:aguaList){
+            world.destroyBody(agua.body);
+            agua.clearActions();
+            removeActor(agua);
+        }
+        aguaList.clear();
+
+        for (Pared pared:paredes){
+            world.destroyBody(pared.body);
+            pared.clearActions();
+            removeActor(pared);
+        }
+        paredes.clear();
+
+        for (Sillas sillas: sillasList){
+            world.destroyBody(sillas.body);
+            sillas.clearActions();
+            removeActor(sillas);
+        }
+        sillasList.clear();
+
+        for (Puerta puerta : puertas){
+            world.destroyBody(puerta.body);
+            puerta.clearActions();
+            removeActor(puerta);
+        }
+        puertas.clear();
+
+        world.destroyBody(personaje.body);
+
+        removeActor(personaje);
+        removeActor(map);
+        System.out.println("CARGANDO " + puertaCambio.map + " : " + puertaCambio.name);
+        initWorld(puertaCambio.map);
     }
 
     public void addPersonaje(Fixture fixture, MapObject mapObject) {
+        System.out.println("AÑADIENDO PERASONALEEEEE ...");
         addActor(personaje = new Personaje(fixture,mapObject));
     }
 
@@ -116,9 +187,18 @@ public class MyWorld extends Group {
         addActor(enemigoBase);
     }
 
-    public void addPuerta(Fixture fixture){
-        Puerta puerta = new Puerta(fixture);
+    public void addSillas(Fixture fixture){
+        Sillas sillas = new Sillas(fixture);
+        sillasList.add(sillas);
+        addActor(sillas);
+    }
+
+    public void addPuerta(Fixture fixture, String res, String name){
+        System.out.println("Añadiendo puerta " + name + " hacia " + res);
+        Puerta puerta = new Puerta(fixture, name);
+        puerta.map = res;
         puertas.add(puerta);
+        puertas.forEach(System.out::println);
         addActor(puerta);
     }
 
@@ -134,10 +214,23 @@ public class MyWorld extends Group {
         addActor(agua);
     }
 
+    public void addPared(Fixture fixture){
+        Pared pared = new Pared(fixture);
+        paredes.add(pared);
+        addActor(pared);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
         world.step(delta, 6, 2);
+
+        if(reloadMap){
+            clearMyWorld();
+            reloadMap = false;
+        }
+
+
     }
 
     @Override

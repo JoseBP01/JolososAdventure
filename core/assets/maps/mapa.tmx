@@ -145,7 +145,7 @@
   <object id="5" name="casa" type="object" x="1188" y="352">
    <polygon points="0,0 252,0 250,-130 -2,-128"/>
   </object>
-  <object id="6" name="personaje" type="object" x="96" y="127.36" width="48" height="48"/>
+  <object id="6" name="personaje" type="object" x="1650" y="552" width="48" height="48"/>
   <object id="7" name="npc" type="object" x="845.167" y="202.105" width="48" height="48"/>
   <object id="29" name="arbol" type="object" x="706" y="130" width="63" height="60"/>
   <object id="30" name="arbol" type="object" x="736" y="477" width="64" height="65"/>
@@ -158,7 +158,7 @@
   <object id="40" name="pared" type="object" x="-86" y="2" width="90" height="762"/>
   <object id="41" name="pared" type="object" x="2" y="-100" width="1826" height="100"/>
   <object id="42" name="pared" type="object" x="1824" y="-4" width="108" height="774"/>
-  <object id="43" name="puertajesus" type="object" x="1320" y="329" width="111" height="31"/>
+  <object id="43" name="puertajesus1" type="object" x="1320" y="329" width="111" height="31"/>
   <object id="44" x="953.333" y="348" width="1.33333"/>
  </objectgroup>
 </map>
