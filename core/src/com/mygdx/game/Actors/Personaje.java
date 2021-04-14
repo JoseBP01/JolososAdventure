@@ -55,7 +55,7 @@ public class Personaje extends MyActor {
     public Personaje(Fixture fixture, MapObject mapObject) {
         super(fixture);
 
-        currentAnimation = Assets.getAnimation("quietoDerecha", 0.3f, Animation.PlayMode.NORMAL);
+        currentAnimation = Assets.getAnimation("quietosDerecha", 0.3f, Animation.PlayMode.NORMAL);
         direccion = Direccion.Derecha;
         estado = State.Quieto;
         fixture.getFilterData().categoryBits= MyWorld.PERSONAJE_BIT;
@@ -111,7 +111,11 @@ public class Personaje extends MyActor {
         }else if(Gdx.input.isKeyPressed(Input.Keys.S)){
             abajo();
             moveBy(0, -getVy());
-        }else{
+        }
+//        else if (Gdx.input.isKeyPressed(Input.Keys.)){
+//
+//        }
+        else{
             setState(Personaje.State.Quieto);
             body.setLinearVelocity(0,0);
         }

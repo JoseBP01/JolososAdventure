@@ -283,7 +283,7 @@
   <object id="17" name="pared" type="object" x="804" y="8" width="36" height="1378"/>
   <object id="18" name="pared" type="object" x="-41" y="8" width="42" height="1586"/>
   <object id="19" name="pared" type="object" x="2" y="1594" width="386" height="64"/>
-  <object id="20" name="entrada" type="object" x="70" y="591" width="370" height="26"/>
+  <object id="20" name="puerta" type="object" x="70" y="591" width="370" height="26"/>
   <object id="21" name="agua" type="object" x="386" y="1378" width="413" height="221"/>
  </objectgroup>
 </map>
