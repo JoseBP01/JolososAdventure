@@ -23,7 +23,7 @@ public class Personaje extends MyActor {
 //    private static final Animation<TextureRegion> quietoArriba = Assets.getAnimation("quietoArriba", 0.3f, Animation.PlayMode.NORMAL);
 //    private static final Animation<TextureRegion> quietoAbajo = Assets.getAnimation("quietoAbajo", 0.3f, Animation.PlayMode.NORMAL);
 
-    //Nuevo Sprite
+    //Animacion Movimiento
     private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("direcIzquierda", 0.1f, Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> animacionCaminarDerecha = Assets.getAnimation("direcDerecha", 0.1f, Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> animacionCaminarArriba = Assets.getAnimation("direcArriba", 0.1f, Animation.PlayMode.LOOP);
@@ -32,12 +32,22 @@ public class Personaje extends MyActor {
     private static final Animation<TextureRegion> quietoDerecha = Assets.getAnimation("quietosDerecha", 0.1f, Animation.PlayMode.NORMAL);
     private static final Animation<TextureRegion> quietoArriba = Assets.getAnimation("quietosArriba", 0.1f, Animation.PlayMode.NORMAL);
     private static final Animation<TextureRegion> quietoAbajo = Assets.getAnimation("quietosAbajo", 0.1f, Animation.PlayMode.NORMAL);
-
-
+    //Animacion Ataque
+    private static final Animation<TextureRegion> ataqueIzquierda = Assets.getAnimation("caminandoIzquierda", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> ataqueDerecha = Assets.getAnimation("caminandoDerecha", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> ataqueArriba = Assets.getAnimation("caminandoArriba", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> ataqueAbajo = Assets.getAnimation("caminandoAbajo", 0.5f, Animation.PlayMode.LOOP);
+    //Animacion Curar
+    private static final Animation<TextureRegion> curarIzquierda = Assets.getAnimation("caminandoIzquierda", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> curarDerecha = Assets.getAnimation("caminandoDerecha", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> curarArriba = Assets.getAnimation("caminandoArriba", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> curarAbajo = Assets.getAnimation("caminandoAbajo", 0.5f, Animation.PlayMode.LOOP);
 
     public enum State {
         Quieto,
-        Caminando
+        Caminando,
+        Ataque,
+        Curar
     }
     public enum Direccion {
         Izquerda,
@@ -71,25 +81,23 @@ public class Personaje extends MyActor {
         body.setGravityScale(0);
     }
 
+    //MOVIMIENTO
     public void izquierda() {
         setDireccion(Direccion.Izquerda);
         setState(State.Caminando);
         body.setLinearVelocity(-300,0);
     }
-
     public void derecha(){
         setDireccion(Direccion.Derecha);
         setState(Personaje.State.Caminando);
         body.setLinearVelocity(300,0);
     }
-
     public void arriba(){
         setDireccion(Direccion.Arriba);
         setState(State.Caminando);
         body.setLinearVelocity(0,300);
 
     }
-
     public void abajo(){
         setDireccion(Direccion.Abajo);
         setState(State.Caminando);
@@ -97,9 +105,42 @@ public class Personaje extends MyActor {
 
     }
 
-    public void ataque(){
-
+    //ATAQUE
+    public void ataqueIzquierda(){
+        setDireccion(Direccion.Izquerda);
+        setState(State.Ataque);
     }
+    public void ataqueDerecha(){
+        setDireccion(Direccion.Derecha);
+        setState(State.Ataque);
+    }
+    public void ataqueArriba(){
+        setDireccion(Direccion.Arriba);
+        setState(State.Ataque);
+    }
+    public void ataqueAbajo(){
+        setDireccion(Direccion.Abajo);
+        setState(State.Ataque);
+    }
+
+    //CURAR
+    public void curarIzquierda(){
+        setDireccion(Direccion.Izquerda);
+        setState(State.Curar);
+    }
+    public void curarDerecha(){
+        setDireccion(Direccion.Derecha);
+        setState(State.Curar);
+    }
+    public void curarArriba(){
+        setDireccion(Direccion.Arriba);
+        setState(State.Curar);
+    }
+    public void curarAbajo(){
+        setDireccion(Direccion.Abajo);
+        setState(State.Curar);
+    }
+
 
     public void manejarTeclas() {
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
@@ -117,10 +158,34 @@ public class Personaje extends MyActor {
             moveBy(0, -getVy());
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            ataque();
-//            if (getVx()==)
-        }
-        else{
+
+            if (direccion==Direccion.Izquerda){
+                ataqueIzquierda();
+            }
+            else if (direccion==Direccion.Derecha){
+                ataqueDerecha();
+            }
+            else if (direccion==Direccion.Arriba){
+                ataqueArriba();
+            }
+            else if (direccion==Direccion.Abajo){
+                ataqueAbajo();
+            }
+        }else if (Gdx.input.isKeyPressed(Input.Keys.E)){
+
+            if (direccion==Direccion.Izquerda){
+                curarIzquierda();
+            }
+            else if (direccion==Direccion.Derecha){
+                curarDerecha();
+            }
+            else if (direccion==Direccion.Arriba){
+                curarArriba();
+            }
+            else if (direccion==Direccion.Abajo){
+                curarAbajo();
+            }
+        }else{
             setState(Personaje.State.Quieto);
             body.setLinearVelocity(0,0);
         }
@@ -165,7 +230,42 @@ public class Personaje extends MyActor {
                         currentAnimation = quietoAbajo;
                         break;
                 }
-            break;
+                break;
+            case Ataque:
+                switch (direccion){
+                    case Izquerda:
+                        currentAnimation = ataqueIzquierda;
+                        break;
+                    case Derecha:
+                        currentAnimation = ataqueDerecha;
+                        break;
+                    case Arriba:
+                        currentAnimation = ataqueArriba;
+                        break;
+                    case Abajo:
+                        currentAnimation = ataqueAbajo;
+                        break;
+                }
+                break;
+            case Curar:
+                switch (direccion){
+                    case Izquerda:
+                        currentAnimation = curarIzquierda;
+                        break;
+
+                    case Derecha:
+                        currentAnimation = curarDerecha;
+                        break;
+
+                    case Arriba:
+                        currentAnimation = curarArriba;
+                        break;
+
+                    case Abajo:
+                        currentAnimation = curarAbajo;
+                        break;
+                }
+                break;
 
             default: currentAnimation = quietoDerecha;
             break;
