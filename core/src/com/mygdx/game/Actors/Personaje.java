@@ -112,9 +112,9 @@ public class Personaje extends MyActor {
             abajo();
             moveBy(0, -getVy());
         }
-//        else if (Gdx.input.isKeyPressed(Input.Keys.)){
-//
-//        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+
+        }
         else{
             setState(Personaje.State.Quieto);
             body.setLinearVelocity(0,0);

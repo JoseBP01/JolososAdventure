@@ -98,7 +98,7 @@
   <object id="8" name="pared" type="object" x="-42.1733" y="159.17" width="42.1733" height="636.681"/>
   <object id="9" name="sillas" type="object" x="76.184" y="311.538" width="242.156" height="238.075"/>
   <object id="10" name="sillas" type="object" x="390.61" y="310.9" width="239.435" height="227.192"/>
-  <object id="11" name="escalera" type="object" x="0" y="640.762" width="62.5797" height="28.569"/>
+  <object id="11" name="puertasotano" type="object" x="0" y="640.762" width="62.5797" height="28.569"/>
   <object id="12" name="personaje" type="object" x="606.751" y="701.981" width="48" height="48"/>
  </objectgroup>
  <layer id="5" name="cruz" width="25" height="25">
