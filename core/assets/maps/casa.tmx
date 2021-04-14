@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="15">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="18">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="3" name="cesped" width="25" height="25">
   <data encoding="csv">
@@ -100,6 +100,7 @@
   <object id="10" name="sillas" type="object" x="390.61" y="310.9" width="239.435" height="227.192"/>
   <object id="11" name="puertasotano" type="object" x="0" y="640.762" width="62.5797" height="28.569"/>
   <object id="12" name="personaje" type="object" x="606.751" y="701.981" width="48" height="48"/>
+  <object id="17" name="salidajesus1" type="object" x="423.093" y="0" width="379.56" height="88.4279"/>
  </objectgroup>
  <layer id="5" name="cruz" width="25" height="25">
   <data encoding="csv">

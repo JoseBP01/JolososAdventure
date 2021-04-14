@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="57" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="44">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="57" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="45">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="5" name="agua" width="57" height="24">
   <data encoding="csv">
@@ -159,5 +159,6 @@
   <object id="41" name="pared" type="object" x="2" y="-100" width="1826" height="100"/>
   <object id="42" name="pared" type="object" x="1824" y="-4" width="108" height="774"/>
   <object id="43" name="puertajesus" type="object" x="1320" y="329" width="111" height="31"/>
+  <object id="44" x="953.333" y="348" width="1.33333"/>
  </objectgroup>
 </map>

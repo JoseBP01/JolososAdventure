@@ -97,6 +97,10 @@ public class Personaje extends MyActor {
 
     }
 
+    public void ataque(){
+
+    }
+
     public void manejarTeclas() {
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
 
@@ -113,7 +117,8 @@ public class Personaje extends MyActor {
             moveBy(0, -getVy());
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-
+            ataque();
+//            if ()
         }
         else{
             setState(Personaje.State.Quieto);
