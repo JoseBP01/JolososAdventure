@@ -96,13 +96,11 @@ public class Personaje extends MyActor {
         setDireccion(Direccion.Arriba);
         setState(State.Caminando);
         body.setLinearVelocity(0,300);
-
     }
     public void abajo(){
         setDireccion(Direccion.Abajo);
         setState(State.Caminando);
         body.setLinearVelocity(0,-300);
-
     }
 
     //ATAQUE
@@ -141,7 +139,7 @@ public class Personaje extends MyActor {
         setState(State.Curar);
     }
 
-
+    //Teclas asignadas
     public void manejarTeclas() {
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
 
@@ -158,7 +156,6 @@ public class Personaje extends MyActor {
             moveBy(0, -getVy());
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-
             if (direccion==Direccion.Izquerda){
                 ataqueIzquierda();
             }
@@ -172,7 +169,6 @@ public class Personaje extends MyActor {
                 ataqueAbajo();
             }
         }else if (Gdx.input.isKeyPressed(Input.Keys.E)){
-
             if (direccion==Direccion.Izquerda){
                 curarIzquierda();
             }
