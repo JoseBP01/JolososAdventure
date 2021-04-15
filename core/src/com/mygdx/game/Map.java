@@ -56,14 +56,14 @@ public class Map extends Actor {
                         break;
                     case "puertamap1":
                     case "salidajesus1":
-                    case "salidasotano1":
                         myWorld.addPuerta(fixture,"maps/mapa.tmx", mapObject.getName());
+                        break;
+                    case "salidasotano1":
+                    case "puertajesus1":
+                        myWorld.addPuerta(fixture,"maps/casa.tmx", mapObject.getName());
                         break;
                     case "puertasotano":
                         myWorld.addPuerta(fixture,"maps/sotano.tmx", mapObject.getName());
-                        break;
-                    case "puertajesus1":
-                        myWorld.addPuerta(fixture,"maps/casa.tmx", mapObject.getName());
                         break;
                     case "agua":
                         myWorld.addAgua(fixture);

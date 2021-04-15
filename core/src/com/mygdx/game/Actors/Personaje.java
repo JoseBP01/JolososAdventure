@@ -3,6 +3,7 @@ package com.mygdx.game.Actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -99,6 +100,12 @@ public class Personaje extends MyActor {
 
     public void ataque(){
 
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        System.out.println("dibujando");
     }
 
     public void manejarTeclas() {

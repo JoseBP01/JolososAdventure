@@ -23,13 +23,8 @@ public class MyWorld extends Group {
     public static final short PERSONAJE_BIT = 8;
     public static final short PUERTA_BIT = 16;
 
-    // 000000001
-    // 000000010
-    // 000000100
-
     private final Box2DDebugRenderer debugRenderer;
 
-    MyWorld myWorld = this;
     public Personaje personaje;
     public List<Npc> npcs = new ArrayList<>();
     public List<Casa> casas = new ArrayList<>();
@@ -40,10 +35,10 @@ public class MyWorld extends Group {
     public List<Pared> paredes = new ArrayList<>();
     public List<Sillas> sillasList = new ArrayList<>();
     Puerta puertaCambio;
+    MyDialog dialog;
 
     public World world;
     boolean reloadMap;
-
 
     public MyWorld(OrthographicCamera camera) {
         this.camera = camera;
@@ -56,7 +51,6 @@ public class MyWorld extends Group {
     void initWorld (String mapName){
         world = new World(new Vector2(0, -80), true);
 
-
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -67,6 +61,17 @@ public class MyWorld extends Group {
                 switch (cDef) {
                     case PERSONAJE_BIT | NPC_BIT:
 
+
+                        addActor(dialog = new MyDialog("Warning", "TextoPrueba", "Yes", true, "No", false, 200, 200) {
+                            public void result(Object obj) {
+                                System.out.println("result "+obj);
+                            }
+                        });
+//                        dialog.show(getStage());
+
+                        System.out.println(camera.position.x);
+                        System.out.println("w: "+camera.viewportWidth);
+//                        dialog.setPosition(camera.viewportWidth, 0);
                         break;
 
                     case PUERTA_BIT | PERSONAJE_BIT:
@@ -88,6 +93,18 @@ public class MyWorld extends Group {
 
             @Override
             public void endContact(Contact contact) {
+                Fixture fixA = contact.getFixtureA();
+                Fixture fixB = contact.getFixtureB();
+
+                int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+                switch (cDef) {
+                    case PERSONAJE_BIT | NPC_BIT:
+                        removeActor(dialog);
+//                        dialog.hide();
+
+
+                        break;
+                }
             }
 
             @Override
@@ -229,8 +246,9 @@ public class MyWorld extends Group {
             clearMyWorld();
             reloadMap = false;
         }
-
-
+        if(dialog != null) {
+            dialog.update(camera);
+        }
     }
 
     @Override
@@ -238,5 +256,4 @@ public class MyWorld extends Group {
         super.draw(batch, parentAlpha);
         debugRenderer.render(world, camera.combined);
     }
-
 }

@@ -1,18 +1,21 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets extends AssetManager {
 
 
     public static TextureAtlas atlas;
+    public static Skin uiSkin;
+
 
     public void load(){
         load("miatles.atlas", TextureAtlas.class);
+        load("uiskins/skin.json", Skin.class);
     }
 
     @Override
@@ -21,6 +24,7 @@ public class Assets extends AssetManager {
 
         if(update){
             atlas = get("miatles.atlas", TextureAtlas.class);
+            uiSkin = get("uiskins/skin.json", Skin.class);
         }
         return update;
     }

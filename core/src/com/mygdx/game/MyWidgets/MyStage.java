@@ -42,4 +42,11 @@ public class MyStage extends Stage {
 
         addActor(table);
     }
+
+    @Override
+    public void draw() {
+        super.draw();
+        System.out.println("SRC " + getBatch().getBlendSrcFuncAlpha());
+        System.out.println("DST " + getBatch().getBlendDstFuncAlpha());
+    }
 }
