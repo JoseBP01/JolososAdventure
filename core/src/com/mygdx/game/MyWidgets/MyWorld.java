@@ -62,9 +62,15 @@ public class MyWorld extends Group {
                     case PERSONAJE_BIT | NPC_BIT:
 
 
-                        addActor(dialog = new MyDialog("Warning", "TextoPrueba", "Yes", true, "No", false, 200, 200) {
+                        addActor(dialog = new MyDialog("Warning", "TextoPrueba", "Yes", true, "No", false, camera.viewportWidth, 200) {
                             public void result(Object obj) {
                                 System.out.println("result "+obj);
+                                System.out.println(obj);
+
+                                if (obj.equals(true)){
+                                    System.out.println("verdadero");
+                                    
+                                }else System.out.println("falso");
                             }
                         });
 //                        dialog.show(getStage());

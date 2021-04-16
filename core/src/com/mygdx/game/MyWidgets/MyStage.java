@@ -46,7 +46,5 @@ public class MyStage extends Stage {
     @Override
     public void draw() {
         super.draw();
-        System.out.println("SRC " + getBatch().getBlendSrcFuncAlpha());
-        System.out.println("DST " + getBatch().getBlendDstFuncAlpha());
     }
 }

@@ -28,7 +28,7 @@ public class MyDialog extends Dialog {
     }
 
     public void update(OrthographicCamera camera) {
-        setPosition(camera.position.x-getWidth()/2, camera.position.y-getHeight()/2);
+        setPosition(camera.position.x-getWidth()/2, 0);
 
     }
 }
