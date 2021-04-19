@@ -22,6 +22,8 @@ public class MyWorld extends Group {
     public static final short NPC_BIT = 4;
     public static final short PERSONAJE_BIT = 8;
     public static final short PUERTA_BIT = 16;
+    public static final short ENEMIGO_BIT = 8;
+    public static final short MONEDA_BIT = 4;
 
     private final Box2DDebugRenderer debugRenderer;
 
@@ -34,6 +36,8 @@ public class MyWorld extends Group {
     public List<Agua> aguaList = new ArrayList<>();
     public List<Pared> paredes = new ArrayList<>();
     public List<Sillas> sillasList = new ArrayList<>();
+    public List<Moneda> monedas = new ArrayList<>();
+
     Puerta puertaCambio;
     MyDialog dialog;
 
@@ -93,6 +97,15 @@ public class MyWorld extends Group {
                         }
                         break;
 
+//                    case MONEDA_BIT | PERSONAJE_BIT:
+//
+//                        if ()
+//
+//                        break;
+
+//                    case PERSONAJE_BIT | ENEMIGO_BIT:
+//
+//                        break;
                 }
 
             }
@@ -241,6 +254,12 @@ public class MyWorld extends Group {
         Pared pared = new Pared(fixture);
         paredes.add(pared);
         addActor(pared);
+    }
+
+    public void addMoneda(Fixture fixture){
+        Moneda moneda = new Moneda(fixture);
+        monedas.add(moneda);
+        addActor(moneda);
     }
 
     @Override
