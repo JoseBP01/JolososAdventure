@@ -1,4 +1,4 @@
-package com.mygdx.game.Actors;
+package com.mygdx.game.Actors.UtilidadesPersonaje;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
