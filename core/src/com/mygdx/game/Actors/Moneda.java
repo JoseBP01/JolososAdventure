@@ -13,6 +13,5 @@ public class Moneda extends MyActor {
 
     public Moneda(Fixture fixture) {
         super(fixture);
-
     }
 }

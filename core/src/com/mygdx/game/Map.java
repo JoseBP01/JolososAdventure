@@ -74,6 +74,12 @@ public class Map extends Actor {
                     case "sillas":
                         myWorld.addSillas(fixture);
                         break;
+                    case "moneda":
+                        myWorld.addMoneda(fixture);
+                        break;
+                    case "enemigo":
+                        myWorld.addEnemigo(fixture);
+                        break;
                 }
             }
         });
