@@ -10,8 +10,7 @@ buildscript {
     }
     dependencies {
         classpath "com.badlogicgames.gdx:gdx-tools:1.9.14"
-
-    }
+        classpath 'com.google.gms:google-services:3.1.0'    }
 }
 
 allprojects {
@@ -49,7 +48,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:1.0.2"
-
+        compile "de.tomgrill.gdxfirebase:gdx-firebase-desktop:0.0.4-SNAPSHOT"
     }
 }
 
@@ -65,6 +64,7 @@ project(":core") {
         api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
         api "com.underwaterapps.overlap2druntime:overlap2d-runtime-libgdx:0.1.0"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2"
+        compile "de.tomgrill.gdxfirebase:gdx-firebase-core:0.0.4-SNAPSHOT"
     }
 
 }
