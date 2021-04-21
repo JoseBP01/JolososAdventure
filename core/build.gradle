@@ -7,3 +7,10 @@ eclipse.project.name = appName + "-core"
 
 
 //implementation "pl.mk5.gdx-fireapp:gdx-fireapp-core:$gdxFireappVersion"
+
+//dependencies {
+//    implementation "com.heroiclabs.nakama:client:0.5.1" // set your version
+//    implementation('org.slf4j:slf4j-api:1.7.25') {
+//        force = true // don't upgrade to "1.8.0-alpha2"
+//    }
+//}

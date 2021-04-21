@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.JadventureMain;
 import com.mygdx.game.MyWidgets.MyScreen;
+import com.mygdx.game.NakamaController.NakamaSessionManager;
 
 public class LoadScreen extends MyScreen {
 
@@ -13,6 +14,7 @@ public class LoadScreen extends MyScreen {
     SpriteBatch spriteBatch;
     Texture background;
     Stage stage;
+    NakamaSessionManager nakamaSessionManager = new NakamaSessionManager();
 
     public LoadScreen(JadventureMain game) {
         super(game);
@@ -21,7 +23,17 @@ public class LoadScreen extends MyScreen {
     @Override
     public void show() {
         super.show();
+        nakamaSessionManager.iniciarSesion("GERARD@SGERARD.COM", "Test1234DSFDSF", new NakamaSessionManager.IniciarSesionCallback() {
+            @Override
+            public void loginOk() {
+                System.out.println("se ha logueado " + NakamaSessionManager.account.getEmail());
+            }
 
+            @Override
+            public void loginError(String error) {
+                System.out.println("Errror " + error);
+            }
+        });
         spriteBatch = new SpriteBatch();
         background = new Texture("background.png");
     }
