@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.JadventureMain;
 import com.mygdx.game.MyWidgets.MyScreen;
-import de.tomgrill.gdxfirebase.core.FirebaseFeatures;
-import de.tomgrill.gdxfirebase.core.FirebaseLoader;
 
 public class LoadScreen extends MyScreen {
 
@@ -18,9 +16,6 @@ public class LoadScreen extends MyScreen {
 
     public LoadScreen(JadventureMain game) {
         super(game);
-        FirebaseLoader.load(null,
-                FirebaseFeatures.AUTHENTICATION,
-                FirebaseFeatures.REALTIME_DATABASE);
     }
 
     @Override
