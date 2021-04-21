@@ -32,7 +32,7 @@ public class MenuScreen extends MyScreen {
         buttonStart.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                setScreen(new GameScreen(game));
+//                setScreen(new GameScreen(game));
                 return true;
             }
         });
