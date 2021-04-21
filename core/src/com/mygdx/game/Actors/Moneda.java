@@ -1,17 +1,47 @@
 package com.mygdx.game.Actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
+import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyActor;
+import com.mygdx.game.MyWidgets.MyWorld;
 
 public class Moneda extends MyActor {
 
-    private static final Animation<TextureRegion> animacionMoneda = Assets.getAnimation("hpBar", 0.3f, Animation.PlayMode.LOOP);
 
+    float timer;
 
-    public Moneda(Fixture fixture) {
+    public Moneda(Fixture fixture, MapObject mapObject) {
         super(fixture);
+
+        currentAnimation = Assets.getAnimation("moneda", 0.3f, Animation.PlayMode.NORMAL);
+        fixture.getFilterData().categoryBits= MyWorld.MONEDA_BIT;
+        fixture.getFilterData().maskBits = MyWorld.PERSONAJE_BIT;
+
+        setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
+        setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
+
+        timer = MyWorld.time + 5;
+    }
+
+    @Override
+    public void defineBody() {
+        body.setType(BodyDef.BodyType.StaticBody);
+    }
+
+    //el act funciona como un while
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        if(MyWorld.time > timer){
+            stateTime = 0;
+            timer = MyWorld.time + 5;
+        }
     }
 }

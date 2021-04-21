@@ -59,7 +59,7 @@
   <object id="7" name="barril" type="object" x="129" y="124" width="65" height="66"/>
   <object id="8" name="barril" type="object" x="64" y="465" width="66" height="114"/>
   <object id="9" name="barril" type="object" x="3" y="576" width="61" height="67"/>
-  <object id="10" name="salidasotano1" type="object" x="609" y="134" width="41" height="57"/>
+  <object id="10" name="puertajesus1" type="object" x="609" y="134" width="41" height="57"/>
   <object id="11" name="personaje" type="object" x="530" y="177" width="48" height="48"/>
  </objectgroup>
 </map>

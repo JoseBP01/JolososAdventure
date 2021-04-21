@@ -18,6 +18,13 @@ caminandoAbajo
   orig: 12, 16
   offset: 0, 0
   index: 0
+moneda
+  rotate: false
+  xy: 453, 228
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: 0
 quietoAbajo
   rotate: false
   xy: 453, 228
@@ -88,6 +95,13 @@ caminandoArriba
   orig: 12, 16
   offset: 0, 0
   index: 0
+moneda
+  rotate: false
+  xy: 212, 114
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: 1
 quietoArriba
   rotate: false
   xy: 212, 114
@@ -151,6 +165,13 @@ caminandoDerecha
   orig: 11, 16
   offset: 0, 0
   index: 0
+moneda
+  rotate: false
+  xy: 465, 210
+  size: 11, 16
+  orig: 11, 16
+  offset: 0, 0
+  index: 2
 quietoDerecha
   rotate: false
   xy: 465, 210
@@ -186,6 +207,13 @@ caminandoIzquierda
   orig: 11, 16
   offset: 0, 0
   index: 0
+moneda
+  rotate: false
+  xy: 478, 210
+  size: 11, 16
+  orig: 11, 16
+  offset: 0, 0
+  index: 3
 quietoIzquierda
   rotate: false
   xy: 478, 210

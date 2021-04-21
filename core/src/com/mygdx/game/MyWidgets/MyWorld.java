@@ -23,7 +23,7 @@ public class MyWorld extends Group {
     public static final short PERSONAJE_BIT = 8;
     public static final short PUERTA_BIT = 16;
     public static final short ENEMIGO_BIT = 8;
-    public static final short MONEDA_BIT = 4;
+    public static final short MONEDA_BIT = 6;
 
     private final Box2DDebugRenderer debugRenderer;
 
@@ -40,9 +40,11 @@ public class MyWorld extends Group {
 
     Puerta puertaCambio;
     MyDialog dialog;
+    Moneda moneda;
 
     public World world;
     boolean reloadMap;
+    public static float time;
 
     public MyWorld(OrthographicCamera camera) {
         this.camera = camera;
@@ -97,11 +99,14 @@ public class MyWorld extends Group {
                         }
                         break;
 
-//                    case MONEDA_BIT | PERSONAJE_BIT:
-//
-//                        if ()
-//
-//                        break;
+                    case MONEDA_BIT | PERSONAJE_BIT:
+
+                        System.out.println("AAAAAAAAAaa");
+                        world.destroyBody(moneda.body);
+                        moneda.clearActions();
+                        removeActor(moneda);
+
+                        break;
 
 //                    case PERSONAJE_BIT | ENEMIGO_BIT:
 //
@@ -256,8 +261,8 @@ public class MyWorld extends Group {
         addActor(pared);
     }
 
-    public void addMoneda(Fixture fixture){
-        Moneda moneda = new Moneda(fixture);
+    public void addMoneda(Fixture fixture,MapObject mapObject){
+        Moneda moneda = new Moneda(fixture, mapObject );
         monedas.add(moneda);
         addActor(moneda);
     }
@@ -265,6 +270,7 @@ public class MyWorld extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
+        time += delta;
         world.step(delta, 6, 2);
 
         if(reloadMap){
@@ -282,3 +288,5 @@ public class MyWorld extends Group {
         debugRenderer.render(world, camera.combined);
     }
 }
+
+// 1 2 3 4 5 6 7 8 9 10

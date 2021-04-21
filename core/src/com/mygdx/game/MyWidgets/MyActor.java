@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class MyActor extends Actor {
 
-    private float stateTime;
+    public float stateTime;
     public Body body;
     public Animation<TextureRegion> currentAnimation;
 
