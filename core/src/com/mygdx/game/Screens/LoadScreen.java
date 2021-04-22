@@ -23,7 +23,7 @@ public class LoadScreen extends MyScreen {
     @Override
     public void show() {
         super.show();
-        nakamaSessionManager.iniciarSesion("test1@test.test", "Test1234", "usuarioPrueba", new NakamaSessionManager.IniciarSesionCallback() {
+        nakamaSessionManager.iniciarSesion("GERARD@SGERARD.COM", "Test1234DSFDSF", "usuarioPrueba", new NakamaSessionManager.IniciarSesionCallback() {
             @Override
             public void loginOk() {
                 System.out.println("se ha logueado " + NakamaSessionManager.account.getEmail());
