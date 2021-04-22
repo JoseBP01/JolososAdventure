@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.heroiclabs.nakama.*;
 import com.heroiclabs.nakama.api.Account;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -30,7 +31,10 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.0.20", 7349, false);
+        client = new DefaultClient("mynewkey", "192.168.22.155", 7349, false);
+        String host = "192.168.22.155";
+        int port = 7350; // different port to the main API port
+        socket = client.createSocket(host, port, false);
     }
 
     public void iniciarSesion(String email, String password, String username, IniciarSesionCallback callback){
@@ -71,9 +75,7 @@ public class NakamaSessionManager {
     }
 
     public void crearPartida(){
-        String host = "192.168.0.20";
-        int port = 7350; // different port to the main API port
-        socket = client.createSocket(host, port, false);
+
         SocketListener listener = new AbstractSocketListener() {
             @Override
             public void onChannelMessage(final com.heroiclabs.nakama.api.ChannelMessage message) {
@@ -114,11 +116,11 @@ public class NakamaSessionManager {
         }
     }
 
-    public void crearPerfilMatchMatchmaking(){
+    public MatchmakerTicket crearPerfilMatchMatchmaking(){
         String queryRestringida = "+properties.region:europe +properties.rank:>=5 +properties.rank:<=10";
         String queryCualquiera = "*";
-        int minCount = 2;
-        int maxCount = 4;
+        int minCount = 0;
+        int maxCount = 20;
         Map<String, String> stringProperties = new HashMap<String, String>() {{
             put("region", "europe");
         }};
@@ -127,13 +129,13 @@ public class NakamaSessionManager {
         }};
 
         try {
-            MatchmakerTicket matchmakerTicket = socket.addMatchmaker(
-                    maxCount, minCount, queryCualquiera, stringProperties, numericProperties).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            MatchmakerTicket matchmakerTicket = socket.addMatchmaker().get();
+            System.out.println(matchmakerTicket.getTicket());
+            return matchmakerTicket;
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public String unirseAlMatchMaking(){
@@ -143,14 +145,26 @@ public class NakamaSessionManager {
                 try {
                     socket.joinMatchToken(matched.getToken()).get();
                     idPartida[0] = socket.joinMatchToken(matched.getToken()).get().getMatchId();
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         };
         return idPartida[0];
+    }
+
+    public void enviarMensajePrueba(){
+        int opCode = 1;
+        String data = "{\"message\":\"Hello world\"}";
+        socket.sendMatchData(idPartida[0], opCode, data.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public void recibirMensajePrueba(){
+        SocketListener listener = new AbstractSocketListener() {
+            @Override
+            public void onMatchData(final MatchData matchData) {
+                System.out.format("Received match data %s with opcode %d", matchData.getData(), matchData.getOpCode());
+            }
+        };
     }
 }
