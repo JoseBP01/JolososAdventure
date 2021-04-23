@@ -96,8 +96,6 @@ public class NakamaSessionManager {
             e.printStackTrace();
         }
 
-
-
         try {
             match = socket.createMatch().get();
 
@@ -158,6 +156,12 @@ public class NakamaSessionManager {
                 System.out.format("Received MatchmakerMatched message: %s", matched.toString());
                 try {
                     socket.joinMatchToken(matched.getToken()).get();
+                    while (matched.getMatchId() == null){
+
+                    }
+                    if (matched.getMatchId() != null){
+                        socket.joinMatch(matched.getMatchId());
+                    }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
