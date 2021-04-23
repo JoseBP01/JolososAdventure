@@ -18,7 +18,11 @@ public class GameScreen extends MyScreen {
     public void show () {
         myWorld = new MyWorld(camera);
         stage.addActor(myWorld);
-        nakamaSessionManager.crearPartida();
+        nakamaSessionManager.listaPartidas();
+        nakamaSessionManager.matchMaking();
+//        nakamaSessionManager.unirseAlMatchMaking();
+//        nakamaSessionManager.unirsePartida();
+//        nakamaSessionManager.crearPartida();
 //        nakamaSessionManager.unirsePartida();
 //        nakamaSessionManager.crearPerfilMatchMatchmaking();
 //        nakamaSessionManager.unirMatch();
