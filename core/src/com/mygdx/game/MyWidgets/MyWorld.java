@@ -22,7 +22,7 @@ public class MyWorld extends Group {
     public static final short NPC_BIT = 4;
     public static final short PERSONAJE_BIT = 8;
     public static final short PUERTA_BIT = 16;
-    public static final short ENEMIGO_BIT = 8;
+    public static final short ENEMIGO_BIT = 10;
     public static final short MONEDA_BIT = 6;
 
     private final Box2DDebugRenderer debugRenderer;
@@ -40,11 +40,11 @@ public class MyWorld extends Group {
 
     Puerta puertaCambio;
     MyDialog dialog;
-    Moneda moneda;
 
     public World world;
     boolean reloadMap;
     public static float time;
+    private Moneda moneda;
 
     public MyWorld(OrthographicCamera camera) {
         this.camera = camera;
@@ -101,10 +101,18 @@ public class MyWorld extends Group {
 
                     case MONEDA_BIT | PERSONAJE_BIT:
 
-                        System.out.println("AAAAAAAAAaa");
-                        world.destroyBody(moneda.body);
-                        moneda.clearActions();
-                        removeActor(moneda);
+
+                    if (fixB.getFilterData().categoryBits == MONEDA_BIT){
+                        moneda = (Moneda) fixB.getBody().getUserData();
+//                        world.destroyBody(moneda.body);
+//                        world.
+
+                    } else {
+                        moneda = (Moneda) fixA.getBody().getUserData();
+                            world.destroyBody(moneda.body);
+                            removeActor(moneda);
+
+                    }
 
                         break;
 
@@ -289,4 +297,3 @@ public class MyWorld extends Group {
     }
 }
 
-// 1 2 3 4 5 6 7 8 9 10

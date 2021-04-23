@@ -16,17 +16,29 @@ import java.util.concurrent.TimeUnit;
 
 public class NakamaSessionManager {
     private final DefaultClient client;
-    ExecutorService executor = Executors.newSingleThreadExecutor();
+    static ExecutorService executor = Executors.newSingleThreadExecutor();
     public static Account account;
     private SocketClient socket;
     private Session session;
     private Match match;
     final String[] idPartida = new String[1];
 
+    interface LoginCallBack{
+        void onSuccess(Account account);
+        void onFailure(Throwable e);
+    }
+    static <T> void addCallback(ListenableFuture<T> lf, FutureCallback<T> fc){
+        Futures.addCallback(lf,fc,executor);
+    }
+    static void  login(String email,String password, LoginCallBack callBack){
+
+    }
+
     public interface IniciarSesionCallback {
         void loginOk();
         void loginError(String error);
     }
+
 
     public NakamaSessionManager() {
         client = new DefaultClient("mynewkey", "192.168.22.155", 7349, false);
