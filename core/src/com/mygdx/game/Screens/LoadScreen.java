@@ -9,8 +9,6 @@ import com.mygdx.game.NakamaController.NakamaSessionManager;
 
 public class LoadScreen extends MyScreen {
 
-//    setScreen(new MenuScreen(game)
-
     SpriteBatch spriteBatch;
     Texture background;
     Stage stage;
@@ -23,17 +21,6 @@ public class LoadScreen extends MyScreen {
     @Override
     public void show() {
         super.show();
-        nakamaSessionManager.iniciarSesion("test1@test.test", "Test1234", "usuarioPrueba", new NakamaSessionManager.IniciarSesionCallback() {
-            @Override
-            public void loginOk() {
-                System.out.println("se ha logueado " + NakamaSessionManager.account.getEmail());
-            }
-
-            @Override
-            public void loginError(String error) {
-                System.out.println("Errror " + error);
-            }
-        });
         spriteBatch = new SpriteBatch();
         background = new Texture("background.png");
     }
@@ -43,7 +30,7 @@ public class LoadScreen extends MyScreen {
         if(!assets.update()){
             return;
         }
-        setScreen(new GameScreen(game,nakamaSessionManager));
+        setScreen(new LoginScreen(game,nakamaSessionManager));
 //        setScreen(new MenuScreen(game));
 //        spriteBatch.begin();
 //

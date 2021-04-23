@@ -7,7 +7,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.heroiclabs.nakama.*;
 import com.heroiclabs.nakama.api.Account;
-import com.heroiclabs.nakama.api.Rpc;
+import com.heroiclabs.nakama.api.NakamaGrpc;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -15,36 +15,26 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class NakamaSessionManager {
+    public NakamaMatchMaking matchMaking;
+
     private final DefaultClient client;
-    static ExecutorService executor = Executors.newSingleThreadExecutor();
+    ExecutorService executor = Executors.newSingleThreadExecutor();
     public static Account account;
     private SocketClient socket;
     private Session session;
     private Match match;
-    final String[] idPartida = new String[1];
-
-    interface LoginCallBack{
-        void onSuccess(Account account);
-        void onFailure(Throwable e);
-    }
-    static <T> void addCallback(ListenableFuture<T> lf, FutureCallback<T> fc){
-        Futures.addCallback(lf,fc,executor);
-    }
-    static void  login(String email,String password, LoginCallBack callBack){
-
-    }
 
     public interface IniciarSesionCallback {
         void loginOk();
         void loginError(String error);
     }
 
-
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.22.155", 7349, false);
-        String host = "192.168.22.155";
+        client = new DefaultClient("mynewkey", "192.168.0.20", 7349, false);
+        String host = "192.168.0.20";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
+        matchMaking = new NakamaMatchMaking(socket);
     }
 
     public void iniciarSesion(String email, String password, String username, IniciarSesionCallback callback){
@@ -53,9 +43,7 @@ public class NakamaSessionManager {
 
         try {
             session = authFuture.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         AsyncFunction<Session, Account> accountFunction = session -> client.getAccount(session);
@@ -66,6 +54,7 @@ public class NakamaSessionManager {
             public void onSuccess(Account account) {
                 NakamaSessionManager.account = account;
                 callback.loginOk();
+
                 executor.shutdown();
             }
 
@@ -84,12 +73,12 @@ public class NakamaSessionManager {
         }
     }
 
-    public void listaPartidas(){
-        ListenableFuture<Rpc> partidas = socket.rpc("ListMatches");
-        System.out.println(partidas.toString());
+    public void listarPartidas(){
+        System.out.println(NakamaGrpc.getListMatchesMethod());
+
     }
 
-    public void crearPartida(){
+    public void crearPartida(NakamaMatchMaking.Matcheado matcheado){
 
         SocketListener listener = new AbstractSocketListener() {
             @Override
@@ -102,19 +91,16 @@ public class NakamaSessionManager {
         try {
             socket.connect(session,listener).get();
             System.out.println("Socket connected successfully.");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
         try {
             match = socket.createMatch().get();
-
-        } catch (InterruptedException e) {
+            matcheado.PartidaEncontrada();
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            matcheado.SinPartida();
         }
     }
 
@@ -130,115 +116,25 @@ public class NakamaSessionManager {
         try {
             socket.connect(session,listener).get();
             System.out.println("Socket connected successfully.");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-
-
         try {
-
-            Match match1 = socket.joinMatch(idPartida[0]).get();
+            Match match1 = socket.joinMatch("796152d7-fb0b-403b-8d0d-9c45d7e26321.").get();
             for (UserPresence presence : match1.getPresences()) {
                 System.out.format("User id %s name %s.", presence.getUserId(), presence.getUsername());
             }
             System.out.println(match1.toString());
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
-
-    public void matchMaking(){
-        try {
-            MatchmakerTicket matchmakerTicket = socket.addMatchmaker(0,100,"*").get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        SocketListener listener = new AbstractSocketListener() {
-            @Override
-            public void onMatchmakerMatched(final MatchmakerMatched matched) {
-                System.out.format("Received MatchmakerMatched message: %s", matched.toString());
-                try {
-                    socket.joinMatchToken(matched.getToken()).get();
-                    while (matched.getMatchId() == null){
-
-                    }
-                    if (matched.getMatchId() != null){
-                        socket.joinMatch(matched.getMatchId());
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-    }
-
-    public String unirseAlMatchMaking(){
-        SocketListener listener = new AbstractSocketListener() {
-            @Override
-            public void onMatchmakerMatched(final MatchmakerMatched matched) {
-                try {
-                    socket.joinMatchToken(matched.getToken()).get();
-                    idPartida[0] = socket.joinMatchToken(matched.getToken()).get().getMatchId();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        return idPartida[0];
-    }
-
-    public void recibirMatchMaker(){
-        SocketListener listener = new AbstractSocketListener() {
-            @Override
-            public void onMatchmakerMatched(final MatchmakerMatched matched) {
-                System.out.format("Received MatchmakerMatched message: %s", matched.toString());
-                socket.joinMatch(matched.getMatchId());
-//                System.out.format("Matched opponents: %s", opponents.toString());
-            }
-        };
-    }
-
-//    public void unirMatch(){
-//        SocketListener joinMatch = new AbstractSocketListener() {
-//            @Override
-//            public void onMatchmakerMatched(final MatchmakerMatched matched) {
-//                try {
-//                    socket.joinMatchToken(matched.getToken()).get();
-//                    socket.joinMatch(matched.getMatchId());
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//
-//
-//    }
 
 //    public void enviarMensajePrueba(){
 //        int opCode = 1;
 //        String data = "{\"message\":\"Hello world\"}";
 //        socket.sendMatchData(idPartida[0], opCode, data.getBytes(StandardCharsets.UTF_8));
 //    }
-
-    public void recibirMensajePrueba(){
-        SocketListener listener = new AbstractSocketListener() {
-            @Override
-            public void onMatchData(final MatchData matchData) {
-                System.out.format("Received match data %s with opcode %d", matchData.getData(), matchData.getOpCode());
-            }
-        };
-    }
 }
