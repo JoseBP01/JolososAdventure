@@ -16,7 +16,7 @@ public class GameScreen extends MyScreen {
 
     @Override
     public void show () {
-        myWorld = new MyWorld(camera);
+        myWorld = new MyWorld(camera,nakamaSessionManager);
         stage.addActor(myWorld);
 
         nakamaSessionManager.listarPartidas();

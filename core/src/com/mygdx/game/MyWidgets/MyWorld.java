@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.game.Actors.*;
 import com.mygdx.game.Map;
+import com.mygdx.game.NakamaController.NakamaSessionManager;
+import com.mygdx.game.NakamaController.NakamaStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +42,18 @@ public class MyWorld extends Group {
 
     Puerta puertaCambio;
     MyDialog dialog;
+    NakamaSessionManager nakamaSessionManager;
+    NakamaStorage nakamaStorage;
 
     public World world;
     boolean reloadMap;
     public static float time;
     private Moneda moneda;
 
-    public MyWorld(OrthographicCamera camera) {
+    public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager) {
         this.camera = camera;
+        this.nakamaSessionManager = nakamaSessionManager;
+        nakamaStorage = new NakamaStorage(nakamaSessionManager);
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         initWorld("maps/mapa.tmx");
@@ -75,7 +81,7 @@ public class MyWorld extends Group {
 
                                 if (obj.equals(true)){
                                     System.out.println("verdadero");
-                                    
+                                    nakamaStorage.pruebaStorage();
                                 }else System.out.println("falso");
                             }
                         });

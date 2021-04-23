@@ -17,11 +17,11 @@ import java.util.concurrent.TimeUnit;
 public class NakamaSessionManager {
     public NakamaMatchMaking matchMaking;
 
-    private final DefaultClient client;
+    public DefaultClient client;
     ExecutorService executor = Executors.newSingleThreadExecutor();
     public static Account account;
     private SocketClient socket;
-    private Session session;
+    public Session session;
     private Match match;
 
     public interface IniciarSesionCallback {
