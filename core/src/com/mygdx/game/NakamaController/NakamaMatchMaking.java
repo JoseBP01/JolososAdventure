@@ -55,6 +55,17 @@ public class NakamaMatchMaking {
         }
     }
 
+    public void resultadoMatch(Matcheado matcheado){
+        SocketListener listener = new AbstractSocketListener() {
+            @Override
+            public void onMatchmakerMatched(final MatchmakerMatched matched) {
+                System.out.format("Received MatchmakerMatched message: %s", matched.toString());
+                matcheado.PartidaEncontrada();
+//                System.out.format("Matched opponents: %s", opponents.toString());
+            }
+        };
+    }
+
     public void unirseAlMatchMaking(Matcheado matcheado){
         SocketListener listener = new AbstractSocketListener() {
             @Override

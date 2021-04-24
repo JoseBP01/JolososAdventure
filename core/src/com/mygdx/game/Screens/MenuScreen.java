@@ -55,16 +55,27 @@ public class MenuScreen extends MyScreen {
                 @Override
                 public void TicketCreado() {
                     System.out.println("Ticket Creado");
-                    nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
+                    nakamaSessionManager.matchMaking.resultadoMatch(new NakamaMatchMaking.Matcheado() {
                         @Override
                         public void PartidaEncontrada() {
-                            setScreen(new GameScreen(game,nakamaSessionManager));
-                            System.out.println("unido Partida");
+                            System.out.println("resultados");
+                            nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
+                                @Override
+                                public void PartidaEncontrada() {
+                                    setScreen(new GameScreen(game,nakamaSessionManager));
+                                    System.out.println("unido Partida");
+                                }
+
+                                @Override
+                                public void SinPartida() {
+                                    System.out.println("sin partida");
+                                }
+                            });
                         }
 
                         @Override
                         public void SinPartida() {
-                            System.out.println("sin partida");
+
                         }
                     });
                 }
@@ -77,6 +88,7 @@ public class MenuScreen extends MyScreen {
             });
         });
     }
+
 
     @Override
     public void render(float delta) {
