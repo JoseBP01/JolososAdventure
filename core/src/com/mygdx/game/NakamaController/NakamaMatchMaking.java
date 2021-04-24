@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 public class NakamaMatchMaking {
 
     private String[] idPartida = new String[1];
+    private Session session;
 
     public interface TicketCola{
         void TicketCreado();
@@ -21,12 +22,28 @@ public class NakamaMatchMaking {
     private MatchmakerTicket ticket;
     private final SocketClient socket;
 
+
     public NakamaMatchMaking(SocketClient socket) {
         this.socket = socket;
 
     }
 
     public void EntrarQueue(TicketCola ticketCola) {
+        SocketListener listener = new AbstractSocketListener() {
+            @Override
+            public void onChannelMessage(final com.heroiclabs.nakama.api.ChannelMessage message) {
+                System.out.format("Received a message on channel %s", message.getChannelId());
+                System.out.format("Message content: %s", message.getContent());
+            }
+        };
+
+        try {
+            socket.connect(session,listener).get();
+            System.out.println("Socket connected successfully.");
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
         try {
             MatchmakerTicket matchmakerTicket = socket.addMatchmaker(2,4,"*").get();
             ticket = matchmakerTicket;
@@ -81,5 +98,13 @@ public class NakamaMatchMaking {
 //                System.out.format("Matched opponents: %s", opponents.toString());
             }
         };
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 }

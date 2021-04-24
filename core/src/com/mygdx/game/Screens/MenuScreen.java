@@ -55,7 +55,6 @@ public class MenuScreen extends MyScreen {
                 @Override
                 public void TicketCreado() {
                     System.out.println("Ticket Creado");
-                    nakamaSessionManager.matchMaking.recibirMatchMaker();
                     nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
                         @Override
                         public void PartidaEncontrada() {

@@ -43,6 +43,7 @@ public class NakamaSessionManager {
 
         try {
             session = authFuture.get();
+            matchMaking.setSession(session);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
