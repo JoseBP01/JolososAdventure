@@ -38,10 +38,10 @@ public class Personaje extends MyActor {
     private static final Animation<TextureRegion> ataqueArriba = Assets.getAnimation("caminandoArriba", 0.5f, Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> ataqueAbajo = Assets.getAnimation("caminandoAbajo", 0.5f, Animation.PlayMode.LOOP);
     //Animacion Curar
-    private static final Animation<TextureRegion> curarIzquierda = Assets.getAnimation("caminandoIzquierda", 0.5f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> curarDerecha = Assets.getAnimation("caminandoDerecha", 0.5f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> curarArriba = Assets.getAnimation("caminandoArriba", 0.5f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> curarAbajo = Assets.getAnimation("caminandoAbajo", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> curarIzquierda = Assets.getAnimation("animCuracionIzquierda", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> curarDerecha = Assets.getAnimation("animCuracionIzDerecha", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> curarArriba = Assets.getAnimation("animCuracionIzArriba", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> curarAbajo = Assets.getAnimation("animCuracionIzAbajo", 0.5f, Animation.PlayMode.LOOP);
 
     public enum State {
         Quieto,
