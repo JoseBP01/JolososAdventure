@@ -27,6 +27,17 @@ public class NakamaMatchMaking {
         this.socket = socket;
 
     }
+    public void EntrarQueuePartidaCreada(TicketCola ticketCola) {
+        try {
+            MatchmakerTicket matchmakerTicket = socket.addMatchmaker(2,4,"*").get();
+            ticket = matchmakerTicket;
+            ticketCola.TicketCreado();
+
+        } catch (InterruptedException | ExecutionException e) {
+            ticketCola.NoHayTicket();
+            e.printStackTrace();
+        }
+    }
 
     public void EntrarQueue(TicketCola ticketCola) {
         SocketListener listener = new AbstractSocketListener() {
@@ -53,17 +64,6 @@ public class NakamaMatchMaking {
             ticketCola.NoHayTicket();
             e.printStackTrace();
         }
-    }
-
-    public void resultadoMatch(Matcheado matcheado){
-        SocketListener listener = new AbstractSocketListener() {
-            @Override
-            public void onMatchmakerMatched(final MatchmakerMatched matched) {
-                System.out.format("Received MatchmakerMatched message: %s", matched.toString());
-                matcheado.PartidaEncontrada();
-//                System.out.format("Matched opponents: %s", opponents.toString());
-            }
-        };
     }
 
     public void unirseAlMatchMaking(Matcheado matcheado){

@@ -40,7 +40,30 @@ public class MenuScreen extends MyScreen {
             nakamaSessionManager.crearPartida(new NakamaMatchMaking.Matcheado() {
                 @Override
                 public void PartidaEncontrada() {
-                    setScreen(new GameScreen(game,nakamaSessionManager));
+                    nakamaSessionManager.matchMaking.EntrarQueuePartidaCreada(new NakamaMatchMaking.TicketCola() {
+                        @Override
+                        public void TicketCreado() {
+                            System.out.println("tiketsito");
+                            nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
+                                @Override
+                                public void PartidaEncontrada() {
+                                    System.out.println("partida encontrada");
+                                    setScreen(new GameScreen(game,nakamaSessionManager));
+                                }
+
+                                @Override
+                                public void SinPartida() {
+
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void NoHayTicket() {
+
+                        }
+                    });
                 }
 
                 @Override
@@ -55,29 +78,19 @@ public class MenuScreen extends MyScreen {
                 @Override
                 public void TicketCreado() {
                     System.out.println("Ticket Creado");
-                    nakamaSessionManager.matchMaking.resultadoMatch(new NakamaMatchMaking.Matcheado() {
+                    nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
                         @Override
                         public void PartidaEncontrada() {
-                            System.out.println("resultados");
-                            nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
-                                @Override
-                                public void PartidaEncontrada() {
-                                    setScreen(new GameScreen(game,nakamaSessionManager));
-                                    System.out.println("unido Partida");
-                                }
-
-                                @Override
-                                public void SinPartida() {
-                                    System.out.println("sin partida");
-                                }
-                            });
+                            setScreen(new GameScreen(game,nakamaSessionManager));
+                            System.out.println("unido Partida");
                         }
 
                         @Override
                         public void SinPartida() {
-
+                            System.out.println("sin partida");
                         }
                     });
+
                 }
 
                 @Override
