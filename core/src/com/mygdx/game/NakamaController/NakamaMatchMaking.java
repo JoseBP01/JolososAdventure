@@ -55,31 +55,13 @@ public class NakamaMatchMaking {
         }
     }
 
-    public String unirseAlMatchMaking(Matcheado matcheado){
+    public void unirseAlMatchMaking(Matcheado matcheado){
         SocketListener listener = new AbstractSocketListener() {
             @Override
             public void onMatchmakerMatched(final MatchmakerMatched matched) {
                 try {
-                    while (idPartida[0] == null){
-                        socket.joinMatchToken(matched.getToken()).get();
-                        idPartida[0] = socket.joinMatchToken(matched.getToken()).get().getMatchId();
-                        System.out.println(idPartida[0]);
-                        if (idPartida[0] != null){
-                            SocketListener joinMatch = new AbstractSocketListener() {
-                                @Override
-                                public void onMatchmakerMatched(final MatchmakerMatched matched) {
-                                    try {
-                                        socket.joinMatchToken(matched.getToken()).get();
-                                        matcheado.PartidaEncontrada();
-                                    } catch (InterruptedException | ExecutionException e) {
-                                        e.printStackTrace();
-                                        matcheado.SinPartida();
-                                    }
-                                }
-                            };
-                            matcheado.PartidaEncontrada();
-                        }
-                    }
+                    socket.joinMatchToken(matched.getToken()).get();
+                    matcheado.PartidaEncontrada();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -87,7 +69,6 @@ public class NakamaMatchMaking {
                 }
             }
         };
-        return idPartida[0];
     }
 
     public void recibirMatchMaker() {
