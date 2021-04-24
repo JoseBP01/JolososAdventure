@@ -7,7 +7,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.heroiclabs.nakama.*;
 import com.heroiclabs.nakama.api.Account;
-import com.heroiclabs.nakama.api.NakamaGrpc;
+import com.heroiclabs.nakama.api.Rpc;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -74,9 +74,15 @@ public class NakamaSessionManager {
         }
     }
 
-    public void listarPartidas(){
-        System.out.println(NakamaGrpc.getListMatchesMethod());
-
+    public String  listarPartidas(){
+        Rpc rpc = null;
+        try {
+            rpc = socket.rpc("get_world_id").get();
+            return rpc.getPayload();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void crearPartida(NakamaMatchMaking.Matcheado matcheado){
@@ -90,19 +96,14 @@ public class NakamaSessionManager {
         };
 
         try {
-            socket.connect(session,listener).get();
+            socket.connect(session,listener,true).get();
             System.out.println("Socket connected successfully.");
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        try {
-            match = socket.createMatch().get();
-            matcheado.PartidaEncontrada();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            matcheado.SinPartida();
-        }
+        socket.joinMatch(listarPartidas());
+        matcheado.PartidaEncontrada();
     }
 
     public void unirsePartida(){
@@ -115,18 +116,18 @@ public class NakamaSessionManager {
         };
 
         try {
-            socket.connect(session,listener).get();
+            socket.connect(session,listener,true).get();
             System.out.println("Socket connected successfully.");
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
         try {
-            Match match1 = socket.joinMatch("796152d7-fb0b-403b-8d0d-9c45d7e26321.").get();
-            for (UserPresence presence : match1.getPresences()) {
-                System.out.format("User id %s name %s.", presence.getUserId(), presence.getUsername());
-            }
-            System.out.println(match1.toString());
+            socket.joinMatch(listarPartidas()).get();
+//            for (UserPresence presence : match1.getPresences()) {
+//                System.out.format("User id %s name %s.", presence.getUserId(), presence.getUsername());
+//            }
+//            System.out.println(match1.toString());
 
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

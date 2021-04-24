@@ -56,7 +56,7 @@ public class NakamaMatchMaking {
         }
 
         try {
-            MatchmakerTicket matchmakerTicket = socket.addMatchmaker(2,4,"*").get();
+            MatchmakerTicket matchmakerTicket = socket.addMatchmaker(2,2,"*").get();
             ticket = matchmakerTicket;
             ticketCola.TicketCreado();
 
@@ -71,7 +71,8 @@ public class NakamaMatchMaking {
             @Override
             public void onMatchmakerMatched(final MatchmakerMatched matched) {
                 try {
-                    socket.joinMatchToken(matched.getToken()).get();
+//                    socket.joinMatchToken(matched.getToken()).get();
+                    socket.joinMatch(matched.getMatchId()).get();
                     matcheado.PartidaEncontrada();
 
                 } catch (Exception e) {
