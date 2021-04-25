@@ -107,36 +107,47 @@ public class Personaje extends MyActor {
     public void ataqueIzquierda(){
         setDireccion(Direccion.Izquerda);
         setState(State.Ataque);
+        body.setLinearVelocity(-0,0);
     }
     public void ataqueDerecha(){
         setDireccion(Direccion.Derecha);
         setState(State.Ataque);
+        body.setLinearVelocity(0,0);
     }
     public void ataqueArriba(){
         setDireccion(Direccion.Arriba);
         setState(State.Ataque);
+        body.setLinearVelocity(0,0);
+
     }
     public void ataqueAbajo(){
         setDireccion(Direccion.Abajo);
         setState(State.Ataque);
+        body.setLinearVelocity(0,0);
+
     }
 
     //CURAR
     public void curarIzquierda(){
         setDireccion(Direccion.Izquerda);
         setState(State.Curar);
+        body.setLinearVelocity(0,0);
+
     }
     public void curarDerecha(){
         setDireccion(Direccion.Derecha);
         setState(State.Curar);
+        body.setLinearVelocity(0,0);
     }
     public void curarArriba(){
         setDireccion(Direccion.Arriba);
         setState(State.Curar);
+        body.setLinearVelocity(0,0);
     }
     public void curarAbajo(){
         setDireccion(Direccion.Abajo);
         setState(State.Curar);
+        body.setLinearVelocity(0,0);
     }
 
     //Teclas asignadas

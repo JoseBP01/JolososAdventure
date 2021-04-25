@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NakamaSessionManager {
 
+
     public DefaultClient client;
     ExecutorService executor = Executors.newSingleThreadExecutor();
     public static Account account;

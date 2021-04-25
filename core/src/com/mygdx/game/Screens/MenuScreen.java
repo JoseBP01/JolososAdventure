@@ -11,8 +11,6 @@ import com.mygdx.game.NakamaController.NakamaSessionManager;
 public class MenuScreen extends MyScreen {
 
     Table table;
-    boolean matchCreated;
-    boolean joinGame;
     NakamaSessionManager nakamaSessionManager;
 
     public MenuScreen(JadventureMain game, NakamaSessionManager nakamaSessionManager) {
@@ -38,72 +36,11 @@ public class MenuScreen extends MyScreen {
         create.onClick(() -> {
             nakamaSessionManager.unirsePartida();
             setScreen(new GameScreen(game,nakamaSessionManager));
-//            nakamaSessionManager.crearPartida(new NakamaMatchMaking.Matcheado() {
-//                @Override
-//                public void PartidaEncontrada() {
-//                    nakamaSessionManager.matchMaking.EntrarQueuePartidaCreada(new NakamaMatchMaking.TicketCola() {
-//                        @Override
-//                        public void TicketCreado() {
-//                            nakamaSessionManager.listarPartidas();
-//                            System.out.println("tiketsito");
-//                            nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
-//                                @Override
-//                                public void PartidaEncontrada() {
-//                                    System.out.println("partida encontrada");
-//                                    setScreen(new GameScreen(game,nakamaSessionManager));
-//                                }
-//
-//                                @Override
-//                                public void SinPartida() {
-//
-//                                }
-//                            });
-//
-//                        }
-//
-//                        @Override
-//                        public void NoHayTicket() {
-//
-//                        }
-//                    });
-//                }
-//
-//                @Override
-//                public void SinPartida() {
-//                    System.out.println("No se puede crear partida");
-//                }
-//            });
         });
 
         join.onClick(() -> {
             nakamaSessionManager.unirsePartida();
             setScreen(new GameScreen(game,nakamaSessionManager));
-//            nakamaSessionManager.matchMaking.EntrarQueue(new NakamaMatchMaking.TicketCola() {
-//                @Override
-//                public void TicketCreado() {
-//                    nakamaSessionManager.listarPartidas();
-//                    System.out.println("Ticket Creado");
-//                    nakamaSessionManager.matchMaking.unirseAlMatchMaking(new NakamaMatchMaking.Matcheado() {
-//                        @Override
-//                        public void PartidaEncontrada() {
-//                            setScreen(new GameScreen(game,nakamaSessionManager));
-//                            System.out.println("unido Partida");
-//                        }
-//
-//                        @Override
-//                        public void SinPartida() {
-//                            System.out.println("sin partida");
-//                        }
-//                    });
-//
-//                }
-//
-//                @Override
-//                public void NoHayTicket() {
-//                    System.out.println("sin ticket");
-//
-//                }
-//            });
         });
     }
 
@@ -111,9 +48,6 @@ public class MenuScreen extends MyScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        if (matchCreated){
-//            setScreen(new GameScreen());
-        }
     }
     //    Stage stage;
 
