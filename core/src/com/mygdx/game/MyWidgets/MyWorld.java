@@ -302,4 +302,3 @@ public class MyWorld extends Group {
         debugRenderer.render(world, camera.combined);
     }
 }
-

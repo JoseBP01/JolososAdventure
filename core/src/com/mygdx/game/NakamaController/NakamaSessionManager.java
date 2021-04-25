@@ -15,14 +15,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class NakamaSessionManager {
-    public NakamaMatchMaking matchMaking;
 
     public DefaultClient client;
     ExecutorService executor = Executors.newSingleThreadExecutor();
     public static Account account;
     private SocketClient socket;
     public Session session;
-    private Match match;
+    public NakamaChat nakamaChat;
+    public NakamaStorage nakamaStorage;
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -34,7 +34,6 @@ public class NakamaSessionManager {
         String host = "192.168.0.20";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
-        matchMaking = new NakamaMatchMaking(socket);
     }
 
     public void iniciarSesion(String email, String password, String username, IniciarSesionCallback callback){
@@ -43,7 +42,6 @@ public class NakamaSessionManager {
 
         try {
             session = authFuture.get();
-            matchMaking.setSession(session);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -75,7 +73,7 @@ public class NakamaSessionManager {
     }
 
     public String  listarPartidas(){
-        Rpc rpc = null;
+        Rpc rpc;
         try {
             rpc = socket.rpc("get_world_id").get();
             return rpc.getPayload();
@@ -83,27 +81,6 @@ public class NakamaSessionManager {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void crearPartida(NakamaMatchMaking.Matcheado matcheado){
-
-        SocketListener listener = new AbstractSocketListener() {
-            @Override
-            public void onChannelMessage(final com.heroiclabs.nakama.api.ChannelMessage message) {
-                System.out.format("Received a message on channel %s", message.getChannelId());
-                System.out.format("Message content: %s", message.getContent());
-            }
-        };
-
-        try {
-            socket.connect(session,listener,true).get();
-            System.out.println("Socket connected successfully.");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        socket.joinMatch(listarPartidas());
-        matcheado.PartidaEncontrada();
     }
 
     public void unirsePartida(){
@@ -117,6 +94,8 @@ public class NakamaSessionManager {
 
         try {
             socket.connect(session,listener,true).get();
+            nakamaChat = new NakamaChat(socket);
+            nakamaStorage = new NakamaStorage(this);
             System.out.println("Socket connected successfully.");
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -124,19 +103,11 @@ public class NakamaSessionManager {
 
         try {
             socket.joinMatch(listarPartidas()).get();
-//            for (UserPresence presence : match1.getPresences()) {
-//                System.out.format("User id %s name %s.", presence.getUserId(), presence.getUsername());
-//            }
-//            System.out.println(match1.toString());
 
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
-//    public void enviarMensajePrueba(){
-//        int opCode = 1;
-//        String data = "{\"message\":\"Hello world\"}";
-//        socket.sendMatchData(idPartida[0], opCode, data.getBytes(StandardCharsets.UTF_8));
-//    }
+
 }

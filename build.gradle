@@ -81,9 +81,9 @@ project(":core") {
 
 }
 
-project.ext.texturePacker = ["core/assets/sprites/", "core/assets/", "miatles"]
-
-// Import the texture packer
+//project.ext.texturePacker = [ "core/assets/sprites/", "core/assets/", "miatles" ]
+//
+//// Import the texture packer
 //import com.badlogic.gdx.tools.texturepacker.TexturePacker
 //
 //// Add a new task that packs the textures for you
