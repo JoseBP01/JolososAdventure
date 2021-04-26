@@ -25,6 +25,8 @@ public class NakamaStorage {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        System.out.format("Stored objects %s", acks.getAcksList());
+        if (acks != null){
+            System.out.format("Stored objects %s", acks.getAcksList());
+        }
     }
 }
