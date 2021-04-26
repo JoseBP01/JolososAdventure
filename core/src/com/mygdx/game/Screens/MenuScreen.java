@@ -41,6 +41,8 @@ public class MenuScreen extends MyScreen {
 
         join.onClick(() -> {
             nakamaSessionManager.unirsePartida();
+            nakamaSessionManager.unirseChat();
+
             setScreen(new GameScreen(game,nakamaSessionManager));
         });
     }
