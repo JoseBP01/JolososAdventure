@@ -22,8 +22,11 @@ public class NakamaSessionManager {
     public static Account account;
     private SocketClient socket;
     public Session session;
+    Channel channel = null;
     public NakamaChat nakamaChat;
     public NakamaStorage nakamaStorage;
+
+
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -31,8 +34,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.0.20", 7349, false);
-        String host = "192.168.0.20";
+        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
+        String host = "192.168.22.198";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
@@ -105,6 +108,32 @@ public class NakamaSessionManager {
         try {
             socket.joinMatch(listarPartidas()).get();
 
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unirseChat() {
+        String roomName = "game";
+        boolean persistence = true;
+        boolean hidden = false;
+        try {
+            channel = socket.joinChat(roomName,ChannelType.ROOM,persistence,hidden).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Conectado al chat: "+channel.getId());
+    }
+
+    public void enviarMensaje(){
+        while (channel.getId() == null){
+            System.out.println("no hay id");
+        }
+        String channelId = channel.getId();
+        final String content = "{\"message\":\"Hello world\"}";
+        try {
+            ChannelMessageAck sendAck = socket.writeChatMessage(channelId, content).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

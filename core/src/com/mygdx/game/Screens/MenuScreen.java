@@ -35,6 +35,7 @@ public class MenuScreen extends MyScreen {
         table.add(error);
         create.onClick(() -> {
             nakamaSessionManager.unirsePartida();
+            nakamaSessionManager.unirseChat();
             setScreen(new GameScreen(game,nakamaSessionManager));
         });
 

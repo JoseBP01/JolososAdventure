@@ -82,6 +82,7 @@ public class MyWorld extends Group {
                                 if (obj.equals(true)){
                                     System.out.println("verdadero");
                                     nakamaStorage.pruebaStorage();
+                                    nakamaSessionManager.enviarMensaje();
                                 }else System.out.println("falso");
                             }
                         });
