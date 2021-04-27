@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 public class NakamaSessionManager {
 
-
     public DefaultClient client;
     ExecutorService executor = Executors.newSingleThreadExecutor();
     public static Account account;
@@ -25,8 +24,6 @@ public class NakamaSessionManager {
     Channel channel = null;
     public NakamaChat nakamaChat;
     public NakamaStorage nakamaStorage;
-
-
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -57,7 +54,6 @@ public class NakamaSessionManager {
             public void onSuccess(Account account) {
                 NakamaSessionManager.account = account;
                 callback.loginOk();
-
                 executor.shutdown();
             }
 
@@ -66,7 +62,6 @@ public class NakamaSessionManager {
                 callback.loginError(e.getMessage());
                 executor.shutdown();
             }
-
         }, executor);
 
         try {
@@ -93,6 +88,11 @@ public class NakamaSessionManager {
             public void onChannelMessage(final com.heroiclabs.nakama.api.ChannelMessage message) {
                 System.out.format("Received a message on channel %s", message.getChannelId());
                 System.out.format("Message content: %s", message.getContent());
+            }
+
+            @Override
+            public void onStatusPresence(StatusPresenceEvent presence) {
+                super.onStatusPresence(presence);
             }
         };
 
