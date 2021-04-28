@@ -15,7 +15,7 @@ public class LoginScreen extends MyScreen {
     @Override
     public void show() {
         super.show();
-        nakamaSessionManager.iniciarSesion("gerard@gerard2.com", "Test1234", "usuarioPrueba", new NakamaSessionManager.IniciarSesionCallback() {
+        nakamaSessionManager.iniciarSesion("test1@test.test", "Test1234", "usuarioPrueba", new NakamaSessionManager.IniciarSesionCallback() {
             @Override
             public void loginOk() {
                 System.out.println("se ha logueado " + NakamaSessionManager.account.getEmail());

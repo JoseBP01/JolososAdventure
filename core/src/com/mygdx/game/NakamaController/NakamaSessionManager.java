@@ -1,6 +1,7 @@
 package com.mygdx.game.NakamaController;
 
 
+import com.badlogic.gdx.utils.Json;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -8,7 +9,10 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.heroiclabs.nakama.*;
 import com.heroiclabs.nakama.api.Account;
 import com.heroiclabs.nakama.api.Rpc;
+import com.mygdx.game.Actors.Personaje;
+import com.mygdx.game.UpdatePosition;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,6 +28,8 @@ public class NakamaSessionManager {
     Channel channel = null;
     public NakamaChat nakamaChat;
     public NakamaStorage nakamaStorage;
+    private String idPartida;
+    private String idJugador;
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -43,6 +49,7 @@ public class NakamaSessionManager {
 
         try {
             session = authFuture.get();
+            idJugador = session.getUserId();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -75,6 +82,7 @@ public class NakamaSessionManager {
         Rpc rpc;
         try {
             rpc = socket.rpc("get_world_id").get();
+            idPartida = rpc.getPayload();
             return rpc.getPayload();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -91,8 +99,9 @@ public class NakamaSessionManager {
             }
 
             @Override
-            public void onStatusPresence(StatusPresenceEvent presence) {
-                super.onStatusPresence(presence);
+            public void onMatchData(MatchData matchData) {
+                super.onMatchData(matchData);
+                recibirDatosPartida(matchData);
             }
         };
 
@@ -115,14 +124,11 @@ public class NakamaSessionManager {
 
     public void unirseChat() {
         String roomName = "game";
-        boolean persistence = true;
-        boolean hidden = false;
         try {
-            channel = socket.joinChat(roomName,ChannelType.ROOM,persistence,hidden).get();
+            channel = socket.joinChat(roomName,ChannelType.ROOM, true, false).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
         System.out.println("Conectado al chat: "+channel.getId());
     }
 
@@ -139,5 +145,18 @@ public class NakamaSessionManager {
         }
     }
 
+    public void enviarDatosPartida(Personaje personaje,int opCode){
+
+        String json = new Json().toJson(new UpdatePosition(idJugador,personaje.getX(), personaje.getY()));
+        String json2 = new Json().toJson(new UpdatePosition(personaje.getX(), personaje.getY()));
+        String dat3a = "{\"message\":\"Hello world\"}";
+        String data = "{\"pos\": {\"x\":" + personaje.getX() +", \"y\": " + personaje.getY() + "}}";
+     socket.sendMatchData(idPartida,1,json2.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private void recibirDatosPartida(MatchData matchData) {
+        String datos = new String(matchData.getData());
+        System.out.println(datos);
+    }
 
 }

@@ -27,6 +27,9 @@ public class GameScreen extends MyScreen {
             camera.position.set(myWorld.personaje.getX(),myWorld.personaje.getY(),0);
             camera.update();
             myWorld.personaje.manejarTeclas();
+            if (myWorld.personaje != null){
+                nakamaSessionManager.enviarDatosPartida(myWorld.personaje, 1);
+            }
         }
     }
 }

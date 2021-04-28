@@ -13,7 +13,7 @@ public class NakamaGameManager {
 
     public void posicion_update(int x, int y){
 //        socket.sendMatchData();
-//        func send_direction_update(input: float) -> void:
+//        func send_posicion_update(input: float) -> void:
 //        if _socket:
 //        var payload := {id = get_user_id(), inp = input}
 //        _socket.send_match_state_async(_world_id, OpCodes.UPDATE_INPUT, JSON.print(payload))
