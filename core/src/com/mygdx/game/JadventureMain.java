@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.mygdx.game.MyWidgets.Timer;
 import com.mygdx.game.Screens.LoadScreen;
 
 public class JadventureMain extends Game {
@@ -19,5 +21,6 @@ public class JadventureMain extends Game {
 	@Override
 	public void render () {
 		super.render();
+		Timer.gameTime += Gdx.graphics.getDeltaTime();
 	}
 }

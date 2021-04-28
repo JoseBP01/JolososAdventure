@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Actors.*;
 import com.mygdx.game.Map;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
@@ -39,6 +40,9 @@ public class MyWorld extends Group {
     public List<Pared> paredes = new ArrayList<>();
     public List<Sillas> sillasList = new ArrayList<>();
     public List<Moneda> monedas = new ArrayList<>();
+    List<Body> monedasContacto = new ArrayList<>();
+    List<Body> enemigosContacto = new ArrayList<>();
+    Array<Body> allBodies = new Array<>();
 
     Puerta puertaCambio;
     MyDialog dialog;
@@ -57,10 +61,9 @@ public class MyWorld extends Group {
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         initWorld("maps/mapa.tmx");
-
     }
 
-    void initWorld (String mapName){
+    void initWorld(String mapName) {
         world = new World(new Vector2(0, -80), true);
 
         world.setContactListener(new ContactListener() {
@@ -73,29 +76,28 @@ public class MyWorld extends Group {
                 switch (cDef) {
                     case PERSONAJE_BIT | NPC_BIT:
 
-
                         addActor(dialog = new MyDialog("Warning", "TextoPrueba", "Yes", true, "No", false, camera.viewportWidth, 200) {
                             public void result(Object obj) {
-                                System.out.println("result "+obj);
+                                System.out.println("result " + obj);
                                 System.out.println(obj);
 
-                                if (obj.equals(true)){
+                                if (obj.equals(true)) {
                                     System.out.println("verdadero");
                                     nakamaStorage.pruebaStorage();
                                     nakamaSessionManager.enviarMensaje();
-                                }else System.out.println("falso");
+                                } else System.out.println("falso");
                             }
                         });
 //                        dialog.show(getStage());
 
                         System.out.println(camera.position.x);
-                        System.out.println("w: "+camera.viewportWidth);
+                        System.out.println("w: " + camera.viewportWidth);
 //                        dialog.setPosition(camera.viewportWidth, 0);
                         break;
 
                     case PUERTA_BIT | PERSONAJE_BIT:
 
-                        if (fixB.getFilterData().categoryBits == PUERTA_BIT){
+                        if (fixB.getFilterData().categoryBits == PUERTA_BIT) {
                             puertaCambio = (Puerta) fixB.getBody().getUserData();
                             reloadMap = true;
                             System.out.println("COLISION CON PUERTA " + puertaCambio);
@@ -107,25 +109,22 @@ public class MyWorld extends Group {
                         break;
 
                     case MONEDA_BIT | PERSONAJE_BIT:
-
-
-                    if (fixB.getFilterData().categoryBits == MONEDA_BIT){
-                        moneda = (Moneda) fixB.getBody().getUserData();
-//                        world.destroyBody(moneda.body);
-//                        world.
-
-                    } else {
-                        moneda = (Moneda) fixA.getBody().getUserData();
-                            world.destroyBody(moneda.body);
-                            removeActor(moneda);
-
-                    }
+                        if (fixB.getFilterData().categoryBits == MONEDA_BIT) {
+                            System.out.println("BBBBBBBBBBBBBBAAH");
+                            monedasContacto.add(fixB.getBody());
+                        } else {
+                            System.out.println("AAH");
+                        }
 
                         break;
 
-//                    case PERSONAJE_BIT | ENEMIGO_BIT:
-//
-//                        break;
+                    case PERSONAJE_BIT | ENEMIGO_BIT:
+                        if (fixB.getFilterData().categoryBits == ENEMIGO_BIT) {
+                            enemigosContacto.add(fixA.getBody());
+                        } else {
+                            System.out.println("AAH");
+                        }
+                        break;
                 }
 
             }
@@ -140,8 +139,6 @@ public class MyWorld extends Group {
                     case PERSONAJE_BIT | NPC_BIT:
                         removeActor(dialog);
 //                        dialog.hide();
-
-
                         break;
                 }
             }
@@ -155,56 +152,32 @@ public class MyWorld extends Group {
             }
         });
 
-        map = new Map(camera,mapName);
+        map = new Map(camera, mapName);
         map.loadObjects(this);
         addActor(map);
-        camera.position.set(personaje.getX(),personaje.getY(),0);
+        camera.position.set(personaje.getX(), personaje.getY(), 0);
 
     }
 
+    <T extends MyActor> void  clearObjects(List<T> actorlist){
+        for(T actor:actorlist) {
+            System.out.println("ELIMINANDO ACTOR.....");
+            world.destroyBody(actor.body);
+            actor.clearActions();
+            removeActor(actor);
+        }
+        actorlist.clear();
+    }
+
     void clearMyWorld() {
+        //Lista de listas
+        List[] colecciones = {arboles, npcs, aguaList, sillasList, puertas,monedas};
 
-        for (Arbol arbol:arboles){
-            world.destroyBody(arbol.body);
-            arbol.clearActions();
-            removeActor(arbol);
+        //Borra las listas
+        for(List coleccion:colecciones){
+            clearObjects(coleccion);
         }
-        arboles.clear();
 
-        for (Npc npc: npcs){
-            world.destroyBody(npc.body);
-            npc.clearActions();
-            removeActor(npc);
-        }
-        npcs.clear();
-
-        for (Agua agua:aguaList){
-            world.destroyBody(agua.body);
-            agua.clearActions();
-            removeActor(agua);
-        }
-        aguaList.clear();
-
-        for (Pared pared:paredes){
-            world.destroyBody(pared.body);
-            pared.clearActions();
-            removeActor(pared);
-        }
-        paredes.clear();
-
-        for (Sillas sillas: sillasList){
-            world.destroyBody(sillas.body);
-            sillas.clearActions();
-            removeActor(sillas);
-        }
-        sillasList.clear();
-
-        for (Puerta puerta : puertas){
-            world.destroyBody(puerta.body);
-            puerta.clearActions();
-            removeActor(puerta);
-        }
-        puertas.clear();
 
         world.destroyBody(personaje.body);
 
@@ -216,11 +189,11 @@ public class MyWorld extends Group {
 
     public void addPersonaje(Fixture fixture, MapObject mapObject) {
         System.out.println("AÑADIENDO PERASONALEEEEE ...");
-        addActor(personaje = new Personaje(fixture,mapObject));
+        addActor(personaje = new Personaje(fixture, mapObject));
     }
 
     public void addNpc(Fixture fixture, MapObject mapObject) {
-        Npc npc = new Npc(fixture,mapObject);
+        Npc npc = new Npc(fixture, mapObject);
         npcs.add(npc);
         addActor(npc);
     }
@@ -237,19 +210,19 @@ public class MyWorld extends Group {
         fixture.setRestitution(0.5f);
     }
 
-    public void addEnemigo(Fixture fixture){
-        Enemigo enemigoBase = new Enemigo(fixture);
+    public void addEnemigo(Fixture fixture, MapObject mapObject) {
+        Enemigo enemigoBase = new Enemigo(fixture, mapObject);
         enemigos.add(enemigoBase);
         addActor(enemigoBase);
     }
 
-    public void addSillas(Fixture fixture){
+    public void addSillas(Fixture fixture) {
         Sillas sillas = new Sillas(fixture);
         sillasList.add(sillas);
         addActor(sillas);
     }
 
-    public void addPuerta(Fixture fixture, String res, String name){
+    public void addPuerta(Fixture fixture, String res, String name) {
         System.out.println("Añadiendo puerta " + name + " hacia " + res);
         Puerta puerta = new Puerta(fixture, name);
         puerta.map = res;
@@ -258,26 +231,26 @@ public class MyWorld extends Group {
         addActor(puerta);
     }
 
-    public void addArbol(Fixture fixture){
+    public void addArbol(Fixture fixture) {
         Arbol arbol = new Arbol(fixture);
         arboles.add(arbol);
         addActor(arbol);
     }
 
-    public void addAgua(Fixture fixture){
+    public void addAgua(Fixture fixture) {
         Agua agua = new Agua(fixture);
         aguaList.add(agua);
         addActor(agua);
     }
 
-    public void addPared(Fixture fixture){
+    public void addPared(Fixture fixture) {
         Pared pared = new Pared(fixture);
         paredes.add(pared);
         addActor(pared);
     }
 
-    public void addMoneda(Fixture fixture,MapObject mapObject){
-        Moneda moneda = new Moneda(fixture, mapObject );
+    public void addMoneda(Fixture fixture, MapObject mapObject) {
+        Moneda moneda = new Moneda(fixture, mapObject);
         monedas.add(moneda);
         addActor(moneda);
     }
@@ -288,12 +261,25 @@ public class MyWorld extends Group {
         time += delta;
         world.step(delta, 6, 2);
 
-        if(reloadMap){
+        if (reloadMap) {
             clearMyWorld();
             reloadMap = false;
         }
-        if(dialog != null) {
+        if (dialog != null) {
             dialog.update(camera);
+        }
+
+        for (Body body : monedasContacto) {
+            System.out.println("HOLAAA");
+            world.destroyBody(body);
+            Moneda moneda = (Moneda) body.getUserData();
+            monedas.remove(moneda);
+            removeActor(moneda);
+        }
+        monedasContacto.clear();
+
+        for (Body body : enemigosContacto) {
+
         }
     }
 

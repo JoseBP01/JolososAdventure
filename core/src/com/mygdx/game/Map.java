@@ -78,7 +78,7 @@ public class Map extends Actor {
                         myWorld.addMoneda(fixture, mapObject);
                         break;
                     case "enemigo":
-                        myWorld.addEnemigo(fixture);
+                        myWorld.addEnemigo(fixture, mapObject);
                         break;
                 }
             }

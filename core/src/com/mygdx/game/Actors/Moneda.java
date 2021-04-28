@@ -10,11 +10,14 @@ import com.mygdx.game.Assets;
 import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.MyWidgets.MyWorld;
+import com.mygdx.game.MyWidgets.Timer;
+
+import java.sql.Time;
 
 public class Moneda extends MyActor {
 
 
-    float timer;
+    Timer timer;
 
     public Moneda(Fixture fixture, MapObject mapObject) {
         super(fixture);
@@ -26,7 +29,7 @@ public class Moneda extends MyActor {
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
 
-        timer = MyWorld.time + 5;
+        timer = new Timer(5);
     }
 
     @Override
@@ -39,9 +42,8 @@ public class Moneda extends MyActor {
     public void act(float delta) {
         super.act(delta);
 
-        if(MyWorld.time > timer){
+        if(timer.pita()){
             stateTime = 0;
-            timer = MyWorld.time + 5;
         }
     }
 }
