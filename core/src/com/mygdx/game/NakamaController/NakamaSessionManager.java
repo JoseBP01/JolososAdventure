@@ -1,7 +1,8 @@
 package com.mygdx.game.NakamaController;
 
 
-import com.badlogic.gdx.utils.Json;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -13,6 +14,7 @@ import com.mygdx.game.Actors.Personaje;
 import com.mygdx.game.Pos;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +32,7 @@ public class NakamaSessionManager {
     public NakamaStorage nakamaStorage;
     private String idPartida;
     private String idJugador;
+    private List<Pos> posRecibidas;
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -112,6 +115,12 @@ public class NakamaSessionManager {
                 super.onMatchData(matchData);
                 recibirDatosPartida(matchData);
             }
+
+            @Override
+            public void onMatchPresence(MatchPresenceEvent matchPresence) {
+                super.onMatchPresence(matchPresence);
+                System.out.println(matchPresence.getJoins());
+            }
         };
 
         try {
@@ -157,17 +166,21 @@ public class NakamaSessionManager {
 
     public void enviarDatosPartida(Personaje personaje,int opCode){
         //{id = session.getUserId, pos = {x = position.x, y = position.y}}
-        String json = new Json().toJson(new Pos(personaje.getX(), personaje.getY()));
-//        String json2 = new Json().toJson(new UpdatePosition(personaje.getX(), personaje.getY()));
-        String dat3a = "{\"message\":\"Hello world\"}";
         String data = "{\"id\" : \""+session.getUserId()+"\", "+"\"pos\""+": {\"x\":"+personaje.getX()+",\"y\":"+personaje.getY()+"}}";
 
      socket.sendMatchData(idPartida,1,data.getBytes(StandardCharsets.UTF_8));
     }
-
+    final ObjectMapper objectMapper = new ObjectMapper();
     private void recibirDatosPartida(MatchData matchData) {
+
         String datos = new String(matchData.getData());
-        System.out.println(datos);
+        try {
+            posRecibidas.add(objectMapper.readValue(datos, Pos.class));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//        System.out.println(datos);
+//        posRecibidas.forEach(System.out::println);
     }
 
 }
