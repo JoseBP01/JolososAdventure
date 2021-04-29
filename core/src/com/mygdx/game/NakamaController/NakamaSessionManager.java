@@ -10,7 +10,7 @@ import com.heroiclabs.nakama.*;
 import com.heroiclabs.nakama.api.Account;
 import com.heroiclabs.nakama.api.Rpc;
 import com.mygdx.game.Actors.Personaje;
-import com.mygdx.game.UpdatePosition;
+import com.mygdx.game.Pos;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
@@ -37,8 +37,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.0.20", 7349, false);
-        String host = "192.168.0.20";
+        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
+        String host = "192.168.22.198";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
@@ -90,6 +90,15 @@ public class NakamaSessionManager {
         return null;
     }
 
+    public void registrarPersonaje(){
+        try {
+            Rpc rpc = socket.rpc("register_character_name","joloco").get();
+            System.out.println("personaje registrado");
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void unirsePartida(){
         SocketListener listener = new AbstractSocketListener() {
             @Override
@@ -116,6 +125,7 @@ public class NakamaSessionManager {
 
         try {
             socket.joinMatch(listarPartidas()).get();
+            registrarPersonaje();
 
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -146,11 +156,11 @@ public class NakamaSessionManager {
     }
 
     public void enviarDatosPartida(Personaje personaje,int opCode){
-
-        String json = new Json().toJson(new UpdatePosition(idJugador,personaje.getX(), personaje.getY()));
+        //{id = session.getUserId, pos = {x = position.x, y = position.y}}
+        String json = new Json().toJson(new Pos(personaje.getX(), personaje.getY()));
 //        String json2 = new Json().toJson(new UpdatePosition(personaje.getX(), personaje.getY()));
         String dat3a = "{\"message\":\"Hello world\"}";
-        String data = "{\"pos\":{\""+idJugador+"\""+":{\"x\":"+personaje.getX()+",\"y\":"+personaje.getY()+"}}}";
+        String data = "{\"id\" : \""+session.getUserId()+"\", "+"\"pos\""+": {\"x\":"+personaje.getX()+",\"y\":"+personaje.getY()+"}}";
 
      socket.sendMatchData(idPartida,1,data.getBytes(StandardCharsets.UTF_8));
     }
