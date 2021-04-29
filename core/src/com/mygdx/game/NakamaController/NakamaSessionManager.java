@@ -37,8 +37,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
-        String host = "192.168.22.198";
+        client = new DefaultClient("mynewkey", "192.168.0.20", 7349, false);
+        String host = "192.168.0.20";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
@@ -148,10 +148,11 @@ public class NakamaSessionManager {
     public void enviarDatosPartida(Personaje personaje,int opCode){
 
         String json = new Json().toJson(new UpdatePosition(idJugador,personaje.getX(), personaje.getY()));
-        String json2 = new Json().toJson(new UpdatePosition(personaje.getX(), personaje.getY()));
+//        String json2 = new Json().toJson(new UpdatePosition(personaje.getX(), personaje.getY()));
         String dat3a = "{\"message\":\"Hello world\"}";
-        String data = "{\"pos\": {\"x\":" + personaje.getX() +", \"y\": " + personaje.getY() + "}}";
-     socket.sendMatchData(idPartida,1,json2.getBytes(StandardCharsets.UTF_8));
+        String data = "{\"pos\":{\""+idJugador+"\""+":{\"x\":"+personaje.getX()+",\"y\":"+personaje.getY()+"}}}";
+
+     socket.sendMatchData(idPartida,1,data.getBytes(StandardCharsets.UTF_8));
     }
 
     private void recibirDatosPartida(MatchData matchData) {

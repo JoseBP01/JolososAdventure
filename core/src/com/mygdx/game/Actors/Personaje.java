@@ -13,15 +13,6 @@ import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyWorld;
 
 public class Personaje extends MyActor {
-    //Sprite Base
-//    private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("caminandoIzquierda", 0.3f, Animation.PlayMode.LOOP);
-//    private static final Animation<TextureRegion> animacionCaminarDerecha = Assets.getAnimation("caminandoDerecha", 0.3f, Animation.PlayMode.LOOP);
-//    private static final Animation<TextureRegion> animacionCaminarArriba = Assets.getAnimation("caminandoArriba", 0.3f, Animation.PlayMode.LOOP);
-//    private static final Animation<TextureRegion> animacionCaminarAbajo = Assets.getAnimation("caminandoAbajo", 0.3f, Animation.PlayMode.LOOP);
-//    private static final Animation<TextureRegion> quietoIzquierda = Assets.getAnimation("quietoIzquierda", 0.3f, Animation.PlayMode.NORMAL);
-//    private static final Animation<TextureRegion> quietoDerecha = Assets.getAnimation("quietoDerecha", 0.3f, Animation.PlayMode.NORMAL);
-//    private static final Animation<TextureRegion> quietoArriba = Assets.getAnimation("quietoArriba", 0.3f, Animation.PlayMode.NORMAL);
-//    private static final Animation<TextureRegion> quietoAbajo = Assets.getAnimation("quietoAbajo", 0.3f, Animation.PlayMode.NORMAL);
 
     //Animacion Movimiento
     private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("direcIzquierda", 0.1f, Animation.PlayMode.LOOP);
@@ -72,7 +63,6 @@ public class Personaje extends MyActor {
 
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
-
     }
 
     @Override
@@ -132,7 +122,6 @@ public class Personaje extends MyActor {
         setDireccion(Direccion.Izquerda);
         setState(State.Curar);
         body.setLinearVelocity(0,0);
-
     }
     public void curarDerecha(){
         setDireccion(Direccion.Derecha);
@@ -153,7 +142,6 @@ public class Personaje extends MyActor {
     //Teclas asignadas
     public void manejarTeclas() {
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
-
             izquierda();
         }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
             derecha();
