@@ -3,6 +3,7 @@ package com.mygdx.game.MyWidgets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -25,8 +26,8 @@ public class MyWorld extends Group {
     public static final short NPC_BIT = 4;
     public static final short PERSONAJE_BIT = 8;
     public static final short PUERTA_BIT = 16;
-    public static final short ENEMIGO_BIT = 10;
-    public static final short MONEDA_BIT = 6;
+    public static final short ENEMIGO_BIT = 32;
+    public static final short MONEDA_BIT = 64;
 
     private final Box2DDebugRenderer debugRenderer;
 
@@ -40,9 +41,8 @@ public class MyWorld extends Group {
     public List<Pared> paredes = new ArrayList<>();
     public List<Sillas> sillasList = new ArrayList<>();
     public List<Moneda> monedas = new ArrayList<>();
-    List<Body> monedasContacto = new ArrayList<>();
-    List<Body> enemigosContacto = new ArrayList<>();
-    Array<Body> allBodies = new Array<>();
+    public List<Body> monedasContacto = new ArrayList<>();
+    public List<Body> enemigosContacto = new ArrayList<>();
 
     Puerta puertaCambio;
     MyDialog dialog;
@@ -51,6 +51,7 @@ public class MyWorld extends Group {
 
     public World world;
     boolean reloadMap;
+    boolean limpiarMoneda;
     public static float time;
     private Moneda moneda;
 
@@ -110,8 +111,9 @@ public class MyWorld extends Group {
 
                     case MONEDA_BIT | PERSONAJE_BIT:
                         if (fixB.getFilterData().categoryBits == MONEDA_BIT) {
-                            System.out.println("BBBBBBBBBBBBBBAAH");
+                            System.out.println("BBBBBBBBBBAAH");
                             monedasContacto.add(fixB.getBody());
+                            limpiarMoneda = true;
                         } else {
                             System.out.println("AAH");
                         }
@@ -178,13 +180,22 @@ public class MyWorld extends Group {
             clearObjects(coleccion);
         }
 
-
         world.destroyBody(personaje.body);
 
         removeActor(personaje);
         removeActor(map);
         System.out.println("CARGANDO " + puertaCambio.map + " : " + puertaCambio.name);
         initWorld(puertaCambio.map);
+    }
+
+    void  clearMonedas(){
+        List[] colecciones = {monedas};
+
+        //Borra las listas
+        for(List coleccion:colecciones){
+            clearObjects(coleccion);
+        }
+
     }
 
     public void addPersonaje(Fixture fixture, MapObject mapObject) {
@@ -270,18 +281,17 @@ public class MyWorld extends Group {
         }
 
         for (Body body : monedasContacto) {
-            System.out.println("HOLAAA");
+            System.out.println("Borrar Moneda");
             world.destroyBody(body);
+
             Moneda moneda = (Moneda) body.getUserData();
             monedas.remove(moneda);
             removeActor(moneda);
         }
         monedasContacto.clear();
 
-        for (Body body : enemigosContacto) {
-
-        }
     }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

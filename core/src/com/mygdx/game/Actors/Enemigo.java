@@ -10,13 +10,14 @@ import com.mygdx.game.Assets;
 import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.MyWidgets.MyWorld;
+import com.mygdx.game.MyWidgets.Timer;
 
 public class Enemigo extends MyActor {
 
     private Personaje.State estado;
     private Personaje.Direccion direccion;
 
-    float timer;
+    Timer timer;
 
     public enum State {
         Quieto,
@@ -39,9 +40,7 @@ public class Enemigo extends MyActor {
         estado = Personaje.State.Quieto;
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
-
-//        timer = MyWorld.time + 3;
-
+        timer = new Timer(3);
     }
 
     @Override
