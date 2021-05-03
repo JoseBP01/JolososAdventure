@@ -1,7 +1,6 @@
 package com.mygdx.game.NakamaController;
 
 
-import com.badlogic.gdx.physics.box2d.World;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -11,6 +10,7 @@ import com.heroiclabs.nakama.api.Account;
 import com.heroiclabs.nakama.api.Rpc;
 import com.mygdx.game.Actors.Personaje;
 import com.mygdx.game.Actors.PersonajeOnline;
+import com.mygdx.game.MyWidgets.MyWorld;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -34,11 +34,7 @@ public class NakamaSessionManager {
     private String idJugador;
     private List<Position> posRecibidas = new ArrayList<>();
     private List<PersonajeOnline> personajeOnlineList = new ArrayList<>();
-    private World world;
-
-    public void setWorld(World world) {
-        this.world = world;
-    }
+    private MyWorld myWorld;
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -135,8 +131,9 @@ public class NakamaSessionManager {
                         System.out.println(id);
                         if (id.equals(session.getUserId())){
                         }else {
+                            myWorld.addPersonajeOnline(id,0,0);
                             System.out.println("nuevo personaje añadido");
-                            nuevoJugador(id);
+
                         }
                     }
                     i++;
@@ -199,13 +196,32 @@ public class NakamaSessionManager {
     private void recibirDatosPartida(MatchData matchData) {
 
         String datos = new String(matchData.getData());
+        System.out.println(datos);
         Position position = new Position();
         position.fromJson(datos);
         if (position != null){
             posRecibidas.add(position);
 
         }
+
+        for (Position position1: posRecibidas){
+            for (PersonajeOnline pO: myWorld.personajesOnline){
+                if (position1.id.equals(pO.getId())){
+                    pO.update(position1.x, position1.y);
+                }
+
+            }
+        }
 //        posRecibidas.forEach(System.out::println);
+    }
+
+
+    public void setMyWorld(MyWorld myWorld){
+        this.myWorld = myWorld;
+    }
+
+    public MyWorld getMyWorld() {
+        return myWorld;
     }
 
 }

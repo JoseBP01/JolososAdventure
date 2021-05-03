@@ -27,7 +27,7 @@ public class MyWorld extends Group {
     public static final short ENEMIGO_BIT = 32;
     public static final short MONEDA_BIT = 64;
 
-    private final Box2DDebugRenderer debugRenderer;
+//    private final Box2DDebugRenderer debugRenderer;
 
     public Personaje personaje;
     public List<Npc> npcs = new ArrayList<>();
@@ -41,6 +41,8 @@ public class MyWorld extends Group {
     public List<Moneda> monedas = new ArrayList<>();
     public List<Body> monedasContacto = new ArrayList<>();
     public List<Body> enemigosContacto = new ArrayList<>();
+    public List<PersonajeOnline> personajesOnline=new ArrayList<>();
+
 
     Puerta puertaCambio;
     MyDialog dialog;
@@ -57,14 +59,15 @@ public class MyWorld extends Group {
         this.camera = camera;
         this.nakamaSessionManager = nakamaSessionManager;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
-        debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+//        debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         initWorld("maps/mapa.tmx");
+        this.nakamaSessionManager.setMyWorld(this);
+
     }
 
     void initWorld(String mapName) {
         world = new World(new Vector2(0, -80), true);
-        nakamaSessionManager.setWorld(world);
 
         world.setContactListener(new ContactListener() {
             @Override
@@ -265,6 +268,12 @@ public class MyWorld extends Group {
         addActor(moneda);
     }
 
+    public void addPersonajeOnline(String id, float x, float y){
+        PersonajeOnline personajeOnline = new PersonajeOnline(id,x,y,world);
+        personajesOnline.add(personajeOnline);
+        addActor(personajeOnline);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -295,6 +304,6 @@ public class MyWorld extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        debugRenderer.render(world, camera.combined);
+//        debugRenderer.render(world, camera.combined);
     }
 }
