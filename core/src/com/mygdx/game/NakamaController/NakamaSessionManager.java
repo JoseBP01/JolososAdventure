@@ -35,6 +35,8 @@ public class NakamaSessionManager {
     private List<Position> posRecibidas = new ArrayList<>();
     private List<PersonajeOnline> personajeOnlineList = new ArrayList<>();
     private MyWorld myWorld;
+    List<UserPresence> connectedOpponents = new ArrayList<UserPresence>();
+    List<String> idUsuariosPartida = new ArrayList<>();
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -97,7 +99,7 @@ public class NakamaSessionManager {
 
     public void registrarPersonaje(){
         try {
-            Rpc rpc = socket.rpc("register_character_name","joloco").get();
+            Rpc rpc = socket.rpc("register_character_name","aldair").get();
             System.out.println("personaje registrado");
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -118,9 +120,11 @@ public class NakamaSessionManager {
                 recibirDatosPartida(matchData);
             }
 
+
             @Override
             public void onMatchPresence(MatchPresenceEvent matchPresence) {
                 super.onMatchPresence(matchPresence);
+
                 int i=0;
                 String[] nombre;
                 nombre = matchPresence.toString().split(",");
@@ -189,6 +193,7 @@ public class NakamaSessionManager {
     public void enviarDatosPartida(Personaje personaje,int opCode){
         //{id = session.getUserId, pos = {x = position.x, y = position.y}}
         String data = "{\"id\" : \""+session.getUserId()+"\", "+"\"pos\""+": {\"x\":"+personaje.getX()+",\"y\":"+personaje.getY()+"}}";
+//        System.out.println(data);
 
      socket.sendMatchData(idPartida,1,data.getBytes(StandardCharsets.UTF_8));
     }
@@ -198,23 +203,35 @@ public class NakamaSessionManager {
         String datos = new String(matchData.getData());
         System.out.println(datos);
         Position position = new Position();
+        System.out.println(position);
         position.fromJson(datos);
         if (position != null){
             posRecibidas.add(position);
 
         }
 
-        for (Position position1: posRecibidas){
-            for (PersonajeOnline pO: myWorld.personajesOnline){
-                if (position1.id.equals(pO.getId())){
-                    pO.update(position1.x, position1.y);
-                }
-
-            }
-        }
+//        for (Position position1: posRecibidas){
+//            for (PersonajeOnline pO: myWorld.personajesOnline){
+//                if (position1.id.equals(pO.getId())){
+//                    pO.update(position1.x, position1.y);
+//                    posRecibidas.remove(position1);
+//                }else {
+//                    comprobarUsuariosPartida(position1.id);
+//                }
+//            }
+//
+//        }
 //        posRecibidas.forEach(System.out::println);
     }
 
+    public void comprobarUsuariosPartida(String id){
+        for (String s:idUsuariosPartida){
+            if (!id.equals(s)){
+                myWorld.addPersonajeOnline(id,0,0);
+                System.out.println("nuevo personaje añadido");
+            }else System.out.println("el personaje: "+id+" ya existe");
+        }
+    }
 
     public void setMyWorld(MyWorld myWorld){
         this.myWorld = myWorld;
