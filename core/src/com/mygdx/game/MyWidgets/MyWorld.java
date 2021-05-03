@@ -3,11 +3,9 @@ package com.mygdx.game.MyWidgets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Actors.*;
 import com.mygdx.game.Map;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
@@ -66,6 +64,7 @@ public class MyWorld extends Group {
 
     void initWorld(String mapName) {
         world = new World(new Vector2(0, -80), true);
+        nakamaSessionManager.setWorld(world);
 
         world.setContactListener(new ContactListener() {
             @Override

@@ -1,8 +1,7 @@
 package com.mygdx.game.NakamaController;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.badlogic.gdx.physics.box2d.World;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -11,9 +10,10 @@ import com.heroiclabs.nakama.*;
 import com.heroiclabs.nakama.api.Account;
 import com.heroiclabs.nakama.api.Rpc;
 import com.mygdx.game.Actors.Personaje;
-import com.mygdx.game.Pos;
+import com.mygdx.game.Actors.PersonajeOnline;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -32,7 +32,13 @@ public class NakamaSessionManager {
     public NakamaStorage nakamaStorage;
     private String idPartida;
     private String idJugador;
-    private List<Pos> posRecibidas;
+    private List<Position> posRecibidas = new ArrayList<>();
+    private List<PersonajeOnline> personajeOnlineList = new ArrayList<>();
+    private World world;
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -40,8 +46,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
-        String host = "192.168.22.198";
+        client = new DefaultClient("mynewkey", "192.168.0.22", 7349, false);
+        String host = "192.168.0.22";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
@@ -119,7 +125,22 @@ public class NakamaSessionManager {
             @Override
             public void onMatchPresence(MatchPresenceEvent matchPresence) {
                 super.onMatchPresence(matchPresence);
-                System.out.println(matchPresence.getJoins());
+                int i=0;
+                String[] nombre;
+                nombre = matchPresence.toString().split(",");
+                for (String s:nombre){
+                    if (i == 5){
+                        String[] idLimpio = s.split("\\)");
+                        String id = idLimpio[0].substring(8);
+                        System.out.println(id);
+                        if (id.equals(session.getUserId())){
+                        }else {
+                            System.out.println("nuevo personaje añadido");
+                            nuevoJugador(id);
+                        }
+                    }
+                    i++;
+                }
             }
         };
 
@@ -139,6 +160,10 @@ public class NakamaSessionManager {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    private void nuevoJugador(String joins) {
+//        PersonajeOnline personajeOnline = new PersonajeOnline(joins.toString());
     }
 
     public void unirseChat() {
@@ -170,16 +195,16 @@ public class NakamaSessionManager {
 
      socket.sendMatchData(idPartida,1,data.getBytes(StandardCharsets.UTF_8));
     }
-    final ObjectMapper objectMapper = new ObjectMapper();
+
     private void recibirDatosPartida(MatchData matchData) {
 
         String datos = new String(matchData.getData());
-        try {
-            posRecibidas.add(objectMapper.readValue(datos, Pos.class));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        Position position = new Position();
+        position.fromJson(datos);
+        if (position != null){
+            posRecibidas.add(position);
+
         }
-//        System.out.println(datos);
 //        posRecibidas.forEach(System.out::println);
     }
 
