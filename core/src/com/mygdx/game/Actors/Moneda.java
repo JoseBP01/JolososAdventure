@@ -22,14 +22,14 @@ public class Moneda extends MyActor {
     public Moneda(Fixture fixture, MapObject mapObject) {
         super(fixture);
 
-        currentAnimation = Assets.getAnimation("moneda", 0.3f, Animation.PlayMode.NORMAL);
+        currentAnimation = Assets.getAnimation("movMoneda", 0.3f, Animation.PlayMode.NORMAL);
         fixture.getFilterData().categoryBits= MyWorld.MONEDA_BIT;
         fixture.getFilterData().maskBits = MyWorld.PERSONAJE_BIT;
 
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
 
-        timer = new Timer(5);
+        timer = new Timer(3);
     }
 
     @Override

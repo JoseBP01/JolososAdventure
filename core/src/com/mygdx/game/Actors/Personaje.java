@@ -24,10 +24,10 @@ public class Personaje extends MyActor {
     private static final Animation<TextureRegion> quietoArriba = Assets.getAnimation("quietosArriba", 0.1f, Animation.PlayMode.NORMAL);
     private static final Animation<TextureRegion> quietoAbajo = Assets.getAnimation("quietosAbajo", 0.1f, Animation.PlayMode.NORMAL);
     //Animacion Ataque
-    private static final Animation<TextureRegion> ataqueIzquierda = Assets.getAnimation("caminandoIzquierda", 0.5f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> ataqueDerecha = Assets.getAnimation("caminandoDerecha", 0.5f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> ataqueArriba = Assets.getAnimation("caminandoArriba", 0.5f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> ataqueAbajo = Assets.getAnimation("caminandoAbajo", 0.5f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> ataqueIzquierda = Assets.getAnimation("ataqueIzquierda", 0.1f, Animation.PlayMode.LOOP_PINGPONG);
+    private static final Animation<TextureRegion> ataqueDerecha = Assets.getAnimation("ataqueDerecha", 0.1f, Animation.PlayMode.LOOP_PINGPONG);
+    private static final Animation<TextureRegion> ataqueArriba = Assets.getAnimation("ataqueArriba", 0.2f, Animation.PlayMode.LOOP_PINGPONG);
+    private static final Animation<TextureRegion> ataqueAbajo = Assets.getAnimation("ataqueAbajo", 0.1f, Animation.PlayMode.LOOP_PINGPONG);
     //Animacion Curar
     private static final Animation<TextureRegion> curarIzquierda = Assets.getAnimation("animCuracionIzquierda", 0.2f, Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> curarDerecha = Assets.getAnimation("animCuracionDerecha", 0.2f, Animation.PlayMode.LOOP);
