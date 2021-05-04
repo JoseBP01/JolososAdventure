@@ -64,7 +64,7 @@ public class PersonajeOnline extends Actor {
         estado = State.Quieto;
         direccion = Direccion.Derecha;
         hitBox = new Circle(getX(),getY(), 32);
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
 
