@@ -16,6 +16,7 @@ import java.util.List;
 
 public class MyWorld extends Group {
 
+
     private Map map;
     OrthographicCamera camera;
 
@@ -51,9 +52,14 @@ public class MyWorld extends Group {
 
     public World world;
     boolean reloadMap;
+    public boolean addNuevoPOnline=false;
     boolean limpiarMoneda;
     public static float time;
     private Moneda moneda;
+
+    public String idPOnline;
+    public float xPOnline;
+    public float yPOnline;
 
     public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager) {
         this.camera = camera;
@@ -284,6 +290,10 @@ public class MyWorld extends Group {
             clearMyWorld();
             reloadMap = false;
         }
+
+        if (addNuevoPOnline && idPOnline != null){
+            addPersonajeOnline(idPOnline,xPOnline,yPOnline);
+        }
         if (dialog != null) {
             dialog.update(camera);
         }
@@ -305,5 +315,11 @@ public class MyWorld extends Group {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 //        debugRenderer.render(world, camera.combined);
+    }
+
+    public void cargarNuevoPOnline(String id, float x, float y){
+        idPOnline = id;
+        xPOnline = x;
+        yPOnline = y;
     }
 }

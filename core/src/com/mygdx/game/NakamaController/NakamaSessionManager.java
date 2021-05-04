@@ -198,20 +198,25 @@ public class NakamaSessionManager {
         String datos = new String(matchData.getData());
         System.out.println(datos);
         Position position = new Position();
-        position.fromJson(datos);
-        if (position != null){
-            posRecibidas.add(position);
-
-        }
+        posRecibidas = position.fromJson(datos);
 
         for (Position position1: posRecibidas){
+            if (myWorld.personajesOnline.size() == 0 && !position1.id.equals(session.getUserId())){
+                myWorld.addNuevoPOnline=true;
+                myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
+            }
             for (PersonajeOnline pO: myWorld.personajesOnline){
                 if (position1.id.equals(pO.getId())){
                     pO.update(position1.x, position1.y);
-                }
+                    posRecibidas.remove(position1);
+                }else if (!position1.id.equals(idJugador)){
+                    myWorld.addNuevoPOnline = true;
+                    myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
 
+                }
             }
         }
+        posRecibidas.clear();
 //        posRecibidas.forEach(System.out::println);
     }
 
