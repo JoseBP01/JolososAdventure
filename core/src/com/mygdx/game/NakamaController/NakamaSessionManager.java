@@ -35,6 +35,7 @@ public class NakamaSessionManager {
     private List<Position> posRecibidas = new ArrayList<>();
     private List<PersonajeOnline> personajeOnlineList = new ArrayList<>();
     private MyWorld myWorld;
+    public String personajeAborrar;
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -121,23 +122,27 @@ public class NakamaSessionManager {
             @Override
             public void onMatchPresence(MatchPresenceEvent matchPresence) {
                 super.onMatchPresence(matchPresence);
-                int i=0;
-                String[] nombre;
-                nombre = matchPresence.toString().split(",");
-                for (String s:nombre){
-                    if (i == 5){
-                        String[] idLimpio = s.split("\\)");
-                        String id = idLimpio[0].substring(8);
-                        System.out.println(id);
-                        if (id.equals(session.getUserId())){
-                        }else {
-                            myWorld.addPersonajeOnline(id,0,0);
-                            System.out.println("nuevo personaje añadido");
+               if (matchPresence.getJoins() != null){
+                   for (UserPresence us : matchPresence.getJoins()){
+                       if (!us.getUserId().equals(session.getUserId())){
+                           myWorld.addPersonajeOnline(us.getUserId(),0,0);
+                           System.out.println("nuevo personaje añadido");
+                       }
+                   }
+               }
 
+                if (matchPresence.getLeaves() != null){
+                    for (UserPresence presenceEvent: matchPresence.getLeaves()){
+                        for(PersonajeOnline pO : myWorld.personajesOnline){
+                            if (presenceEvent.getUserId().equals(pO.getId())){
+                                myWorld.quitarPOnline = true;
+                                personajeAborrar = presenceEvent.getUserId();
+                                System.out.println("Personaje quitado");
+                            }
                         }
                     }
-                    i++;
                 }
+
             }
         };
 
@@ -192,22 +197,25 @@ public class NakamaSessionManager {
     private void recibirDatosPartida(MatchData matchData) {
 
         String datos = new String(matchData.getData());
-        System.out.println(datos);
+//        System.out.println(datos);
         Position position = new Position();
         posRecibidas = position.fromJson(datos);
-
+        boolean hacerNuevoPersonaje = false;
         for (Position position1: posRecibidas){
-            if (myWorld.personajesOnline.size() == 0 && !position1.id.equals(session.getUserId())){
-                myWorld.addNuevoPOnline=true;
-                myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
+            for (PersonajeOnline pO: myWorld.personajesOnline){
+                if (!position1.id.equals(pO.getId())){
+                    hacerNuevoPersonaje = true;
+                }
             }
+
             for (PersonajeOnline pO: myWorld.personajesOnline){
                 if (position1.id.equals(pO.getId())){
                     pO.update(position1.x, position1.y);
                     posRecibidas.remove(position1);
-                }else if (!position1.id.equals(idJugador)){
+                }else if (!position1.id.equals(idJugador) && hacerNuevoPersonaje ){
                     myWorld.addNuevoPOnline = true;
                     myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
+                    hacerNuevoPersonaje = false;
                 }
             }
         }

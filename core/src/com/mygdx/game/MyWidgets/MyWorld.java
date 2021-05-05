@@ -16,7 +16,6 @@ import java.util.List;
 
 public class MyWorld extends Group {
 
-
     private Map map;
     OrthographicCamera camera;
 
@@ -60,6 +59,8 @@ public class MyWorld extends Group {
     public String idPOnline;
     public float xPOnline;
     public float yPOnline;
+    public boolean quitarPOnline;
+
 
     public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager) {
         this.camera = camera;
@@ -293,7 +294,14 @@ public class MyWorld extends Group {
 
         if (addNuevoPOnline && idPOnline != null){
             addPersonajeOnline(idPOnline,xPOnline,yPOnline);
+            addNuevoPOnline = false;
         }
+
+        if (quitarPOnline && nakamaSessionManager.personajeAborrar != null){
+            personajeOBorrar(nakamaSessionManager.personajeAborrar);
+            quitarPOnline = false;
+        }
+
         if (dialog != null) {
             dialog.update(camera);
         }
@@ -321,5 +329,15 @@ public class MyWorld extends Group {
         idPOnline = id;
         xPOnline = x;
         yPOnline = y;
+    }
+
+    public void personajeOBorrar(String userId) {
+        for (PersonajeOnline p : personajesOnline){
+            if (p.getId().equals(userId)){
+                removeActor(p);
+                world.destroyBody(p.body);
+                personajesOnline.remove(p);
+            }
+        }
     }
 }
