@@ -336,7 +336,7 @@ public class MyWorld extends Group {
             if (p.getId().equals(userId)){
                 removeActor(p);
                 world.destroyBody(p.body);
-                personajesOnline.remove(p);
+//                personajesOnline.remove(p);
             }
         }
     }

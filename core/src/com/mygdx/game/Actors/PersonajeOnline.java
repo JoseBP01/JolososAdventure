@@ -82,7 +82,7 @@ public class PersonajeOnline extends Actor {
 
 // Create our fixture and attach it to the body
         body.createFixture(fixtureDef).setUserData(this);
-        circle.dispose();
+//        circle.dispose();
     }
 
     public void update(float x, float y){

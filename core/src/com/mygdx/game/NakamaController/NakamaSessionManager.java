@@ -201,22 +201,27 @@ public class NakamaSessionManager {
         Position position = new Position();
         posRecibidas = position.fromJson(datos);
         boolean hacerNuevoPersonaje = false;
-        for (Position position1: posRecibidas){
-            for (PersonajeOnline pO: myWorld.personajesOnline){
-                if (!position1.id.equals(pO.getId())){
-                    hacerNuevoPersonaje = true;
-                }
-            }
 
+        for (Position position1: posRecibidas){
+            if (myWorld.personajesOnline.size() == 0 && !position1.id.equals(session.getUserId())){
+                myWorld.addNuevoPOnline=true;
+                myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
+            }
             for (PersonajeOnline pO: myWorld.personajesOnline){
+
                 if (position1.id.equals(pO.getId())){
                     pO.update(position1.x, position1.y);
                     posRecibidas.remove(position1);
-                }else if (!position1.id.equals(idJugador) && hacerNuevoPersonaje ){
+                    hacerNuevoPersonaje = false;
+                }else if (!position1.id.equals(session.getUserId()) && !pO.getId().equals(position1.id)){
+                    hacerNuevoPersonaje = true;
+                }
+
+                if (hacerNuevoPersonaje){
                     myWorld.addNuevoPOnline = true;
                     myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
-                    hacerNuevoPersonaje = false;
                 }
+
             }
         }
         posRecibidas.clear();
