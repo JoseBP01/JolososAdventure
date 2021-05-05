@@ -33,7 +33,7 @@ public class PersonajeOnline extends Actor {
 
     public enum State {
         Quieto,
-        Caminando
+        Ataque, Caminando, Curar
     }
     public enum Direccion {
         Izquerda,
@@ -60,11 +60,11 @@ public class PersonajeOnline extends Actor {
         this.y = y;
         this.world = world;
         setSize(32,32);
-        setPosition(x,y);
+        setPosition(x+getWidth(),y+getHeight());
         estado = State.Quieto;
         direccion = Direccion.Derecha;
-        hitBox = new Circle(getX(),getY(), 32);
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+//        hitBox = new Circle(getX(),getY(), 32);
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
 
@@ -74,6 +74,7 @@ public class PersonajeOnline extends Actor {
 // Create a fixture definition to apply our shape to
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
+        body.setGravityScale(0);
         fixtureDef.density = 0.80f;
         fixtureDef.friction = 1.00f;
         fixtureDef.restitution = 0.6f; // Make it bounce a little bit
@@ -86,9 +87,33 @@ public class PersonajeOnline extends Actor {
     }
 
     public void update(float x, float y){
-            setPosition(x,y);
+        if (x != 0 && y != 0){
+            if (x > getX()){
+                direccion = Direccion.Derecha;
+                setState(State.Caminando);
+            }else if (x < getX()){
+                direccion = Direccion.Izquerda;
+                setState(State.Caminando);
+            }
+
+            if (y > getY()){
+                direccion = Direccion.Arriba;
+                setState(State.Caminando);
+            }else if (y < getY()){
+                direccion = Direccion.Abajo;
+                setState(State.Caminando);
+            }
+
+            if (x == getX() && y == getY()){
+                setState(State.Quieto);
+            }
+
             setX(x);
             setY(y);
+        }
+
+
+        System.out.println(body.getPosition());
     }
 
     @Override
@@ -105,6 +130,87 @@ public class PersonajeOnline extends Actor {
             Color color = getColor();
             batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
             batch.draw(currentAnimation.getKeyFrame(getStateTime()), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        }
+    }
+
+    public void setState(State state){
+        estado = state;
+        switch (estado){
+            case Caminando:
+                switch (direccion){
+                    case Izquerda:
+                        currentAnimation = animacionCaminarIzquierda;
+                        break;
+                    case Derecha:
+                        currentAnimation = animacionCaminarDerecha;
+                        break;
+
+                    case Arriba:
+                        currentAnimation=animacionCaminarArriba;
+                        break;
+
+                    case Abajo:
+                        currentAnimation=animacionCaminarAbajo;
+                        break;
+                }
+                break;
+            case Quieto:
+                switch (direccion){
+                    case Izquerda:
+                        currentAnimation = quietoIzquierda;
+                        break;
+
+                    case Derecha:
+                        currentAnimation = quietoDerecha;
+                        break;
+
+                    case Arriba:
+                        currentAnimation = quietoArriba;
+                        break;
+
+                    case Abajo:
+                        currentAnimation = quietoAbajo;
+                        break;
+                }
+                break;
+            case Ataque:
+                switch (direccion){
+                    case Izquerda:
+                        currentAnimation = ataqueIzquierda;
+                        break;
+                    case Derecha:
+                        currentAnimation = ataqueDerecha;
+                        break;
+                    case Arriba:
+                        currentAnimation = ataqueArriba;
+                        break;
+                    case Abajo:
+                        currentAnimation = ataqueAbajo;
+                        break;
+                }
+                break;
+            case Curar:
+                switch (direccion){
+                    case Izquerda:
+                        currentAnimation = curarIzquierda;
+                        break;
+
+                    case Derecha:
+                        currentAnimation = curarDerecha;
+                        break;
+
+                    case Arriba:
+                        currentAnimation = curarArriba;
+                        break;
+
+                    case Abajo:
+                        currentAnimation = curarAbajo;
+                        break;
+                }
+                break;
+
+            default: currentAnimation = quietoDerecha;
+                break;
         }
     }
 
