@@ -59,7 +59,7 @@ public class PersonajeOnline extends Actor {
         this.x = x;
         this.y = y;
         this.world = world;
-        setSize(40,40);
+        setSize(32,32);
         setPosition(x,y);
         estado = State.Quieto;
         direccion = Direccion.Derecha;

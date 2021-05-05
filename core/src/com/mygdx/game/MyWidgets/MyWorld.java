@@ -28,7 +28,7 @@ public class MyWorld extends Group {
     public static final short ENEMIGO_BIT = 32;
     public static final short MONEDA_BIT = 64;
 
-//    private final Box2DDebugRenderer debugRenderer;
+    private final Box2DDebugRenderer debugRenderer;
 
     public Personaje personaje;
     public List<Npc> npcs = new ArrayList<>();
@@ -65,7 +65,7 @@ public class MyWorld extends Group {
         this.camera = camera;
         this.nakamaSessionManager = nakamaSessionManager;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
-//        debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+        debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
@@ -314,7 +314,7 @@ public class MyWorld extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-//        debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
     }
 
     public void cargarNuevoPOnline(String id, float x, float y){

@@ -159,10 +159,6 @@ public class NakamaSessionManager {
         }
     }
 
-    private void nuevoJugador(String joins) {
-//        PersonajeOnline personajeOnline = new PersonajeOnline(joins.toString());
-    }
-
     public void unirseChat() {
         String roomName = "game";
         try {
@@ -212,12 +208,10 @@ public class NakamaSessionManager {
                 }else if (!position1.id.equals(idJugador)){
                     myWorld.addNuevoPOnline = true;
                     myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
-
                 }
             }
         }
         posRecibidas.clear();
-//        posRecibidas.forEach(System.out::println);
     }
 
 
