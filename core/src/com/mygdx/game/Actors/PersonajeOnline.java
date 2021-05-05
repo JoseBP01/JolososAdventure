@@ -111,9 +111,6 @@ public class PersonajeOnline extends Actor {
             setX(x);
             setY(y);
         }
-
-
-        System.out.println(body.getPosition());
     }
 
     @Override

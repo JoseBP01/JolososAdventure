@@ -66,7 +66,7 @@ public class MyWorld extends Group {
         this.camera = camera;
         this.nakamaSessionManager = nakamaSessionManager;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
-        debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+        debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
 
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
