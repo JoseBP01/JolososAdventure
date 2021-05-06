@@ -1,10 +1,8 @@
 package com.mygdx.game.Screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
+import com.mygdx.game.JadventureMain;
 import com.mygdx.game.MyWidgets.MyScreen;
 import com.mygdx.game.MyWidgets.MyWorld;
-import com.mygdx.game.JadventureMain;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
 
 public class GameScreen extends MyScreen {

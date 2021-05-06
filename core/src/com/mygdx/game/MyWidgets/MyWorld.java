@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MyWorld extends Group {
 
-    private Map map;
+    public Map map;
     OrthographicCamera camera;
 
     public static final short TIERRA_BIT = 1;
@@ -70,6 +70,8 @@ public class MyWorld extends Group {
 
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
+        nakamaSessionManager.nakamaStorage.getPosicionJugador();
+
 
     }
 
