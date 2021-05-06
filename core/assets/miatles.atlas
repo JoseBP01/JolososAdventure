@@ -66,14 +66,14 @@ curacionAbajo
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
+  index: 2
 curacionAbajo
   rotate: false
   xy: 320, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
+  index: 3
 animCuracionAbajo
   rotate: false
   xy: 354, 178
@@ -304,13 +304,6 @@ curacionDerecha
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
-curacionDerecha
-  rotate: false
-  xy: 592, 212
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
   index: 7
 curacionDerecha
   rotate: false
@@ -319,6 +312,13 @@ curacionDerecha
   orig: 32, 32
   offset: 0, 0
   index: 5
+curacionDerecha
+  rotate: false
+  xy: 592, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
 animCuracionDerecha
   rotate: false
   xy: 558, 144
@@ -416,6 +416,13 @@ curacionIzquierda
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 5
+curacionIzquierda
+  rotate: false
+  xy: 694, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 7
 curacionIzquierda
   rotate: false
@@ -424,13 +431,6 @@ curacionIzquierda
   orig: 32, 32
   offset: 0, 0
   index: 3
-curacionIzquierda
-  rotate: false
-  xy: 694, 212
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
 animCuracionIzquierda
   rotate: false
   xy: 660, 144
@@ -857,14 +857,14 @@ curacionDerecha
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 8
+  index: 6
 curacionDerecha
   rotate: false
   xy: 966, 144
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 6
+  index: 8
 curacionIzquierda
   rotate: false
   xy: 184, 98

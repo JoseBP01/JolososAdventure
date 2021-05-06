@@ -9,7 +9,8 @@ import com.heroiclabs.nakama.StorageObjectId;
 import com.heroiclabs.nakama.StorageObjectWrite;
 import com.heroiclabs.nakama.api.StorageObjectAcks;
 import com.heroiclabs.nakama.api.StorageObjects;
-import com.mygdx.game.MyWidgets.MyWorld;
+import com.mygdx.game.Actors.MyWorld;
+
 
 import java.util.concurrent.ExecutionException;
 

@@ -1,15 +1,12 @@
 package com.mygdx.game.Actors;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyActor;
-import com.mygdx.game.MyWidgets.MyWorld;
 import com.mygdx.game.MyWidgets.Timer;
 
 public class Enemigo extends MyActor {

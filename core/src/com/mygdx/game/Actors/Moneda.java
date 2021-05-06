@@ -1,18 +1,16 @@
 package com.mygdx.game.Actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyActor;
-import com.mygdx.game.MyWidgets.MyWorld;
 import com.mygdx.game.MyWidgets.Timer;
 
-import java.sql.Time;
+import java.util.Random;
 
 public class Moneda extends MyActor {
 
@@ -21,6 +19,8 @@ public class Moneda extends MyActor {
 
     public Moneda(Fixture fixture, MapObject mapObject) {
         super(fixture);
+
+        setName(""+ new Random().nextInt());
 
         currentAnimation = Assets.getAnimation("movMoneda", 0.3f, Animation.PlayMode.NORMAL);
         fixture.getFilterData().categoryBits= MyWorld.MONEDA_BIT;
@@ -47,5 +47,8 @@ public class Moneda extends MyActor {
         }
     }
 
+    boolean equals(Body body){
+        return getName().equals(((Moneda) body.getUserData()).getName());
+    }
 
 }

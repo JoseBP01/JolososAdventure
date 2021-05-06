@@ -1,17 +1,21 @@
-package com.mygdx.game.MyWidgets;
+package com.mygdx.game.Actors;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.game.Actors.*;
 import com.mygdx.game.Map;
+import com.mygdx.game.MyWidgets.MyActor;
+import com.mygdx.game.MyWidgets.MyDialog;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
 import com.mygdx.game.NakamaController.NakamaStorage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MyWorld extends Group {
@@ -172,8 +176,8 @@ public class MyWorld extends Group {
 
     }
 
-    <T extends MyActor> void  clearObjects(List<T> actorlist){
-        for(T actor:actorlist) {
+    void  clearObjects(List<MyActor> actorlist){
+        for(MyActor actor:actorlist) {
             System.out.println("ELIMINANDO ACTOR.....");
             world.destroyBody(actor.body);
             actor.clearActions();
@@ -184,7 +188,7 @@ public class MyWorld extends Group {
 
     void clearMyWorld() {
         //Lista de listas
-        List[] colecciones = {arboles, npcs, aguaList, sillasList, puertas,monedas};
+        List[] colecciones = {arboles, npcs, aguaList, sillasList, puertas,monedas/*,personajesOnline*/};
 
         //Borra las listas
         for(List coleccion:colecciones){
@@ -308,16 +312,18 @@ public class MyWorld extends Group {
             dialog.update(camera);
         }
 
-        for (Body body : monedasContacto) {
-            System.out.println("Borrar Moneda");
-            world.destroyBody(body);
-
-            Moneda moneda = (Moneda) body.getUserData();
-            monedas.remove(moneda);
-            removeActor(moneda);
+        for (Body body : monedasContacto){
+            for (Iterator<Moneda> iterator = monedas.iterator(); iterator.hasNext(); ) {
+                Moneda moneda = iterator.next();
+                if (moneda.equals(body)) {
+                    world.destroyBody(body);
+                    iterator.remove();
+                    removeActor(moneda);
+                    break;
+                }
+            }
         }
         monedasContacto.clear();
-
     }
 
 
@@ -343,3 +349,4 @@ public class MyWorld extends Group {
         }
     }
 }
+
