@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Config;
 import com.mygdx.game.MyWidgets.MyActor;
-import com.mygdx.game.MyWidgets.MyWorld;
 
 public class Npc extends MyActor {
 

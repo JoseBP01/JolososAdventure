@@ -9,7 +9,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.MyWidgets.MyWorld;
+import com.mygdx.game.Actors.MyWorld;
 import net.dermetfan.gdx.physics.box2d.Box2DMapObjectParser;
 
 public class Map extends Actor {

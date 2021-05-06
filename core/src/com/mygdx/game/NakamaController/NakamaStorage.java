@@ -1,7 +1,6 @@
 package com.mygdx.game.NakamaController;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heroiclabs.nakama.PermissionRead;
@@ -11,7 +10,6 @@ import com.heroiclabs.nakama.StorageObjectWrite;
 import com.heroiclabs.nakama.api.StorageObjectAcks;
 import com.heroiclabs.nakama.api.StorageObjects;
 import com.mygdx.game.Actors.Objeto;
-import com.mygdx.game.MyWidgets.MyWorld;
 
 import java.util.concurrent.ExecutionException;
 
@@ -24,12 +22,11 @@ public class NakamaStorage {
 
     public void crearObjeto(String nombre, float precio, String descripcion){
         Objeto objeto= new Objeto(nombre,precio,descripcion);
-        String  json = new Json().toJson(objeto);
         String data = "{\"nombre\" : \""+nombre+"\", "+"\"precio\": \""+precio+"\","+"\"descripcion\" : \""+descripcion+"\""+"}";
         StorageObjectWrite saveGameObject = new StorageObjectWrite("Objetos", nombre, data, PermissionRead.PUBLIC_READ, PermissionWrite.OWNER_WRITE);
         StorageObjectAcks acks = null;
         try {
-            acks = nakamaSessionManager.client.writeStorageObjects(nakamaSessionManager.session, saveGameObject).get();
+            acks = nakamaSessionManager.client.writeStorageObjects(nakamaSessionManager.session, saveGameObject, statsObject).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

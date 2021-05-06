@@ -10,10 +10,11 @@ import com.heroiclabs.nakama.api.Account;
 import com.heroiclabs.nakama.api.Rpc;
 import com.mygdx.game.Actors.Personaje;
 import com.mygdx.game.Actors.PersonajeOnline;
-import com.mygdx.game.MyWidgets.MyWorld;
+import com.mygdx.game.Actors.MyWorld;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -207,19 +208,20 @@ public class NakamaSessionManager {
                 myWorld.addNuevoPOnline=true;
                 myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
             }
-            for (PersonajeOnline pO: myWorld.personajesOnline){
+            for (Iterator<PersonajeOnline> iterator = myWorld.personajesOnline.iterator(); iterator.hasNext(); ) {
+                PersonajeOnline pO = iterator.next();
 
-                if (position1.id.equals(pO.getId())){
+                if (position1.id.equals(pO.getId())) {
                     pO.update(position1.x, position1.y);
-                    posRecibidas.remove(position1);
+                    iterator.remove();
                     hacerNuevoPersonaje = false;
-                }else if (!position1.id.equals(session.getUserId()) && !pO.getId().equals(position1.id)){
+                } else if (!position1.id.equals(session.getUserId()) && !pO.getId().equals(position1.id)) {
                     hacerNuevoPersonaje = true;
                 }
 
-                if (hacerNuevoPersonaje){
+                if (hacerNuevoPersonaje) {
                     myWorld.addNuevoPOnline = true;
-                    myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
+                    myWorld.cargarNuevoPOnline(position1.id, position1.x, position1.y);
                 }
 
             }
