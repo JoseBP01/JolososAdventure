@@ -1,6 +1,7 @@
 package com.mygdx.game.NakamaController;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heroiclabs.nakama.PermissionRead;
@@ -9,6 +10,7 @@ import com.heroiclabs.nakama.StorageObjectId;
 import com.heroiclabs.nakama.StorageObjectWrite;
 import com.heroiclabs.nakama.api.StorageObjectAcks;
 import com.heroiclabs.nakama.api.StorageObjects;
+import com.mygdx.game.Actors.Objeto;
 import com.mygdx.game.MyWidgets.MyWorld;
 
 import java.util.concurrent.ExecutionException;
@@ -20,14 +22,14 @@ public class NakamaStorage {
         this.nakamaSessionManager = nakamaSessionManager;
     }
 
-    public void pruebaStorage(){
-        String saveGame = "{ \"progress\": 50 }";
-        String myStats = "{ \"skill\": 24 }";
-        StorageObjectWrite saveGameObject = new StorageObjectWrite("saves", "savegame", saveGame, PermissionRead.OWNER_READ, PermissionWrite.OWNER_WRITE);
-        StorageObjectWrite statsObject = new StorageObjectWrite("stats", "skills", myStats, PermissionRead.OWNER_READ, PermissionWrite.OWNER_WRITE);
+    public void crearObjeto(String nombre, float precio, String descripcion){
+        Objeto objeto= new Objeto(nombre,precio,descripcion);
+        String  json = new Json().toJson(objeto);
+        String data = "{\"nombre\" : \""+nombre+"\", "+"\"precio\": \""+precio+"\","+"\"descripcion\" : \""+descripcion+"\""+"}";
+        StorageObjectWrite saveGameObject = new StorageObjectWrite("Objetos", nombre, data, PermissionRead.PUBLIC_READ, PermissionWrite.OWNER_WRITE);
         StorageObjectAcks acks = null;
         try {
-            acks = nakamaSessionManager.client.writeStorageObjects(nakamaSessionManager.session, saveGameObject, statsObject).get();
+            acks = nakamaSessionManager.client.writeStorageObjects(nakamaSessionManager.session, saveGameObject).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

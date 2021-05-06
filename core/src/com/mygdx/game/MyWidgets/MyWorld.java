@@ -95,7 +95,7 @@ public class MyWorld extends Group {
 
                                 if (obj.equals(true)) {
                                     System.out.println("verdadero");
-                                    nakamaStorage.pruebaStorage();
+                                    nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
                                     nakamaSessionManager.enviarMensaje();
                                 } else System.out.println("falso");
                             }

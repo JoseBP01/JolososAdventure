@@ -23,27 +23,27 @@ public class Inventario {
         }
     }
 
-    public Objeto  buscarObjeto(String nombre){
-        for (Objeto objeto: espacios){
-            if (objeto.nombre.equals(nombre)){
-                return objeto;
-            }else {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    public boolean quitarObjeto(String nombre){
-        if (buscarObjeto(nombre) != null){
-            Objeto objeto = buscarObjeto(nombre);
-            System.out.println("El objeto: "+objeto.nombre+" ha sido borrado del inventario");
-            return true;
-        }else {
-            System.out.println("El objeto con nombre: "+nombre+" no existe");
-            return false;
-        }
-    }
+//    public Objeto  buscarObjeto(String nombre){
+//        for (Objeto objeto: espacios){
+//            if (objeto.nombre.equals(nombre)){
+//                return objeto;
+//            }else {
+//                return null;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public boolean quitarObjeto(String nombre){
+//        if (buscarObjeto(nombre) != null){
+//            Objeto objeto = buscarObjeto(nombre);
+//            System.out.println("El objeto: "+objeto.nombre+" ha sido borrado del inventario");
+//            return true;
+//        }else {
+//            System.out.println("El objeto con nombre: "+nombre+" no existe");
+//            return false;
+//        }
+//    }
 
 
 }
