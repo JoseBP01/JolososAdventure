@@ -16,8 +16,10 @@ public class MyDialog extends Dialog {
 
     }
 
-    public MyDialog(String title, Skin skin) {
+    public MyDialog(String title, Skin skin, float width, float height) {
         super(title, skin);
+        setSize(width, height);
+
     }
 
     public MyDialog(String title, Skin skin, String windowStyleName) {

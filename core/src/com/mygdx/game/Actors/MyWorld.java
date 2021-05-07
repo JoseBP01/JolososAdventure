@@ -6,9 +6,12 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.MyWidgets.MyDialog;
+import com.mygdx.game.MyWidgets.MyStage;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
 import com.mygdx.game.NakamaController.NakamaStorage;
 
@@ -44,6 +47,7 @@ public class MyWorld extends Group {
     public List<Body> monedasContacto = new ArrayList<>();
     public List<Body> enemigosContacto = new ArrayList<>();
     public List<PersonajeOnline> personajesOnline=new ArrayList<>();
+    MyStage myStage;
 
 
     Puerta puertaCambio;
@@ -57,6 +61,9 @@ public class MyWorld extends Group {
     boolean limpiarMoneda;
     public static float time;
     private Moneda moneda;
+    TextField textField = new TextField("nombre", Assets.uiSkin);
+    MyDialog chat;
+
 
     public String idPOnline;
     public float xPOnline;
@@ -64,22 +71,23 @@ public class MyWorld extends Group {
     public boolean quitarPOnline;
 
 
-    public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager) {
+    public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager, MyStage stage) {
         this.camera = camera;
         this.nakamaSessionManager = nakamaSessionManager;
+        this.myStage = stage;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
         debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
 
+        chat = new MyDialog("Chat",Assets.uiSkin,50,50);
+        chat.setPosition(camera.viewportWidth,camera.viewportHeight);
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
-
-
     }
 
     void initWorld(String mapName) {
         world = new World(new Vector2(0, -80), true);
-
+        chat.show(myStage);
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -97,11 +105,14 @@ public class MyWorld extends Group {
 
                                 if (obj.equals(true)) {
                                     System.out.println("verdadero");
-                                    nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
-                                    nakamaSessionManager.enviarMensaje();
+//                                    nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
+//                                    nakamaSessionManager.enviarMensaje();
 //                                    Table table = new Table();
 //                                    table.setFillParent(true);
-//                                    TextField textField = new TextField("nombre", Assets.uiSkin);
+//                                    MyDialog myDialog = new MyDialog("objetos", Assets.uiSkin);
+//                                    myDialog.add(textField);
+//                                    addActor(myDialog);
+//                                    myDialog.show(getStage())
 //                                    table.add(textField);
 //                                    dialog.addActor(textField);
 ;                                } else System.out.println("falso");
@@ -176,6 +187,7 @@ public class MyWorld extends Group {
         map.loadObjects(this);
         addActor(map);
         camera.position.set(personaje.getX(), personaje.getY(), 0);
+
 
     }
 
@@ -294,6 +306,7 @@ public class MyWorld extends Group {
     public void act(float delta) {
         super.act(delta);
         time += delta;
+        chat.update(camera);
         world.step(delta, 6, 2);
 
         if (reloadMap) {
