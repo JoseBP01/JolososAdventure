@@ -3,11 +3,9 @@ package com.mygdx.game.Actors;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.mygdx.game.Actors.*;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.MyWidgets.MyDialog;
@@ -74,7 +72,7 @@ public class MyWorld extends Group {
 
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
-        nakamaSessionManager.nakamaStorage.getPosicionJugador();
+//        nakamaSessionManager.nakamaStorage.getPosicionJugador();
 
 
     }
@@ -92,7 +90,7 @@ public class MyWorld extends Group {
                 switch (cDef) {
                     case PERSONAJE_BIT | NPC_BIT:
 
-                        addActor(dialog = new MyDialog("Warning", "TextoPrueba", "Yes", true, "No", false, camera.viewportWidth, 200) {
+                        addActor(dialog = new MyDialog("Herrera", "Quieres fabricar tu propio objeto", "Yes", true, "No", false, camera.viewportWidth, 200) {
                             public void result(Object obj) {
                                 System.out.println("result " + obj);
                                 System.out.println(obj);
@@ -101,7 +99,12 @@ public class MyWorld extends Group {
                                     System.out.println("verdadero");
                                     nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
                                     nakamaSessionManager.enviarMensaje();
-                                } else System.out.println("falso");
+//                                    Table table = new Table();
+//                                    table.setFillParent(true);
+//                                    TextField textField = new TextField("nombre", Assets.uiSkin);
+//                                    table.add(textField);
+//                                    dialog.addActor(textField);
+;                                } else System.out.println("falso");
                             }
                         });
 //                        dialog.show(getStage());

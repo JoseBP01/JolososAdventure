@@ -13,6 +13,7 @@ public class MyDialog extends Dialog {
         button(yess, yesb); //sends "true" as the result
         button(nos, nob); //sends "false" as the result
         setSize(width, height);
+
     }
 
     public MyDialog(String title, Skin skin) {
