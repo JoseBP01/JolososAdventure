@@ -72,7 +72,7 @@ public class MyWorld extends Group {
 
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
-//        nakamaSessionManager.nakamaStorage.getPosicionJugador();
+        nakamaSessionManager.nakamaStorage.getPosicionJugador();
 
 
     }
