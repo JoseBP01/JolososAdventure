@@ -1,7 +1,6 @@
 package com.mygdx.game.NakamaController;
 
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -12,7 +11,6 @@ import com.heroiclabs.nakama.api.Rpc;
 import com.mygdx.game.Actors.MyWorld;
 import com.mygdx.game.Actors.Personaje;
 import com.mygdx.game.Actors.PersonajeOnline;
-import com.mygdx.game.Assets;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -32,13 +30,12 @@ public class NakamaSessionManager {
     Channel channel = null;
     public NakamaChat nakamaChat;
     public NakamaStorage nakamaStorage;
+
     private String idPartida;
-    private String idJugador;
     private List<Position> posRecibidas = new ArrayList<>();
-    private List<PersonajeOnline> personajeOnlineList = new ArrayList<>();
     private MyWorld myWorld;
     public String personajeAborrar;
-    public String mensaje;
+    public List<String > mensajes = new ArrayList<>();
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -46,8 +43,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
-        String host = "192.168.22.198";
+        client = new DefaultClient("mynewkey", "192.168.0.22", 7349, false);
+        String host = "192.168.0.22";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
@@ -58,7 +55,6 @@ public class NakamaSessionManager {
 
         try {
             session = authFuture.get();
-            idJugador = session.getUserId();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -112,12 +108,9 @@ public class NakamaSessionManager {
         SocketListener listener = new AbstractSocketListener() {
             @Override
             public void onChannelMessage(final com.heroiclabs.nakama.api.ChannelMessage message) {
-                System.out.format("Received a message on channel %s", message.getChannelId());
-                System.out.format("Message content: %s", message.getContent());
-                Label label = new Label(message.getContent(), Assets.uiSkin);
-                myWorld.chat.add(label);
-                myWorld.chat.row();
-
+                mensajes.add(message.getContent());
+                String[] msgArray = mensajes.toArray(new String[0]);
+                myWorld.mensajesOnline.setItems(msgArray);
             }
 
             @Override
@@ -195,10 +188,8 @@ public class NakamaSessionManager {
     }
 
     public void enviarDatosPartida(Personaje personaje,int opCode){
-        //{id = session.getUserId, pos = {x = position.x, y = position.y}}
         String data = "{\"id\" : \""+session.getUserId()+"\", "+"\"pos\""+": {\"x\":"+personaje.getX()+",\"y\":"+personaje.getY()+"}}";
-
-     socket.sendMatchData(idPartida,1,data.getBytes(StandardCharsets.UTF_8));
+        socket.sendMatchData(idPartida,1,data.getBytes(StandardCharsets.UTF_8));
     }
 
     private void recibirDatosPartida(MatchData matchData) {
@@ -238,5 +229,4 @@ public class NakamaSessionManager {
     public MyWorld getMyWorld() {
         return myWorld;
     }
-
 }

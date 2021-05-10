@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.mygdx.game.Assets;
@@ -52,6 +52,7 @@ public class MyWorld extends Group {
     public List<Body> monedasContacto = new ArrayList<>();
     public List<Body> enemigosContacto = new ArrayList<>();
     public List<PersonajeOnline> personajesOnline=new ArrayList<>();
+    public com.badlogic.gdx.scenes.scene2d.ui.List<String> mensajesOnline = new com.badlogic.gdx.scenes.scene2d.ui.List<>(Assets.uiSkin);
     MyStage myStage;
 
     Puerta puertaCambio;
@@ -67,15 +68,15 @@ public class MyWorld extends Group {
     MyDialog hacerObjDialog;
     public Table chat;
     public TextField chatInput;
-    boolean hacerObjeto = false;
-
+    public boolean escribiendo = false;
 
     public String idPOnline;
     public float xPOnline;
     public float yPOnline;
     public boolean quitarPOnline;
-    private Table table;
 
+    private Table table;
+    public ScrollPane sP = new ScrollPane(mensajesOnline,Assets.uiSkin);
 
     public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager, MyStage stage) {
         this.camera = camera;
@@ -83,31 +84,49 @@ public class MyWorld extends Group {
         this.myStage = stage;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
         debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
-        chat = new Table(){};
-        chatInput = new TextField("",Assets.uiSkin);
-        chat.add(chatInput).bottom();
-        chat.setPosition(camera.viewportWidth,camera.viewportHeight);
-
-        chatInput.addAction(new Action() {
-            @Override
-            public boolean act(float delta) {
-                return false;
-            }
-        });
-
-        chatInput.addListener(event -> {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && chatInput.getText() != null){
-                personaje.setState(Personaje.State.Quieto);
-                nakamaSessionManager.enviarMensaje(chatInput.getText());
-                System.out.println("mensaje: "+chatInput.getMessageText()+" enviado.");
-            }
-            return false;
-        });
+       crearChat();
 
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
         nakamaStorage.comprarObjeto("objetoPrueba");
+    }
+
+    private void crearChat() {
+        chat = new Table();
+        chat.setFillParent(true);
+        chatInput = new TextField("",Assets.uiSkin);
+        chat.add(new Label("Chat",Assets.uiSkin)).colspan(2);
+        chat.row();
+
+        chat.add(sP).height(100).expandX();
+        chat.row();
+        chat.add(chatInput).bottom().colspan(2);
+
+        chat.setSkin(Assets.uiSkin);
+        chat.setDebug(true);
+
+        chatInput.addCaptureListener(event -> {
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                escribiendo = true;
+                chatInput.setDisabled(false);
+
+            }else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+                escribiendo = false;
+                chatInput.setText("");
+                chatInput.setDisabled(true);
+            }
+            return false;
+        });
+
+        chatInput.addListener(event -> {
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && chatInput.getText() != null){
+                nakamaSessionManager.enviarMensaje(chatInput.getText());
+                System.out.println("mensaje: "+chatInput.getText()+" enviado.");
+            }
+            return false;
+        });
     }
 
     void initWorld(String mapName) {
@@ -132,7 +151,6 @@ public class MyWorld extends Group {
 //                                    nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
 //                                    nakamaStorage.crearObjeto("objetoPrueba2",200f, "el melhor objeto do mondo2");
 //                                    nakamaStorage.crearObjeto("objetoPrueba3",300f, "el melhor objeto do mondo3");
-//                                    nakamaSessionManager.enviarMensaje();
                                     showObjetos(nakamaStorage.getObjetosTienda());
 
 ;                                } else{
@@ -140,12 +158,6 @@ public class MyWorld extends Group {
                                 }
                             }
                         });
-
-//                        dialog.show(getStage());
-
-                        System.out.println(camera.position.x);
-                        System.out.println("w: " + camera.viewportWidth);
-//                        dialog.setPosition(camera.viewportWidth, 0);
                         break;
 
                     case PUERTA_BIT | PERSONAJE_BIT:
@@ -193,11 +205,6 @@ public class MyWorld extends Group {
                     case PERSONAJE_BIT | NPC_BIT:
                         removeActor(dialog);
                         removeActor(table);
-//                        dialog.hide();
-                        if (hacerObjeto){
-                            removeActor(hacerObjDialog);
-                        }
-
                         break;
                 }
             }
@@ -404,11 +411,11 @@ public class MyWorld extends Group {
         monedasContacto.clear();
     }
 
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         debugRenderer.render(world, camera.combined);
+        chat.setPosition(personaje.getX()+248, personaje.getY()+160);
     }
 
     public void cargarNuevoPOnline(String id, float x, float y){
@@ -427,4 +434,3 @@ public class MyWorld extends Group {
         }
     }
 }
-
