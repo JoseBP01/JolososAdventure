@@ -1,6 +1,7 @@
 package com.mygdx.game.NakamaController;
 
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -11,6 +12,7 @@ import com.heroiclabs.nakama.api.Rpc;
 import com.mygdx.game.Actors.MyWorld;
 import com.mygdx.game.Actors.Personaje;
 import com.mygdx.game.Actors.PersonajeOnline;
+import com.mygdx.game.Assets;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class NakamaSessionManager {
     private List<PersonajeOnline> personajeOnlineList = new ArrayList<>();
     private MyWorld myWorld;
     public String personajeAborrar;
+    public String mensaje;
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -43,8 +46,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.0.22", 7349, false);
-        String host = "192.168.0.22";
+        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
+        String host = "192.168.22.198";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
@@ -111,6 +114,10 @@ public class NakamaSessionManager {
             public void onChannelMessage(final com.heroiclabs.nakama.api.ChannelMessage message) {
                 System.out.format("Received a message on channel %s", message.getChannelId());
                 System.out.format("Message content: %s", message.getContent());
+                Label label = new Label(message.getContent(), Assets.uiSkin);
+                myWorld.chat.add(label);
+                myWorld.chat.row();
+
             }
 
             @Override
@@ -174,12 +181,12 @@ public class NakamaSessionManager {
         System.out.println("Conectado al chat: "+channel.getId());
     }
 
-    public void enviarMensaje(){
+    public void enviarMensaje(String messageText){
         while (channel.getId() == null){
             System.out.println("no hay id");
         }
         String channelId = channel.getId();
-        final String content = "{\"message\":\"Hello world\"}";
+        final String content = "{\"message\":\""+messageText+"\"}";
         try {
             ChannelMessageAck sendAck = socket.writeChatMessage(channelId, content).get();
         } catch (InterruptedException | ExecutionException e) {
@@ -197,7 +204,6 @@ public class NakamaSessionManager {
     private void recibirDatosPartida(MatchData matchData) {
 
         String datos = new String(matchData.getData());
-//        System.out.println(datos);
         Position position = new Position();
         posRecibidas = position.fromJson(datos);
         boolean hacerNuevoPersonaje = false;
@@ -220,12 +226,10 @@ public class NakamaSessionManager {
                     myWorld.addNuevoPOnline = true;
                     myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
                 }
-
             }
         }
         posRecibidas.clear();
     }
-
 
     public void setMyWorld(MyWorld myWorld){
         this.myWorld = myWorld;
@@ -236,22 +240,3 @@ public class NakamaSessionManager {
     }
 
 }
-
-/*
-for (PersonajeOnline pO: myWorld.personajesOnline){
-
-                if (position1.id.equals(pO.getId())){
-                    pO.update(position1.x, position1.y);
-                    posRecibidas.remove(position1);
-                    hacerNuevoPersonaje = false;
-                }else if (!position1.id.equals(session.getUserId()) && !pO.getId().equals(position1.id)){
-                    hacerNuevoPersonaje = true;
-                }
-
-                if (hacerNuevoPersonaje){
-                    myWorld.addNuevoPOnline = true;
-                    myWorld.cargarNuevoPOnline(position1.id,position1.x,position1.y);
-                }
-
-            }
- */

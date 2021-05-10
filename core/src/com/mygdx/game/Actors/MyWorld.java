@@ -1,13 +1,17 @@
 package com.mygdx.game.Actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
@@ -60,8 +64,9 @@ public class MyWorld extends Group {
     public boolean addNuevoPOnline=false;
     boolean limpiarMoneda;
     public static float time;
-    MyDialog chat;
     MyDialog hacerObjDialog;
+    public Table chat;
+    public TextField chatInput;
     boolean hacerObjeto = false;
 
 
@@ -78,9 +83,27 @@ public class MyWorld extends Group {
         this.myStage = stage;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
         debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
-
-        chat = new MyDialog("Chat",Assets.uiSkin,50,50);
+        chat = new Table(){};
+        chatInput = new TextField("",Assets.uiSkin);
+        chat.add(chatInput).bottom();
         chat.setPosition(camera.viewportWidth,camera.viewportHeight);
+
+        chatInput.addAction(new Action() {
+            @Override
+            public boolean act(float delta) {
+                return false;
+            }
+        });
+
+        chatInput.addListener(event -> {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && chatInput.getText() != null){
+                personaje.setState(Personaje.State.Quieto);
+                nakamaSessionManager.enviarMensaje(chatInput.getText());
+                System.out.println("mensaje: "+chatInput.getMessageText()+" enviado.");
+            }
+            return false;
+        });
+
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
@@ -89,7 +112,6 @@ public class MyWorld extends Group {
 
     void initWorld(String mapName) {
         world = new World(new Vector2(0, -80), true);
-        chat.show(myStage);
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
@@ -100,7 +122,7 @@ public class MyWorld extends Group {
                 switch (cDef) {
                     case PERSONAJE_BIT | NPC_BIT:
 
-                        addActor(dialog = new MyDialog("Herrera", "Quieres fabricar tu propio objeto", "Yes", true, "No", false, camera.viewportWidth, 200) {
+                        addActor(dialog = new MyDialog("Mercader", "Quieres ver los articulos de la tienda?", "Yes", true, "No", false, camera.viewportWidth, 200) {
                             public void result(Object obj) {
                                 System.out.println("result " + obj);
                                 System.out.println(obj);
@@ -170,6 +192,7 @@ public class MyWorld extends Group {
                 switch (cDef) {
                     case PERSONAJE_BIT | NPC_BIT:
                         removeActor(dialog);
+                        removeActor(table);
 //                        dialog.hide();
                         if (hacerObjeto){
                             removeActor(hacerObjDialog);
@@ -191,6 +214,8 @@ public class MyWorld extends Group {
         map = new Map(camera, mapName);
         map.loadObjects(this);
         addActor(map);
+        addActor(chat);
+
         camera.position.set(personaje.getX(), personaje.getY(), 0);
         if (personaje != null){
             personaje.setNs(nakamaStorage);
@@ -335,8 +360,8 @@ public class MyWorld extends Group {
     public void act(float delta) {
         super.act(delta);
         time += delta;
-        chat.update(camera);
         world.step(delta, 6, 2);
+
 
         if (table != null){
             table.setPosition(personaje.getX(), personaje.getY());
