@@ -6,7 +6,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
@@ -49,7 +50,6 @@ public class MyWorld extends Group {
     public List<PersonajeOnline> personajesOnline=new ArrayList<>();
     MyStage myStage;
 
-
     Puerta puertaCambio;
     MyDialog dialog;
     NakamaSessionManager nakamaSessionManager;
@@ -60,15 +60,16 @@ public class MyWorld extends Group {
     public boolean addNuevoPOnline=false;
     boolean limpiarMoneda;
     public static float time;
-    private Moneda moneda;
-    TextField textField = new TextField("nombre", Assets.uiSkin);
     MyDialog chat;
+    MyDialog hacerObjDialog;
+    boolean hacerObjeto = false;
 
 
     public String idPOnline;
     public float xPOnline;
     public float yPOnline;
     public boolean quitarPOnline;
+    private Table table;
 
 
     public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager, MyStage stage) {
@@ -83,6 +84,7 @@ public class MyWorld extends Group {
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
+        nakamaStorage.comprarObjeto("objetoPrueba");
     }
 
     void initWorld(String mapName) {
@@ -106,18 +108,17 @@ public class MyWorld extends Group {
                                 if (obj.equals(true)) {
                                     System.out.println("verdadero");
 //                                    nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
+//                                    nakamaStorage.crearObjeto("objetoPrueba2",200f, "el melhor objeto do mondo2");
+//                                    nakamaStorage.crearObjeto("objetoPrueba3",300f, "el melhor objeto do mondo3");
 //                                    nakamaSessionManager.enviarMensaje();
-//                                    Table table = new Table();
-//                                    table.setFillParent(true);
-//                                    MyDialog myDialog = new MyDialog("objetos", Assets.uiSkin);
-//                                    myDialog.add(textField);
-//                                    addActor(myDialog);
-//                                    myDialog.show(getStage())
-//                                    table.add(textField);
-//                                    dialog.addActor(textField);
-;                                } else System.out.println("falso");
+                                    showObjetos(nakamaStorage.getObjetosTienda());
+
+;                                } else{
+                                    System.out.println("falso");
+                                }
                             }
                         });
+
 //                        dialog.show(getStage());
 
                         System.out.println(camera.position.x);
@@ -170,6 +171,10 @@ public class MyWorld extends Group {
                     case PERSONAJE_BIT | NPC_BIT:
                         removeActor(dialog);
 //                        dialog.hide();
+                        if (hacerObjeto){
+                            removeActor(hacerObjDialog);
+                        }
+
                         break;
                 }
             }
@@ -187,11 +192,45 @@ public class MyWorld extends Group {
         map.loadObjects(this);
         addActor(map);
         camera.position.set(personaje.getX(), personaje.getY(), 0);
-
+        if (personaje != null){
+            personaje.setNs(nakamaStorage);
+            personaje.setMyWorld(this);
+        }
 
     }
 
-    void  clearObjects(List<MyActor> actorlist){
+    public void showObjetos(List<Objeto> lista) {
+        table = new Table();
+        List<Objeto> objetos = new ArrayList<>();
+        for (Objeto objeto: lista){
+
+            Label nombre = new Label("Nombre:", Assets.uiSkin);
+            Label nombreValue = new Label(objeto.getNombre(), Assets.uiSkin);
+            Label precio = new Label("Precio:", Assets.uiSkin);
+            Label precioValue = new Label(String.valueOf(objeto.getPrecio()), Assets.uiSkin);
+            Label descripcion = new Label("Descripcion:", Assets.uiSkin);
+            Label descripcionValue = new Label(objeto.getDescripcion(), Assets.uiSkin);
+
+            table.add(nombre);
+            table.add(nombreValue);
+            table.row();
+            table.add(precio);
+            table.add(precioValue).width(100);
+            table.row();
+            table.add(descripcion);
+            table.add(descripcionValue).width(100);
+            table.row();
+        }
+        addActor(table);
+        table.setPosition(personaje.getX(), personaje.getY());
+
+    }
+
+    public void hideObjetos(){
+        removeActor(table);
+    }
+
+    private void  clearObjects(List<MyActor> actorlist){
         for(MyActor actor:actorlist) {
             System.out.println("ELIMINANDO ACTOR.....");
             world.destroyBody(actor.body);
@@ -201,7 +240,7 @@ public class MyWorld extends Group {
         actorlist.clear();
     }
 
-    void clearMyWorld() {
+    private void clearMyWorld() {
         //Lista de listas
         List[] colecciones = {arboles, npcs, aguaList, sillasList, puertas,monedas/*,personajesOnline*/};
 
@@ -216,16 +255,6 @@ public class MyWorld extends Group {
         removeActor(map);
         System.out.println("CARGANDO " + puertaCambio.map + " : " + puertaCambio.name);
         initWorld(puertaCambio.map);
-    }
-
-    void  clearMonedas(){
-        List[] colecciones = {monedas};
-
-        //Borra las listas
-        for(List coleccion:colecciones){
-            clearObjects(coleccion);
-        }
-
     }
 
     public void addPersonaje(Fixture fixture, MapObject mapObject) {
@@ -309,6 +338,10 @@ public class MyWorld extends Group {
         chat.update(camera);
         world.step(delta, 6, 2);
 
+        if (table != null){
+            table.setPosition(personaje.getX(), personaje.getY());
+        }
+
         if (reloadMap) {
             clearMyWorld();
             reloadMap = false;
@@ -326,6 +359,10 @@ public class MyWorld extends Group {
 
         if (dialog != null) {
             dialog.update(camera);
+        }
+
+        if (hacerObjDialog != null){
+            hacerObjDialog.update(camera);
         }
 
         for (Body body : monedasContacto){

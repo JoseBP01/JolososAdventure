@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
 import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.Config;
+import com.mygdx.game.NakamaController.NakamaStorage;
 
 public class Personaje extends MyActor {
 
@@ -51,6 +52,10 @@ public class Personaje extends MyActor {
     private State estado;
     private Direccion direccion;
     private int vidas = 4;
+    private NakamaStorage ns;
+    private MyWorld myWorld;
+    private boolean inventarioShow = false;
+
 
     public Personaje(Fixture fixture, MapObject mapObject) {
         super(fixture);
@@ -152,8 +157,16 @@ public class Personaje extends MyActor {
         }else if(Gdx.input.isKeyPressed(Input.Keys.S)){
             abajo();
             moveBy(0, -getVy());
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+        }else if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
+            System.out.println("i");
+            if (ns != null && myWorld != null && !inventarioShow){
+                myWorld.showObjetos(ns.getObjetosInventario());
+                inventarioShow = true;
+            }else if (ns != null && myWorld != null && inventarioShow){
+                myWorld.hideObjetos();
+                inventarioShow = false;
+            }
+        }else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             if (direccion==Direccion.Izquerda){
                 ataqueIzquierda();
             }
@@ -304,5 +317,22 @@ public class Personaje extends MyActor {
 
     public void setVidas(int vidas) {
         this.vidas = vidas;
+    }
+
+    public NakamaStorage getNs() {
+
+        return ns;
+    }
+
+    public void setNs(NakamaStorage ns) {
+        this.ns = ns;
+    }
+
+    public MyWorld getMyWorld() {
+        return myWorld;
+    }
+
+    public void setMyWorld(MyWorld myWorld) {
+        this.myWorld = myWorld;
     }
 }

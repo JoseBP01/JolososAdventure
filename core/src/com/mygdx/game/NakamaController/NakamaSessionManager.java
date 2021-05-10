@@ -43,8 +43,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
-        String host = "192.168.22.198";
+        client = new DefaultClient("mynewkey", "192.168.0.22", 7349, false);
+        String host = "192.168.0.22";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
