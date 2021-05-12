@@ -15,15 +15,14 @@ public class LoginScreen extends MyScreen {
     @Override
     public void show() {
         super.show();
-        nakamaSessionManager.iniciarSesion("test1@test.test", "Test1234", "alda", new NakamaSessionManager.IniciarSesionCallback() {
-            @Override
+        nakamaSessionManager.iniciarSesion("fcano@elpuig.xeill.net", "Test1234", "test1", new NakamaSessionManager.IniciarSesionCallback() {            @Override
             public void loginOk() {
                 System.out.println("se ha logueado " + NakamaSessionManager.account.getEmail());
             }
 
             @Override
             public void loginError(String error) {
-                System.out.println("Errror " + error);
+                System.out.println("Error " + error);
             }
         });
         setScreen(new MenuScreen( game,nakamaSessionManager));

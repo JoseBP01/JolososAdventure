@@ -107,7 +107,6 @@ public class PersonajeOnline extends Actor {
             if (x == getX() && y == getY()){
                 setState(State.Quieto);
             }
-
             setX(x);
             setY(y);
         }

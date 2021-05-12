@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
@@ -87,6 +88,7 @@ public class MyWorld extends Group {
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
+        nakamaStorage.comprarObjeto("objetoPrueba");
     }
 
     private void crearChat() {
@@ -148,7 +150,7 @@ public class MyWorld extends Group {
 //                                    nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
 //                                    nakamaStorage.crearObjeto("objetoPrueba2",200f, "el melhor objeto do mondo2");
 //                                    nakamaStorage.crearObjeto("objetoPrueba3",300f, "el melhor objeto do mondo3");
-                                    showObjetosTienda(nakamaStorage.getObjetosTienda());
+                                    showObjetos(nakamaStorage.getObjetosTienda());
 
 ;                                } else{
                                     System.out.println("falso");
@@ -228,8 +230,27 @@ public class MyWorld extends Group {
 
     }
 
-    public void showObjetosTienda(List<Objeto> lista) {
-        table = new Table();
+
+    public void showObjetos(List<Objeto> lista) {
+
+//        Pixmap bgPixmap = new Pixmap(1,1, Pixmap.Format.RGB565);
+//        bgPixmap.setColor(Color.RED);
+//        bgPixmap.fill();
+
+//        Skin skin = new Skin(Gdx.files.internal("core/assets/uiskins/skin.json"));
+
+        table = new Table(Assets.uiSkin);
+        table.setFillParent(true);
+        table.setDebug(true);
+        table.setBackground("white");
+//        table.setWidth(200);
+//        table.setHeight(300);
+//        table.setBackground(skin.getDrawable("white"));
+
+//        table.setBackground(new TextureRegionDrawable(new Texture(bgPixmap)));
+
+//        table.setSkin(Assets.uiSkin);
+//        table.setBackground(new TextureRegionDrawable(new Texture("objeto_espada_standard.png")));
         for (Objeto objeto: lista){
             Image image = new Image(new Texture("objeto_espada_standard.png"));
             Label nombre = new Label("Nombre:", Assets.uiSkin);
@@ -243,7 +264,7 @@ public class MyWorld extends Group {
             table.setSkin(Assets.uiSkin);
 
             table.add(image).expand().bottom().fillX().fillY().width(30).height(30);
-            table.add(nombre);
+            table.add(nombre).expand();
             table.add(nombreValue);
             table.add(precio).right();
             table.add(precioValue).width(100);
@@ -268,7 +289,9 @@ public class MyWorld extends Group {
     }
 
     public void showObjetosInventario(List<Objeto> lista) {
-        table = new Table();
+        table = new Table(Assets.uiSkin);
+        table.setBackground("white");
+
         for (Objeto objeto: lista){
             Image image = new Image(new Texture("objeto_espada_standard.png"));
             Label nombreValue = new Label(objeto.getNombre(), Assets.uiSkin);
@@ -416,7 +439,7 @@ public class MyWorld extends Group {
 
 
         if (table != null){
-            table.setPosition(personaje.getX(), personaje.getY());
+            table.setPosition(personaje.getX()-100, personaje.getY()-100);
         }
 
         if (reloadMap) {
