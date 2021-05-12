@@ -160,7 +160,7 @@ public class Personaje extends MyActor {
         }else if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
             System.out.println("i");
             if (ns != null && myWorld != null && !inventarioShow){
-                myWorld.showObjetos(ns.getObjetosInventario());
+                myWorld.showObjetosInventario(ns.getObjetosInventario());
                 inventarioShow = true;
             }else if (ns != null && myWorld != null && inventarioShow){
                 myWorld.hideObjetos();

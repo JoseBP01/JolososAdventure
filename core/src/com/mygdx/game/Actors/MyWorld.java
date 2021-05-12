@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
@@ -88,7 +87,6 @@ public class MyWorld extends Group {
         initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
-        nakamaStorage.comprarObjeto("objetoPrueba");
     }
 
     private void crearChat() {
@@ -150,7 +148,7 @@ public class MyWorld extends Group {
 //                                    nakamaStorage.crearObjeto("objetoPrueba",100f, "el melhor objeto do mondo");
 //                                    nakamaStorage.crearObjeto("objetoPrueba2",200f, "el melhor objeto do mondo2");
 //                                    nakamaStorage.crearObjeto("objetoPrueba3",300f, "el melhor objeto do mondo3");
-                                    showObjetos(nakamaStorage.getObjetosTienda());
+                                    showObjetosTienda(nakamaStorage.getObjetosTienda());
 
 ;                                } else{
                                     System.out.println("falso");
@@ -230,7 +228,7 @@ public class MyWorld extends Group {
 
     }
 
-    public void showObjetos(List<Objeto> lista) {
+    public void showObjetosTienda(List<Objeto> lista) {
         table = new Table();
         for (Objeto objeto: lista){
             Image image = new Image(new Texture("objeto_espada_standard.png"));
@@ -243,7 +241,7 @@ public class MyWorld extends Group {
             Button button = new Button(Assets.uiSkin);
 
             table.setSkin(Assets.uiSkin);
-            table.setBackground(new TextureRegionDrawable(new Texture("objeto_espada_standard.png")));
+
             table.add(image).expand().bottom().fillX().fillY().width(30).height(30);
             table.add(nombre);
             table.add(nombreValue);
@@ -255,6 +253,50 @@ public class MyWorld extends Group {
             table.add(button).right();
             table.row().spaceTop(5);
 
+            button.addListener(event -> {
+                if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                    nakamaStorage.comprarObjeto(objeto.getNombre());
+                    System.out.println("se ha comprado el objeto: "+objeto.getNombre());
+                }
+                return false;
+            });
+
+        }
+        addActor(table);
+        table.setPosition(personaje.getX(), personaje.getY());
+
+    }
+
+    public void showObjetosInventario(List<Objeto> lista) {
+        table = new Table();
+        for (Objeto objeto: lista){
+            Image image = new Image(new Texture("objeto_espada_standard.png"));
+            Label nombreValue = new Label(objeto.getNombre(), Assets.uiSkin);
+            Label precioValue = new Label(String.valueOf(objeto.getPrecio()), Assets.uiSkin);
+            Label descripcionValue = new Label(objeto.getDescripcion(), Assets.uiSkin);
+            Button borrarObjeto = new Button(Assets.uiSkin);
+
+            table.setDebug(true);
+            table.add(image).expand().bottom().fillX().fillY().width(30).height(30);
+            table.add(nombreValue);
+            table.add(precioValue).width(100);
+            table.row();
+            table.add(descripcionValue).colspan(2);
+            table.add(borrarObjeto);
+            table.row().spaceTop(5);
+
+            borrarObjeto.addListener(event -> {
+                if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                    nakamaStorage.eliminarObjetoDelInventario(objeto);
+                    table.removeActor(image);
+                    table.removeActor(nombreValue);
+                    table.removeActor(precioValue);
+                    table.removeActor(descripcionValue);
+                    table.removeActor(borrarObjeto);
+
+                }
+                return false;
+            });
         }
         addActor(table);
         table.setPosition(personaje.getX(), personaje.getY());

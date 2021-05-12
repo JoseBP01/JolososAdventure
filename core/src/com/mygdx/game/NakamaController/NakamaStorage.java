@@ -130,4 +130,32 @@ public class NakamaStorage {
         }
         return posicion;
     }
+
+    public boolean eliminarObjetoDelInventario(Objeto objeto) {
+        System.out.println(objeto.toString());
+        StorageObjectId objectId = new StorageObjectId("Inventario");
+        objectId.setKey(objeto.getNombre());
+        objectId.setUserId(nakamaSessionManager.session.getUserId());
+        String version = null;
+        try {
+            StorageObjects objetoInventario = nakamaSessionManager.client.readStorageObjects(nakamaSessionManager.session,objectId).get();
+            if (objetoInventario.getObjectsCount() == 0){
+                return false;
+            }else {
+                StorageObject stObjct = objetoInventario.getObjects(0);
+                version = stObjct.getVersion();
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println();
+        }
+
+        objectId.setVersion(version);
+        try {
+            nakamaSessionManager.client.deleteStorageObjects(nakamaSessionManager.session, objectId).get();
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println();
+        }
+        System.out.format("Objeto: "+objeto.getNombre()+" borrado.");
+        return false;
+    }
 }
