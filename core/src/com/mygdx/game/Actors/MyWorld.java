@@ -3,15 +3,14 @@ package com.mygdx.game.Actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
@@ -233,25 +232,29 @@ public class MyWorld extends Group {
 
     public void showObjetos(List<Objeto> lista) {
         table = new Table();
-        List<Objeto> objetos = new ArrayList<>();
         for (Objeto objeto: lista){
-
+            Image image = new Image(new Texture("objeto_espada_standard.png"));
             Label nombre = new Label("Nombre:", Assets.uiSkin);
             Label nombreValue = new Label(objeto.getNombre(), Assets.uiSkin);
             Label precio = new Label("Precio:", Assets.uiSkin);
             Label precioValue = new Label(String.valueOf(objeto.getPrecio()), Assets.uiSkin);
             Label descripcion = new Label("Descripcion:", Assets.uiSkin);
             Label descripcionValue = new Label(objeto.getDescripcion(), Assets.uiSkin);
+            Button button = new Button(Assets.uiSkin);
 
+            table.setSkin(Assets.uiSkin);
+            table.setBackground(new TextureRegionDrawable(new Texture("objeto_espada_standard.png")));
+            table.add(image).expand().bottom().fillX().fillY().width(30).height(30);
             table.add(nombre);
             table.add(nombreValue);
-            table.row();
-            table.add(precio);
+            table.add(precio).right();
             table.add(precioValue).width(100);
             table.row();
-            table.add(descripcion);
-            table.add(descripcionValue).width(100);
-            table.row();
+            table.add(descripcion).center();
+            table.add(descripcionValue).colspan(2);
+            table.add(button).right();
+            table.row().spaceTop(5);
+
         }
         addActor(table);
         table.setPosition(personaje.getX(), personaje.getY());
