@@ -233,24 +233,12 @@ public class MyWorld extends Group {
 
     public void showObjetos(List<Objeto> lista) {
 
-//        Pixmap bgPixmap = new Pixmap(1,1, Pixmap.Format.RGB565);
-//        bgPixmap.setColor(Color.RED);
-//        bgPixmap.fill();
-
-//        Skin skin = new Skin(Gdx.files.internal("core/assets/uiskins/skin.json"));
 
         table = new Table(Assets.uiSkin);
         table.setFillParent(true);
         table.setDebug(true);
         table.setBackground("white");
-//        table.setWidth(200);
-//        table.setHeight(300);
-//        table.setBackground(skin.getDrawable("white"));
 
-//        table.setBackground(new TextureRegionDrawable(new Texture(bgPixmap)));
-
-//        table.setSkin(Assets.uiSkin);
-//        table.setBackground(new TextureRegionDrawable(new Texture("objeto_espada_standard.png")));
         for (Objeto objeto: lista){
             Image image = new Image(new Texture("objeto_espada_standard.png"));
             Label nombre = new Label("Nombre:", Assets.uiSkin);

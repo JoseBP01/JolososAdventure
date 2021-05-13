@@ -27,4 +27,5 @@ public class LoginScreen extends MyScreen {
         });
         setScreen(new MenuScreen( game,nakamaSessionManager));
     }
+
 }
