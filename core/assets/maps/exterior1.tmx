@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="15">
  <tileset firstgid="1" source="spritesmapa.tsx"/>
  <tileset firstgid="257" source="Castle2.tsx"/>
  <layer id="1" name="suelo" width="64" height="64">
@@ -138,4 +138,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="4" name="Object Layer 1">
+  <object id="1" name="personaje" type="object" x="455.45" y="1732.21" width="48" height="48"/>
+  <object id="3" name="pared" type="object" x="186" y="2" width="96" height="2042"/>
+  <object id="5" name="pared" type="object" x="289" y="1814" width="1665" height="70"/>
+  <object id="6" x="285" y="4" width="1670" height="106"/>
+  <object id="7" name="pared" type="object" x="1956" y="4" width="90" height="1810"/>
+  <object id="8" name="moneda" type="object" x="686" y="1372" width="30" height="30"/>
+  <object id="9" name="moneda" type="object" x="1046" y="982" width="30" height="30"/>
+  <object id="10" x="1058" y="1050" width="26" height="24"/>
+  <object id="12" name="moneda" type="object" x="1058" y="1128" width="30" height="30"/>
+  <object id="13" name="moneda" type="object" x="881.333" y="949.333" width="30" height="30"/>
+ </objectgroup>
 </map>
