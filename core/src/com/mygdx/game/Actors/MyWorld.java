@@ -84,7 +84,7 @@ public class MyWorld extends Group {
         debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
        crearChat();
 
-        initWorld("maps/mapa.tmx");
+        initWorld("maps/exterior1.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
         nakamaStorage.comprarObjeto("objetoPrueba");
@@ -102,7 +102,7 @@ public class MyWorld extends Group {
         chat.add(chatInput).bottom().colspan(2);
 
         chat.setSkin(Assets.uiSkin);
-        chat.setDebug(true);
+//        chat.setDebug(true);
 
         chatInput.addCaptureListener(event -> {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
@@ -219,7 +219,7 @@ public class MyWorld extends Group {
         map = new Map(camera, mapName);
         map.loadObjects(this);
         addActor(map);
-        addActor(chat);
+//        addActor(chat);
 
         camera.position.set(personaje.getX(), personaje.getY(), 0);
         if (personaje != null){
