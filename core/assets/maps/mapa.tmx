@@ -159,7 +159,7 @@
   <object id="41" name="pared" type="object" x="2" y="-100" width="1826" height="100"/>
   <object id="42" name="pared" type="object" x="1824" y="-4" width="108" height="774"/>
   <object id="43" name="puertajesus" type="object" x="1320" y="329" width="111" height="31"/>
-  <object id="44" x="953.333" y="348" width="1.33333"/>
+  <object id="44" name = "enemigo" type="object" x="300" y="329" width="48" height="48"/>
   <object id="45" name="moneda" type="object" x="976" y="266.667" width="30" height="30"/>
   <object id="46" name="moneda" type="object" x="901.333" y="396" width="30" height="30"/>
  </objectgroup>
