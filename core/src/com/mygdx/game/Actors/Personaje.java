@@ -145,6 +145,11 @@ public class Personaje extends MyActor {
 
     //Teclas asignadas
     public void manejarTeclas() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            setPosition(549.45f, 1010.21f,0);
+            body.setTransform(549.45f, 1010.21f,0);
+        }
+
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
             izquierda();
         }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
