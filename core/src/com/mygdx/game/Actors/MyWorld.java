@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
@@ -425,6 +424,11 @@ public class MyWorld extends Group {
         time += delta;
         world.step(delta, 6, 2);
 
+        for (Enemigo enemigo : enemigos){
+            if (personaje != null){
+                enemigo.irHaciaEljugador(personaje.getX(),personaje.getY(),map.getWidth(),map.getHeight());
+            }
+        }
 
         if (table != null){
             table.setPosition(personaje.getX()-100, personaje.getY()-100);
