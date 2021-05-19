@@ -173,7 +173,7 @@ public class MyWorld extends Group {
 
                     case MONEDA_BIT | PERSONAJE_BIT:
                         if (fixB.getFilterData().categoryBits == MONEDA_BIT) {
-                            System.out.println("BBBBBBBBBBAAH");
+                            System.out.println("coger moneda");
                             monedasContacto.add(fixB.getBody());
                             limpiarMoneda = true;
                         } else {
