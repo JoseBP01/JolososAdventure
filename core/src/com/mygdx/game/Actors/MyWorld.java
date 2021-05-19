@@ -56,7 +56,7 @@ public class MyWorld extends Group {
     MyStage myStage;
 
     Puerta puertaCambio;
-    MyDialog dialog;
+    MyDialog dialog,dialogoPozo;
     NakamaSessionManager nakamaSessionManager;
     NakamaStorage nakamaStorage;
 
@@ -160,22 +160,22 @@ public class MyWorld extends Group {
                         });
                         break;
 
-//                    case PERSONAJE_BIT | POZO_BIT:
-//                        addActor(dialog = new MyDialog("Pozo", "Quieres Beber del pozo?", "Yes", true, "No", false, camera.viewportWidth, 200) {
-//                            public void result(Object obj) {
-//                                System.out.println("result " + obj);
-//                                System.out.println(obj);
-//
-//                                if (obj.equals(true)) {
-//                                    System.out.println("verdadero");
-//                                    showObjetos(nakamaStorage.getObjetosTienda());
-//
-//                                } else{
-//                                    System.out.println("falso");
-//                                }
-//                            }
-//                        });
-//                        break;
+                    case PERSONAJE_BIT | POZO_BIT:
+                        addActor(dialog = new MyDialog("Pozo", "Quieres Beber del pozo?", "Yes", true, "No", false, camera.viewportWidth, 200) {
+                            public void result(Object obj) {
+                                System.out.println("result " + obj);
+                                System.out.println(obj);
+
+                                if (obj.equals(true)) {
+                                    System.out.println("*beber fuente*");
+
+
+                                } else{
+                                    System.out.println("falso");
+                                }
+                            }
+                        });
+                        break;
 
                     case PUERTA_BIT | PERSONAJE_BIT:
 
@@ -221,6 +221,11 @@ public class MyWorld extends Group {
                 switch (cDef) {
                     case PERSONAJE_BIT | NPC_BIT:
                         removeActor(dialog);
+                        removeActor(table);
+                        break;
+
+                    case PERSONAJE_BIT | POZO_BIT:
+                        removeActor(dialogoPozo);
                         removeActor(table);
                         break;
                 }
