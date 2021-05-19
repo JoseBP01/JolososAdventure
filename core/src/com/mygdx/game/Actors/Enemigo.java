@@ -1,17 +1,22 @@
 package com.mygdx.game.Actors;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Config;
+import com.mygdx.game.IA.SteeringUtils;
 import com.mygdx.game.MyWidgets.MyActor;
 
-public class Enemigo extends MyActor{
+public class Enemigo extends MyActor implements Steerable<Vector2> {
 
     //Animacion Movimiento
     private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("direcIzquierda", 0.1f, Animation.PlayMode.LOOP);
@@ -36,6 +41,21 @@ public class Enemigo extends MyActor{
     private State estado;
     private Direccion direccion;
 
+
+    Vector2 position = new Vector2();
+    float orientation;
+    Vector2 linearVelocity= new Vector2();
+    float angularVelocity;
+    float maxSpeed;
+    boolean independentFacing;
+
+    boolean tagged;
+    float boundingRadius;
+    float maxLinearSpeed, maxLinearAcceleration;
+    float maxAngularSpeed, maxAngularAcceleration;
+
+    SteeringBehavior<Vector2> behavior;
+    public static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
     private final int vX = 300;
     private final int vY = 300;
 
@@ -54,7 +74,7 @@ public class Enemigo extends MyActor{
         Arriba
     }
 
-    public Enemigo(Fixture fixture, MapObject mapObject) {
+    public Enemigo(Fixture fixture, MapObject mapObject, boolean independentFacing, float boundingRadius) {
         super(fixture);
         currentAnimation = Assets.getAnimation("quietoIzquierda",0.3f, Animation.PlayMode.NORMAL);
         fixture.getFilterData().categoryBits = MyWorld.ENEMIGO_BIT;
@@ -63,87 +83,20 @@ public class Enemigo extends MyActor{
         direccion = Direccion.Izquerda;
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
-//        timer = new Timer(3);
-    }
+        this.independentFacing = independentFacing;
+        this.boundingRadius = boundingRadius;
 
-    public void irHaciaEljugador(float x, float y,float maxX, float maxY){
-                if (x < getX()){
-                    if (getX() > maxX){
-                    }else {
-                        direccion = Direccion.Derecha;
-                        setState(State.Caminando);
-                        while (getX() != x && getY() != y){
-                            moveBy(vX,0);
-                        }
+        maxLinearSpeed = 400;
+        maxAngularAcceleration = 500;
+        maxAngularSpeed = 30;
+        maxAngularSpeed = 5;
 
-//                        body.setLinearVelocity(vX,0);
-                    }
-
-
-                }else if (x > getX()){
-                    if (getX() < maxX){
-                    }else {
-                        direccion = Direccion.Izquerda;
-                        setState(State.Caminando);
-//                        body.setLinearVelocity(-vX,0);
-                        while (getX() != x && getY() != y) {
-                            moveBy(-vX,0);
-
-                        }
-                    }
-                }
-
-                if (y < getY()){
-                    if (getY() > maxY){
-                    }else{
-                        direccion = Direccion.Arriba;
-                        setState(State.Caminando);
-//                        body.setLinearVelocity(0,vY);
-                        while (getX() != x && getY() != y) {
-                            moveBy(0, vY);
-                        }
-                    }
-                }else if (y > getY()){
-                    if (getY() < maxY){
-                    }else {
-                        direccion = Direccion.Abajo;
-                        setState(State.Caminando);
-//                        body.setLinearVelocity(0,-vY);
-                        while (getX() != x && getY() != y) {
-                            moveBy(0, -vY);
-                        }
-                    }
-                }
-
-                if (x == getX() && y == getY()){
-                    setState(State.Quieto);
-                    moveBy(0, 0);
-                    body.setLinearVelocity(0,0);
-                }
-            System.out.println("x: "+getX()+" y: "+getY());
-
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        setPosition(body.getPosition().x, body.getPosition().y);
-        stateTime += delta;
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        if(currentAnimation != null) {
-            Color color = getColor();
-            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-            batch.draw(currentAnimation.getKeyFrame(getStateTime()), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-        }
+        tagged= false;
     }
 
     @Override
     public void defineBody() {
-        body.setType(BodyDef.BodyType.StaticBody);
+        body.setType(BodyDef.BodyType.DynamicBody);
         body.setGravityScale(0);
     }
 
@@ -227,5 +180,161 @@ public class Enemigo extends MyActor{
                 break;
         }
     }
+
+    public void update(float deltaTime) {
+        if (behavior != null) {
+            // Calculate steering acceleration
+            applySteering(steeringOutput, deltaTime);
+
+            /*
+             * Here you might want to add a motor control layer filtering steering accelerations.
+             *
+             * For instance, a car in a driving game has physical constraints on its movement: it cannot turn while stationary; the
+             * faster it moves, the slower it can turn (without going into a skid); it can brake much more quickly than it can
+             * accelerate; and it only moves in the direction it is facing (ignoring power slides).
+             */
+
+            // Apply steering acceleration
+//            applySteering(steeringOutput, deltaTime);
+        }
+
+//        wrapAround(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM);
+    }
+
+    public void irAporElJugador(Personaje personaje){
+//        Pursue<Vector2> pursue = new Pursue<Vector2>(this,personaje,3f);
+////                System.out.println(pursue.getTarget());
+//        System.out.println(personaje.steeringOutput.linear.toString());
+//        pursue.calculateSteering(personaje.steeringOutput);
+    }
+
+    private void applySteering (SteeringAcceleration<Vector2> steering, float time) {
+        // Update position and linear velocity. Velocity is trimmed to maximum speed
+        this.position.mulAdd(linearVelocity, time);
+        this.linearVelocity.mulAdd(steering.linear, time).limit(this.getMaxLinearSpeed());
+
+        // Update orientation and angular velocity
+            this.orientation += angularVelocity * time;
+            this.angularVelocity += steering.angular * time;
+    }
+
+
+    @Override
+    public Vector2 getLinearVelocity() {
+        return body.getLinearVelocity();
+    }
+
+    @Override
+    public float getAngularVelocity() {
+        return body.getAngularVelocity();
+    }
+
+    @Override
+    public float getBoundingRadius() {
+        return boundingRadius;
+    }
+
+    @Override
+    public boolean isTagged() {
+        return tagged;
+    }
+
+    @Override
+    public void setTagged(boolean tagged) {
+        this.tagged = tagged;
+    }
+
+    @Override
+    public float getZeroLinearSpeedThreshold() {
+        return 0;
+    }
+
+    @Override
+    public void setZeroLinearSpeedThreshold(float value) {
+
+    }
+
+    @Override
+    public float getMaxLinearSpeed() {
+        return maxLinearSpeed;
+    }
+
+    @Override
+    public void setMaxLinearSpeed(float maxLinearSpeed) {
+        this.maxLinearSpeed = maxLinearSpeed;
+    }
+
+    @Override
+    public float getMaxLinearAcceleration() {
+        return maxLinearAcceleration;
+    }
+
+    @Override
+    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
+        this.maxLinearAcceleration = maxLinearAcceleration;
+    }
+
+    @Override
+    public float getMaxAngularSpeed() {
+        return maxAngularSpeed;
+    }
+
+    @Override
+    public void setMaxAngularSpeed(float maxAngularSpeed) {
+        this.maxAngularSpeed = maxAngularSpeed;
+    }
+
+    @Override
+    public float getMaxAngularAcceleration() {
+        return maxAngularAcceleration;
+    }
+
+    @Override
+    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
+        this.maxLinearAcceleration = maxAngularAcceleration;
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return body.getPosition();
+    }
+
+    @Override
+    public float getOrientation() {
+        return body.getAngle();
+    }
+
+    @Override
+    public void setOrientation(float orientation) {
+        body.setTransform(getPosition(), orientation);
+    }
+
+    @Override
+    public float vectorToAngle(Vector2 vector) {
+        return SteeringUtils.vectorToAngle(vector);
+    }
+
+    @Override
+    public Vector2 angleToVector(Vector2 outVector, float angle) {
+        return SteeringUtils.angleToVector(outVector,angle);
+    }
+
+    @Override
+    public Location<Vector2> newLocation() {
+        return null;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBehavior(SteeringBehavior<Vector2> behavior) {
+        this.behavior = behavior;
+    }
+
+    public SteeringBehavior<Vector2> getBehavior() {
+        return behavior;
+    }
+
 //https://github.com/codeandcoke/jbombermanx
 }

@@ -2,6 +2,7 @@ package com.mygdx.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -151,7 +152,7 @@ public class MyWorld extends Group {
 //                                    nakamaStorage.crearObjeto("objetoPrueba3",300f, "el melhor objeto do mondo3");
                                     showObjetos(nakamaStorage.getObjetosTienda());
 
-;                                } else{
+                                } else{
                                     System.out.println("falso");
                                 }
                             }
@@ -368,7 +369,7 @@ public class MyWorld extends Group {
     }
 
     public void addEnemigo(Fixture fixture, MapObject mapObject) {
-        Enemigo enemigoBase = new Enemigo(fixture, mapObject);
+        Enemigo enemigoBase = new Enemigo(fixture, mapObject,true,32f);
         enemigos.add(enemigoBase);
         addActor(enemigoBase);
     }
@@ -425,8 +426,26 @@ public class MyWorld extends Group {
         world.step(delta, 6, 2);
 
         for (Enemigo enemigo : enemigos){
+
             if (personaje != null){
-//                enemigo.irHaciaEljugador(personaje.getX(),personaje.getY(),map.getWidth(),map.getHeight());
+//                Pursue<Vector2> pursue = new Pursue<>(enemigo, personaje, 3f);
+//                System.out.println(pursue.getTarget());
+//                pursue.setEnabled(true);
+//
+//                System.out.println(personaje.steeringOutput.linear.toString());
+//                pursue.calculateSteering(personaje.steeringOutput);
+
+//                enemigo.update(delta);
+                Seek<Vector2> seek = new Seek<>(enemigo,personaje);
+                seek.setEnabled(true);
+                System.out.println(Enemigo.steeringOutput.linear.toString());
+                enemigo.setBehavior(seek);
+                seek.calculateSteering(personaje.steeringOutput);
+
+                enemigo.update(delta);
+
+
+
             }
         }
 

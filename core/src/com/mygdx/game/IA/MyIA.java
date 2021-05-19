@@ -11,6 +11,8 @@ import com.mygdx.game.Config;
 
 public class MyIA implements Steerable<Vector2> {
 
+    Vector2 position;
+    float orientation;
     Body body;
     boolean tagged;
     float boundingRadius;
@@ -39,7 +41,6 @@ public class MyIA implements Steerable<Vector2> {
     public void update(float delta){
         if (behavior != null) {
             behavior.calculateSteering(steeringOutput);
-
             applySteering(steeringOutput, delta);
         }
         wrapAround(Gdx.graphics.getWidth() / Config.UNIT_SCALE, Gdx.graphics.getHeight() / Config.UNIT_SCALE);

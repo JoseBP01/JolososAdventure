@@ -2,17 +2,23 @@ package com.mygdx.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.game.Assets;
-import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.Config;
+import com.mygdx.game.IA.SteeringUtils;
+import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.NakamaController.NakamaStorage;
 
-public class Personaje extends MyActor {
+public class Personaje extends MyActor implements Steerable<Vector2> {
 
     //Animacion Movimiento
     private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("direcIzquierda", 0.1f, Animation.PlayMode.LOOP);
@@ -56,6 +62,7 @@ public class Personaje extends MyActor {
     private MyWorld myWorld;
     private boolean inventarioShow = false;
 
+    SteeringAcceleration<Vector2>  steeringOutput = new SteeringAcceleration<>(new Vector2());
 
     public Personaje(Fixture fixture, MapObject mapObject) {
         super(fixture);
@@ -75,26 +82,44 @@ public class Personaje extends MyActor {
         body.setGravityScale(0);
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+    }
+
     //MOVIMIENTO
     public void izquierda() {
         setDireccion(Direccion.Izquerda);
         setState(State.Caminando);
         body.setLinearVelocity(-300,0);
+        steeringOutput.linear.x = -300;
+        steeringOutput.linear.y = -0;
+
     }
     public void derecha(){
         setDireccion(Direccion.Derecha);
         setState(Personaje.State.Caminando);
         body.setLinearVelocity(300,0);
+        steeringOutput.linear.x = 300;
+        steeringOutput.linear.y = 0;
+
+
     }
     public void arriba(){
         setDireccion(Direccion.Arriba);
         setState(State.Caminando);
         body.setLinearVelocity(0,300);
+        steeringOutput.linear.y = 300;
+        steeringOutput.linear.x = 0;
+
     }
     public void abajo(){
         setDireccion(Direccion.Abajo);
         setState(State.Caminando);
         body.setLinearVelocity(0,-300);
+        steeringOutput.linear.y = -300;
+        steeringOutput.linear.x = 0;
     }
 
     //ATAQUE
@@ -200,6 +225,9 @@ public class Personaje extends MyActor {
         }else{
             setState(Personaje.State.Quieto);
             body.setLinearVelocity(0,0);
+            steeringOutput.linear.x = 0;
+            steeringOutput.linear.y = 0;
+
         }
     }
 
@@ -339,5 +367,111 @@ public class Personaje extends MyActor {
 
     public void setMyWorld(MyWorld myWorld) {
         this.myWorld = myWorld;
+    }
+
+    @Override
+    public Vector2 getLinearVelocity() {
+        return body.getLinearVelocity();
+    }
+
+    @Override
+    public float getAngularVelocity() {
+        return body.getAngularVelocity();
+    }
+
+    @Override
+    public float getBoundingRadius() {
+        return 0;
+    }
+
+    @Override
+    public boolean isTagged() {
+        return false;
+    }
+
+    @Override
+    public void setTagged(boolean tagged) {
+
+    }
+
+    @Override
+    public float getZeroLinearSpeedThreshold() {
+        return 0;
+    }
+
+    @Override
+    public void setZeroLinearSpeedThreshold(float value) {
+
+    }
+
+    @Override
+    public float getMaxLinearSpeed() {
+        return 0;
+    }
+
+    @Override
+    public void setMaxLinearSpeed(float maxLinearSpeed) {
+
+    }
+
+    @Override
+    public float getMaxLinearAcceleration() {
+        return 0;
+    }
+
+    @Override
+    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
+    }
+
+    @Override
+    public float getMaxAngularSpeed() {
+        return 0;
+    }
+
+    @Override
+    public void setMaxAngularSpeed(float maxAngularSpeed) {
+    }
+
+    @Override
+    public float getMaxAngularAcceleration() {
+        return 0;
+    }
+
+    @Override
+    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return body.getPosition();
+    }
+
+    @Override
+    public float getOrientation() {
+        return body.getAngle();
+    }
+
+    @Override
+    public void setOrientation(float orientation) {
+        body.setTransform(getPosition(), orientation);
+    }
+
+
+    public float vectorToAngle(Vector2 vector) {
+        return SteeringUtils.vectorToAngle(vector);
+    }
+
+
+    public Vector2 angleToVector(Vector2 outVector, float angle) {
+        return SteeringUtils.angleToVector(outVector,angle);
+    }
+
+    @Override
+    public Location<Vector2> newLocation() {
+        return this;
+    }
+
+    public Body getBody() {
+        return body;
     }
 }
