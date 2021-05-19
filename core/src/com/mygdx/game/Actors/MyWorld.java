@@ -34,6 +34,7 @@ public class MyWorld extends Group {
     public static final short PUERTA_BIT = 16;
     public static final short ENEMIGO_BIT = 32;
     public static final short MONEDA_BIT = 64;
+    public static final short POZO_BIT = 128;
 
     private final Box2DDebugRenderer debugRenderer;
 
@@ -50,6 +51,7 @@ public class MyWorld extends Group {
     public List<Body> monedasContacto = new ArrayList<>();
     public List<Body> enemigosContacto = new ArrayList<>();
     public List<PersonajeOnline> personajesOnline=new ArrayList<>();
+    public List<Pozo> pozos = new ArrayList<>();
     public com.badlogic.gdx.scenes.scene2d.ui.List<String> mensajesOnline = new com.badlogic.gdx.scenes.scene2d.ui.List<>(Assets.uiSkin);
     MyStage myStage;
 
@@ -157,6 +159,23 @@ public class MyWorld extends Group {
                             }
                         });
                         break;
+
+//                    case PERSONAJE_BIT | POZO_BIT:
+//                        addActor(dialog = new MyDialog("Pozo", "Quieres Beber del pozo?", "Yes", true, "No", false, camera.viewportWidth, 200) {
+//                            public void result(Object obj) {
+//                                System.out.println("result " + obj);
+//                                System.out.println(obj);
+//
+//                                if (obj.equals(true)) {
+//                                    System.out.println("verdadero");
+//                                    showObjetos(nakamaStorage.getObjetosTienda());
+//
+//                                } else{
+//                                    System.out.println("falso");
+//                                }
+//                            }
+//                        });
+//                        break;
 
                     case PUERTA_BIT | PERSONAJE_BIT:
 
@@ -347,6 +366,12 @@ public class MyWorld extends Group {
     public void addPersonaje(Fixture fixture, MapObject mapObject) {
         System.out.println("AÑADIENDO PERASONALEEEEE ...");
         addActor(personaje = new Personaje(fixture, mapObject));
+    }
+
+    public void addPozo(Fixture fixture, MapObject mapObject){
+        Pozo pozo = new Pozo(fixture, mapObject);
+        pozos.add(pozo);
+        addActor(pozo);
     }
 
     public void addNpc(Fixture fixture, MapObject mapObject) {

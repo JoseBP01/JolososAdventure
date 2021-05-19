@@ -39,7 +39,10 @@ public class Map extends Actor {
                     case "personaje":
                         myWorld.addPersonaje(fixture,mapObject);
                         break;
-                    case "npc":
+                    case "pozo":
+                        myWorld.addPozo(fixture,mapObject);
+                        break;
+                    case "npcHelp":
                         myWorld.addNpc(fixture,mapObject);
                         break;
                     case "casa":
