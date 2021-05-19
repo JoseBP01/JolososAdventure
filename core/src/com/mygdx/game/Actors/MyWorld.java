@@ -84,7 +84,7 @@ public class MyWorld extends Group {
         debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
        crearChat();
 
-        initWorld("maps/exterior1.tmx");
+        initWorld("maps/mapa.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
         nakamaStorage.comprarObjeto("objetoPrueba");
@@ -219,7 +219,7 @@ public class MyWorld extends Group {
         map = new Map(camera, mapName);
         map.loadObjects(this);
         addActor(map);
-//        addActor(chat);
+        addActor(chat);
 
         camera.position.set(personaje.getX(), personaje.getY(), 0);
         if (personaje != null){
@@ -426,7 +426,7 @@ public class MyWorld extends Group {
 
         for (Enemigo enemigo : enemigos){
             if (personaje != null){
-                enemigo.irHaciaEljugador(personaje.getX(),personaje.getY(),map.getWidth(),map.getHeight());
+//                enemigo.irHaciaEljugador(personaje.getX(),personaje.getY(),map.getWidth(),map.getHeight());
             }
         }
 
