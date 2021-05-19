@@ -51,7 +51,7 @@ public class Map extends Actor {
                     case "arbol":
                         myWorld.addArbol(fixture);
                         break;
-                    case "puertCastillo":
+                    case "puertaCastillo":
                         myWorld.addPuerta(fixture,"maps/castillo1.tmx", mapObject.getName());
                         break;
                     case "puertamap1":

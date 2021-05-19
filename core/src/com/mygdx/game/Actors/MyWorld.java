@@ -84,7 +84,7 @@ public class MyWorld extends Group {
         debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
        crearChat();
 
-        initWorld("maps/mapa.tmx");
+        initWorld("maps/exterior1.tmx");
         this.nakamaSessionManager.setMyWorld(this);
         nakamaSessionManager.nakamaStorage.getPosicionJugador();
         nakamaStorage.comprarObjeto("objetoPrueba");
