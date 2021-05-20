@@ -15,11 +15,17 @@ public class MyActor extends Actor {
     public Body body;
     public Animation<TextureRegion> currentAnimation;
 
+
     public MyActor(Fixture fixture) {
         this.body = fixture.getBody();
         body.setUserData(this);
         defineBody();
         define(fixture);
+    }
+
+    public MyActor() {
+
+
     }
 
     @Override

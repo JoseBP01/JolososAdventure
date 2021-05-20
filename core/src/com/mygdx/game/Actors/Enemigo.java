@@ -88,8 +88,8 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
         this.independentFacing = independentFacing;
         this.boundingRadius = boundingRadius;
 
-        maxLinearSpeed = 150;
-        maxLinearAcceleration=150;
+        maxLinearSpeed = 100;
+        maxLinearAcceleration=100;
         maxAngularAcceleration = 500;
         maxAngularSpeed = 30;
         maxAngularSpeed = 5;

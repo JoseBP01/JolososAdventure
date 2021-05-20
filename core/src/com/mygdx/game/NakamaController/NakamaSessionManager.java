@@ -1,6 +1,8 @@
 package com.mygdx.game.NakamaController;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -36,6 +38,7 @@ public class NakamaSessionManager {
     private MyWorld myWorld;
     public String personajeAborrar;
     public List<String > mensajes = new ArrayList<>();
+    ObjectMapper om = new ObjectMapper();
 
     public interface IniciarSesionCallback {
         void loginOk();
@@ -43,8 +46,8 @@ public class NakamaSessionManager {
     }
 
     public NakamaSessionManager() {
-        client = new DefaultClient("mynewkey", "192.168.0.22", 7349, false);
-        String host = "192.168.0.22";
+        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
+        String host = "192.168.22.198";
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }
@@ -108,7 +111,11 @@ public class NakamaSessionManager {
         SocketListener listener = new AbstractSocketListener() {
             @Override
             public void onChannelMessage(final com.heroiclabs.nakama.api.ChannelMessage message) {
-                mensajes.add(message.getContent());
+                try {
+                    mensajes.add(transformarMensaje(message));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
                 String[] msgArray = mensajes.toArray(new String[0]);
                 myWorld.mensajesOnline.setItems(msgArray);
             }
@@ -162,6 +169,11 @@ public class NakamaSessionManager {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    private String transformarMensaje(com.heroiclabs.nakama.api.ChannelMessage content) throws JsonProcessingException {
+        Mensaje mensaje = om.readValue(content.getContent(), Mensaje.class);
+        return content.getUsername()+": "+mensaje.getMessage();
     }
 
     public void unirseChat() {

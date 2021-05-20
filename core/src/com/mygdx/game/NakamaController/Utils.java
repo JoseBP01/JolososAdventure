@@ -23,18 +23,18 @@ class Position {
         this.y = y;
     }
 
-    List<Position> fromJson(String json){
+    List<Position> fromJson(String json) {
         List<Position> posiciones = new ArrayList<>();
         JsonValue data = Utils.jsonReader.parse(json);
 
-        for (int i = 0; i < data.get("pos").size;i++){
+        for (int i = 0; i < data.get("pos").size; i++) {
             id = data.get("pos").get(i).name;
             x = data.get("pos").get(i).getFloat("x");
             y = data.get("pos").get(i).getFloat("y");
-            posiciones.add(new Position(id,x,y));
+            posiciones.add(new Position(id, x, y));
         }
 
         return posiciones;
     }
-
 }
+

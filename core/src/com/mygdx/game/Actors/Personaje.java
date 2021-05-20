@@ -476,4 +476,8 @@ public class Personaje extends MyActor implements Steerable<Vector2> {
     public Body getBody() {
         return body;
     }
+
+    public State getState() {
+        return estado;
+    }
 }

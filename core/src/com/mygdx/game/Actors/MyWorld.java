@@ -79,11 +79,13 @@ public class MyWorld extends Group {
 
     private Table table;
     public ScrollPane sP = new ScrollPane(mensajesOnline,Assets.uiSkin);
+    private boolean gameOver;
 
     public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager, MyStage stage) {
         this.camera = camera;
         this.nakamaSessionManager = nakamaSessionManager;
         this.myStage = stage;
+        gameOver = false;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
        crearChat();
@@ -98,10 +100,11 @@ public class MyWorld extends Group {
         chat = new Table();
         chat.setFillParent(true);
         chatInput = new TextField("",Assets.uiSkin);
-        chat.add(new Label("Chat",Assets.uiSkin)).colspan(2);
+        chat.add(new Label("Chat",Assets.uiSkin)).colspan(2).center();
         chat.row();
-
-        chat.add(sP).height(100).expandX();
+        sP.setScrollbarsVisible(false);
+        sP.setScrollY(sP.getMaxY());
+        chat.add(sP).height(100).expandX().width(150).center();
         chat.row();
         chat.add(chatInput).bottom().colspan(2);
 
@@ -204,10 +207,22 @@ public class MyWorld extends Group {
                         break;
 
                     case PERSONAJE_BIT | ENEMIGO_BIT:
+                        Enemigo enemigo;
                         if (fixB.getFilterData().categoryBits == ENEMIGO_BIT) {
-                            enemigosContacto.add(fixA.getBody());
+                            enemigo= (Enemigo) fixB.getBody().getUserData();
+                            enemigo.setState(Enemigo.State.Ataque);
+                            if (personaje.getState() != Personaje.State.Ataque){
+                                if (personaje.getVidas() == 1){
+                                    gameOver = true;
+                                }else {
+                                    personaje.daño_recivido();
+                                }
+                            }
+                            System.out.println("Enemigo colisionado " + enemigo);
                         } else {
-                            System.out.println("AAH");
+                            enemigo =(Enemigo) fixA.getBody().getUserData();
+                            enemigo.setState(Enemigo.State.Ataque);
+                            System.out.println("Enemigo colisionado " + enemigo);
                         }
                         break;
                 }
@@ -400,7 +415,7 @@ public class MyWorld extends Group {
     }
 
     public void addEnemigo(Fixture fixture, MapObject mapObject) {
-        Enemigo enemigoBase = new Enemigo(fixture, mapObject,true,300f);
+        Enemigo enemigoBase = new Enemigo(fixture, mapObject,true,128f);
         enemigos.add(enemigoBase);
         addActor(enemigoBase);
     }
@@ -552,5 +567,13 @@ public class MyWorld extends Group {
 //                personajesOnline.remove(p);
             }
         }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }

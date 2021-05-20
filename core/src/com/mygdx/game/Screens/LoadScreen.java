@@ -1,13 +1,11 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.JadventureMain;
+import com.mygdx.game.MyWidgets.MyActor;
 import com.mygdx.game.MyWidgets.MyScreen;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
 
@@ -16,6 +14,7 @@ public class LoadScreen extends MyScreen {
     SpriteBatch spriteBatch;
     NakamaSessionManager nakamaSessionManager = new NakamaSessionManager();
 
+    MyActor logo;
     public LoadScreen(JadventureMain game) {
         super(game);
     }
@@ -24,6 +23,24 @@ public class LoadScreen extends MyScreen {
     public void show() {
         super.show();
         spriteBatch = new SpriteBatch();
+//        logo = new MyActor();
+//        logo.currentAnimation = Assets.getAnimation("direcIzquierda",0.1f, Animation.PlayMode.LOOP);
+//        logo.setSize(200, 100);
+//        logo.setPosition(100,100);
+//        stage.addActor(logo);
+//
+//        logo.addAction(
+//                Actions.sequence(
+//                        Actions.parallel(
+//                                Actions.rotateBy(360*3, 0.9f, Interpolation.fastSlow),
+//                                Actions.moveTo(200, 200, 1, Interpolation.fastSlow)
+//                        ),
+//                        Actions.parallel(
+//                                Actions.rotateBy(360*3, 0.9f, Interpolation.fastSlow),
+//                                Actions.moveTo(200, 200, 1, Interpolation.fastSlow)
+//                        )
+//                )
+//        );
     }
 
     Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("core/assets/cursor2.png"));
@@ -33,6 +50,7 @@ public class LoadScreen extends MyScreen {
 
     @Override
     public void render(float delta) {
+
         if(!assets.update()){
             return;
         }

@@ -35,6 +35,10 @@ public class GameScreen extends MyScreen {
             if (myWorld.personaje != null){
                 nakamaSessionManager.enviarDatosPartida(myWorld.personaje, 1);
             }
+
+            if (myWorld.isGameOver()){
+                setScreen(new GameOverScreen(game,nakamaSessionManager));
+            }
         }
     }
 }
