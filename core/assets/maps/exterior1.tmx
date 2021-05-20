@@ -1024,7 +1024,7 @@
 </data>
  </layer>
  <objectgroup id="4" name="Object Layer 1">
-  <object id="1" name="personaje" type="object" x="549.45" y="1610.21" width="48" height="48"/>
+  <object id="1" name="personaje" type="object" x="800" y="1400.21" width="48" height="48"/>
   <object id="3" name="pared" type="object" x="385" y="2" width="96" height="2042"/>
   <object id="5" name="pared" type="object" x="294" y="1710" width="1665" height="70"/>
   <object id="6" name="pared" type="object" x="291" y="251" width="1670" height="106"/>

@@ -1,5 +1,6 @@
 package com.mygdx.game.Actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
@@ -55,7 +56,7 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
     float maxAngularSpeed, maxAngularAcceleration;
 
     SteeringBehavior<Vector2> behavior;
-    public static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
+    public static SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
     private final int vX = 300;
     private final int vY = 300;
 
@@ -83,10 +84,12 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
         direccion = Direccion.Izquerda;
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
+
         this.independentFacing = independentFacing;
         this.boundingRadius = boundingRadius;
 
-        maxLinearSpeed = 400;
+        maxLinearSpeed = 150;
+        maxLinearAcceleration=150;
         maxAngularAcceleration = 500;
         maxAngularSpeed = 30;
         maxAngularSpeed = 5;
@@ -195,10 +198,10 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
              */
 
             // Apply steering acceleration
-//            applySteering(steeringOutput, deltaTime);
+            applySteering(steeringOutput, deltaTime);
         }
 
-//        wrapAround(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM);
+        wrapAround(Gdx.graphics.getWidth() / Config.PPM, Gdx.graphics.getHeight() / Config.PPM);
     }
 
     public void irAporElJugador(Personaje personaje){
@@ -208,16 +211,57 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
 //        pursue.calculateSteering(personaje.steeringOutput);
     }
 
-    private void applySteering (SteeringAcceleration<Vector2> steering, float time) {
-        // Update position and linear velocity. Velocity is trimmed to maximum speed
-        this.position.mulAdd(linearVelocity, time);
-        this.linearVelocity.mulAdd(steering.linear, time).limit(this.getMaxLinearSpeed());
+    protected void applySteering(SteeringAcceleration<Vector2> steering, float deltaTime) {
+        boolean anyAccelerations = false;
 
-        // Update orientation and angular velocity
-            this.orientation += angularVelocity * time;
-            this.angularVelocity += steering.angular * time;
+        if (!steeringOutput.linear.isZero()) {
+            body.applyForceToCenter(steeringOutput.linear, true);
+            anyAccelerations = true;
+        }
+        if (independentFacing) {
+            if (steeringOutput.angular != 0) {
+                body.applyTorque(steeringOutput.angular, true);
+                anyAccelerations = true;
+            }
+        } else {
+            Vector2 linVel = getLinearVelocity();
+            if (!linVel.isZero(getZeroLinearSpeedThreshold())) {
+                float newOrientation = vectorToAngle(linVel);
+                body.setAngularVelocity((newOrientation - getAngularVelocity()) * deltaTime); // this is superfluous if independentFacing is always true
+                body.setTransform(body.getPosition(), newOrientation);
+            }
+        }
+
+        if (anyAccelerations) {
+
+            Vector2 velocity = body.getLinearVelocity();
+            float currentSpeedSquare = velocity.len2();
+            float maxLinearSpeed = getMaxLinearSpeed();
+            if (currentSpeedSquare > maxLinearSpeed * maxLinearSpeed) {
+                body.setLinearVelocity(velocity.scl(maxLinearSpeed / (float) Math.sqrt(currentSpeedSquare)));
+            }
+
+            float maxAngVelocity = getMaxAngularSpeed();
+            if (body.getAngularVelocity() > maxAngVelocity) {
+                body.setAngularVelocity(maxAngVelocity);
+            }
+        }
     }
 
+    protected void wrapAround(float maxX, float maxY) {
+        float k = Float.POSITIVE_INFINITY;
+        Vector2 pos = body.getPosition();
+
+        if (pos.x > maxX) k = pos.x = 0.0f;
+
+        if (pos.x < 0) k = pos.x = maxX;
+
+        if (pos.y < 0) k = pos.y = maxY;
+
+        if (pos.y > maxY) k = pos.y = 0.0f;
+
+        if (k != Float.POSITIVE_INFINITY) body.setTransform(pos, body.getAngle());
+    }
 
     @Override
     public Vector2 getLinearVelocity() {
@@ -291,7 +335,7 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
 
     @Override
     public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-        this.maxLinearAcceleration = maxAngularAcceleration;
+        this.maxAngularAcceleration = maxAngularAcceleration;
     }
 
     @Override
@@ -327,6 +371,7 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
     public Body getBody() {
         return body;
     }
+
 
     public void setBehavior(SteeringBehavior<Vector2> behavior) {
         this.behavior = behavior;

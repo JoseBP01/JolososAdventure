@@ -2,7 +2,7 @@ package com.mygdx.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.ai.steer.behaviors.Pursue;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -70,6 +70,7 @@ public class MyWorld extends Group {
     public Table chat;
     public TextField chatInput;
     public boolean escribiendo = false;
+    Pursue<Vector2> pursue;
 
     public String idPOnline;
     public float xPOnline;
@@ -84,7 +85,7 @@ public class MyWorld extends Group {
         this.nakamaSessionManager = nakamaSessionManager;
         this.myStage = stage;
         nakamaStorage = new NakamaStorage(nakamaSessionManager);
-        debugRenderer = new Box2DDebugRenderer(false, false, false, false, false, false);
+        debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
        crearChat();
 
         initWorld("maps/exterior1.tmx");
@@ -399,7 +400,7 @@ public class MyWorld extends Group {
     }
 
     public void addEnemigo(Fixture fixture, MapObject mapObject) {
-        Enemigo enemigoBase = new Enemigo(fixture, mapObject,true,32f);
+        Enemigo enemigoBase = new Enemigo(fixture, mapObject,true,300f);
         enemigos.add(enemigoBase);
         addActor(enemigoBase);
     }
@@ -458,21 +459,31 @@ public class MyWorld extends Group {
         for (Enemigo enemigo : enemigos){
 
             if (personaje != null){
-//                Pursue<Vector2> pursue = new Pursue<>(enemigo, personaje, 3f);
-//                System.out.println(pursue.getTarget());
-//                pursue.setEnabled(true);
-//
-//                System.out.println(personaje.steeringOutput.linear.toString());
-//                pursue.calculateSteering(personaje.steeringOutput);
+                if (enemigo.getBehavior() == null){
+                    pursue = new Pursue<>(enemigo, personaje, 3f);
+                    System.out.println(pursue.getTarget());
+                    pursue.setEnabled(true);
+                    enemigo.setBehavior(pursue);
+
+                    System.out.println(personaje.steeringOutput.linear.toString());
+                    enemigo.steeringOutput = pursue.calculateSteering(personaje.steeringOutput);
+                    enemigo.update(delta);
+                    System.out.println(enemigo.steeringOutput.linear.toString());
+                }else {
+                    System.out.println(personaje.steeringOutput.linear.toString());
+                    pursue.calculateSteering(personaje.steeringOutput);
+                    enemigo.update(delta);
+                    System.out.println(enemigo.steeringOutput.linear.toString());
+                }
 
 //                enemigo.update(delta);
-                Seek<Vector2> seek = new Seek<>(enemigo,personaje);
-                seek.setEnabled(true);
-                System.out.println(Enemigo.steeringOutput.linear.toString());
-                enemigo.setBehavior(seek);
-                seek.calculateSteering(personaje.steeringOutput);
-
-                enemigo.update(delta);
+//                Seek<Vector2> seek = new Seek<>(enemigo,personaje);
+//                seek.setEnabled(true);
+//                System.out.println(Enemigo.steeringOutput.linear.toString());
+//                enemigo.setBehavior(seek);
+//                seek.calculateSteering(personaje.steeringOutput);
+//
+//                enemigo.update(delta);
 
 
 
