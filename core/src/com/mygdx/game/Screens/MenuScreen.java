@@ -24,27 +24,25 @@ public class MenuScreen extends MyScreen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        MyTextButton create = new MyTextButton("CREATE GAME");
-        MyTextButton join = new MyTextButton("JOIN GAME");
+        MyTextButton unirseALaPartida = new MyTextButton("Unirse a la partida");
+        MyTextButton ajustes = new MyTextButton("Ajustes");
+        MyTextButton logOut = new MyTextButton("Cerrar Sesion");
         MyLabel error = new MyLabel("", Color.RED);
 
-        table.add(create);
+        table.add(unirseALaPartida);
         table.row();
-        table.add(join);
+        table.add(ajustes);
         table.row();
-        table.add(error);
-        create.onClick(() -> {
+        table.add(logOut);
+        unirseALaPartida.onClick(() -> {
             nakamaSessionManager.unirsePartida();
             nakamaSessionManager.unirseChat();
             setScreen(new GameScreen(game,nakamaSessionManager));
         });
 
-        join.onClick(() -> {
-            nakamaSessionManager.unirsePartida();
-            nakamaSessionManager.unirseChat();
+        ajustes.onClick(() -> setScreen(new SettingScreen(game,nakamaSessionManager)));
 
-            setScreen(new GameScreen(game,nakamaSessionManager));
-        });
+        logOut.onClick(() -> System.exit(1));
     }
 
 
