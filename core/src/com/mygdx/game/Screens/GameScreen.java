@@ -1,13 +1,20 @@
 package com.mygdx.game.Screens;
 
-import com.mygdx.game.MyWidgets.MyScreen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.Actors.MyWorld;
 import com.mygdx.game.JadventureMain;
+import com.mygdx.game.MyWidgets.MyScreen;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
 
 public class GameScreen extends MyScreen {
     MyWorld myWorld;
     NakamaSessionManager nakamaSessionManager;
+    private boolean pausa= false;
+    Table table = new Table();
+
+
 
     public GameScreen(JadventureMain game, NakamaSessionManager nka) {
         super(game);
@@ -21,6 +28,7 @@ public class GameScreen extends MyScreen {
         myWorld = new MyWorld(camera,nakamaSessionManager,stage);
         stage.addActor(myWorld);
     }
+
 
     @Override
     public void render(float delta) {
@@ -38,6 +46,14 @@ public class GameScreen extends MyScreen {
 
             if (myWorld.isGameOver()){
                 setScreen(new GameOverScreen(game,nakamaSessionManager));
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+                pausa = !pausa;
+            }
+
+            if (pausa){
+                myWorld.showPausa();
             }
         }
     }

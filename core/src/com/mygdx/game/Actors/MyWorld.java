@@ -576,4 +576,41 @@ public class MyWorld extends Group {
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
+
+    public void showPausa() {
+//        Table pausa = new Table();
+//        TextButton resume = new TextButton("Resume",Assets.uiSkin);
+//        TextButton ajustes = new TextButton("Ajustes",Assets.uiSkin);
+//        TextButton menuPrincipal = new TextButton("Menu principal",Assets.uiSkin);
+//
+//        pausa.add(resume);
+//        pausa.row();
+//        pausa.add(ajustes);
+//        pausa.row();
+//        pausa.add(menuPrincipal);
+//        addActor(pausa);
+//
+//        resume.addListener(new EventListener() {
+//            @Override
+//            public boolean handle(Event event) {
+////                removeActor(pausa);
+////                pausaMenu = false;
+//                return false;
+//            }
+//        })
+//
+//        removeActor(pausa);
+//        pausa = false;
+//        return false;
+//
+//        ajustes.addListener(event -> {
+//            setScreen(new SettingScreen(game,nakamaSessionManager));
+//            return false;
+//        });
+//
+//        menuPrincipal.addListener(event -> {
+//            setScreen(new MenuScreen(game,nakamaSessionManager));
+//            return false;
+//        });
+    }
 }
