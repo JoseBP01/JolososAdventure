@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.mygdx.game.Actors.UtilidadesPersonaje.HpBarra;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Map;
 import com.mygdx.game.MyWidgets.MyActor;
@@ -54,6 +55,7 @@ public class MyWorld extends Group {
     public List<PersonajeOnline> personajesOnline=new ArrayList<>();
     public List<Pozo> pozos = new ArrayList<>();
     public Catedral catedral;
+    public HpBarra barraVida;
     public com.badlogic.gdx.scenes.scene2d.ui.List<String> mensajesOnline = new com.badlogic.gdx.scenes.scene2d.ui.List<>(Assets.uiSkin);
     MyStage myStage;
 
@@ -81,6 +83,8 @@ public class MyWorld extends Group {
     private Table table;
     public ScrollPane sP = new ScrollPane(mensajesOnline,Assets.uiSkin);
     private boolean gameOver;
+    public boolean irAlmenuPrincipal;
+    public boolean pausaMenu;
 
     public MyWorld(OrthographicCamera camera, NakamaSessionManager nakamaSessionManager, MyStage stage) {
         this.camera = camera;
@@ -214,9 +218,11 @@ public class MyWorld extends Group {
                             enemigo.setState(Enemigo.State.Ataque);
                             if (personaje.getState() != Personaje.State.Ataque){
                                 if (personaje.getVidas() == 1){
+                                    barraVida.setEstadoBarra(personaje.getVidas());
                                     gameOver = true;
                                 }else {
                                     personaje.daño_recivido();
+                                    barraVida.setEstadoBarra(personaje.getVidas());
                                 }
                             }
                             System.out.println("Enemigo colisionado " + enemigo);
@@ -246,6 +252,17 @@ public class MyWorld extends Group {
                         removeActor(dialogoPozo);
                         removeActor(table);
                         break;
+
+                    case PERSONAJE_BIT | ENEMIGO_BIT:
+                        Enemigo enemigo;
+                        if (fixB.getFilterData().categoryBits == ENEMIGO_BIT) {
+                            enemigo= (Enemigo) fixB.getBody().getUserData();
+                            enemigo.setState(Enemigo.State.Caminando);
+                        } else {
+                            enemigo =(Enemigo) fixA.getBody().getUserData();
+                            enemigo.setState(Enemigo.State.Caminando);
+                        }
+                        break;
                 }
             }
 
@@ -262,6 +279,11 @@ public class MyWorld extends Group {
         map.loadObjects(this);
         addActor(map);
         addActor(chat);
+
+        if (personaje != null){
+            barraVida = new HpBarra(world,personaje);
+            addActor(barraVida);
+        }
 
         camera.position.set(personaje.getX(), personaje.getY(), 0);
         if (personaje != null){
@@ -466,11 +488,19 @@ public class MyWorld extends Group {
         addActor(personajeOnline);
     }
 
+    public void addCatedral(Fixture fixture, MapObject mapObject) {
+        Catedral catedral = new Catedral(fixture,mapObject);
+        addActor(catedral);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
         time += delta;
         world.step(delta, 6, 2);
+
+        barraVida.setPosition(personaje.getX()-278, personaje.getY()+110);
+
 
         for (Enemigo enemigo : enemigos){
 
@@ -513,6 +543,10 @@ public class MyWorld extends Group {
         if (reloadMap) {
             clearMyWorld();
             reloadMap = false;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            showPausa();
         }
 
         if (addNuevoPOnline && idPOnline != null){
@@ -579,39 +613,24 @@ public class MyWorld extends Group {
     }
 
     public void showPausa() {
-//        Table pausa = new Table();
-//        TextButton resume = new TextButton("Resume",Assets.uiSkin);
-//        TextButton ajustes = new TextButton("Ajustes",Assets.uiSkin);
-//        TextButton menuPrincipal = new TextButton("Menu principal",Assets.uiSkin);
-//
-//        pausa.add(resume);
-//        pausa.row();
-//        pausa.add(ajustes);
-//        pausa.row();
-//        pausa.add(menuPrincipal);
-//        addActor(pausa);
-//
-//        resume.addListener(new EventListener() {
-//            @Override
-//            public boolean handle(Event event) {
-////                removeActor(pausa);
-////                pausaMenu = false;
-//                return false;
-//            }
-//        })
-//
-//        removeActor(pausa);
-//        pausa = false;
-//        return false;
-//
-//        ajustes.addListener(event -> {
-//            setScreen(new SettingScreen(game,nakamaSessionManager));
-//            return false;
-//        });
-//
-//        menuPrincipal.addListener(event -> {
-//            setScreen(new MenuScreen(game,nakamaSessionManager));
-//            return false;
-//        });
+        Table pausa = new Table();
+        TextButton resume = new TextButton("Resume",Assets.uiSkin);
+        TextButton menuPrincipal = new TextButton("Menu principal",Assets.uiSkin);
+
+        pausa.add(resume);
+        pausa.row();
+        pausa.add(menuPrincipal);
+        addActor(pausa);
+
+        resume.addListener(event -> {
+            removeActor(pausa);
+            pausaMenu = false;
+            return false;
+        });
+
+        menuPrincipal.addListener(event -> {
+            irAlmenuPrincipal = true;
+            return false;
+        });
     }
 }

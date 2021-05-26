@@ -20,24 +20,12 @@ import com.mygdx.game.MyWidgets.MyActor;
 public class Enemigo extends MyActor implements Steerable<Vector2> {
 
     //Animacion Movimiento
-    private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("direcIzquierda", 0.1f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> animacionCaminarDerecha = Assets.getAnimation("direcDerecha", 0.1f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> animacionCaminarArriba = Assets.getAnimation("direcArriba", 0.1f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> animacionCaminarAbajo = Assets.getAnimation("direcAbajo", 0.1f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> quietoIzquierda = Assets.getAnimation("quietosIzquierda", 0.1f, Animation.PlayMode.NORMAL);
-    private static final Animation<TextureRegion> quietoDerecha = Assets.getAnimation("quietosDerecha", 0.1f, Animation.PlayMode.NORMAL);
-    private static final Animation<TextureRegion> quietoArriba = Assets.getAnimation("quietosArriba", 0.1f, Animation.PlayMode.NORMAL);
-    private static final Animation<TextureRegion> quietoAbajo = Assets.getAnimation("quietosAbajo", 0.1f, Animation.PlayMode.NORMAL);
+    private static final Animation<TextureRegion> animacionCaminarIzquierda = Assets.getAnimation("animIzquirdaEnemy", 0.2f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> animacionCaminarDerecha = Assets.getAnimation("animDerechaEnemy", 0.2f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> animacionCaminarArriba = Assets.getAnimation("animArribaEnemy", 0.2f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> animacionCaminarAbajo = Assets.getAnimation("animAbajoEnemy", 0.2f, Animation.PlayMode.LOOP);
     //Animacion Ataque
-    private static final Animation<TextureRegion> ataqueIzquierda = Assets.getAnimation("ataqueIzquierda", 0.1f, Animation.PlayMode.LOOP_PINGPONG);
-    private static final Animation<TextureRegion> ataqueDerecha = Assets.getAnimation("ataqueDerecha", 0.1f, Animation.PlayMode.LOOP_PINGPONG);
-    private static final Animation<TextureRegion> ataqueArriba = Assets.getAnimation("ataqueArriba", 0.2f, Animation.PlayMode.LOOP_PINGPONG);
-    private static final Animation<TextureRegion> ataqueAbajo = Assets.getAnimation("ataqueAbajo", 0.1f, Animation.PlayMode.LOOP_PINGPONG);
-    //Animacion Curar
-    private static final Animation<TextureRegion> curarIzquierda = Assets.getAnimation("animCuracionIzquierda", 0.2f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> curarDerecha = Assets.getAnimation("animCuracionDerecha", 0.2f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> curarArriba = Assets.getAnimation("animCuracionArriba", 0.2f, Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> curarAbajo = Assets.getAnimation("animCuracionAbajo", 0.2f, Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> ataqueIzquierda = Assets.getAnimation("animAtaqueEnemy", 0.1f, Animation.PlayMode.NORMAL);
 
     private State estado;
     private Direccion direccion;
@@ -77,10 +65,11 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
 
     public Enemigo(Fixture fixture, MapObject mapObject, boolean independentFacing, float boundingRadius) {
         super(fixture);
-        currentAnimation = Assets.getAnimation("quietoIzquierda",0.3f, Animation.PlayMode.NORMAL);
+
+        currentAnimation = animacionCaminarIzquierda;
         fixture.getFilterData().categoryBits = MyWorld.ENEMIGO_BIT;
         fixture.getFilterData().maskBits = MyWorld.PERSONAJE_BIT;
-        estado = State.Quieto;
+        estado = State.Caminando;
         direccion = Direccion.Izquerda;
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
@@ -124,62 +113,17 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
                         break;
                 }
                 break;
-            case Quieto:
-                switch (direccion){
-                    case Izquerda:
-                        currentAnimation = quietoIzquierda;
-                        break;
-
-                    case Derecha:
-                        currentAnimation = quietoDerecha;
-                        break;
-
-                    case Arriba:
-                        currentAnimation = quietoArriba;
-                        break;
-
-                    case Abajo:
-                        currentAnimation = quietoAbajo;
-                        break;
-                }
-                break;
             case Ataque:
                 switch (direccion){
                     case Izquerda:
+                    case Abajo:
+                    case Arriba:
+                    case Derecha:
                         currentAnimation = ataqueIzquierda;
                         break;
-                    case Derecha:
-                        currentAnimation = ataqueDerecha;
-                        break;
-                    case Arriba:
-                        currentAnimation = ataqueArriba;
-                        break;
-                    case Abajo:
-                        currentAnimation = ataqueAbajo;
-                        break;
                 }
                 break;
-            case Curar:
-                switch (direccion){
-                    case Izquerda:
-                        currentAnimation = curarIzquierda;
-                        break;
-
-                    case Derecha:
-                        currentAnimation = curarDerecha;
-                        break;
-
-                    case Arriba:
-                        currentAnimation = curarArriba;
-                        break;
-
-                    case Abajo:
-                        currentAnimation = curarAbajo;
-                        break;
-                }
-                break;
-
-            default: currentAnimation = quietoDerecha;
+            default: currentAnimation = animacionCaminarIzquierda;
                 break;
         }
     }
@@ -189,26 +133,11 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
             // Calculate steering acceleration
             applySteering(steeringOutput, deltaTime);
 
-            /*
-             * Here you might want to add a motor control layer filtering steering accelerations.
-             *
-             * For instance, a car in a driving game has physical constraints on its movement: it cannot turn while stationary; the
-             * faster it moves, the slower it can turn (without going into a skid); it can brake much more quickly than it can
-             * accelerate; and it only moves in the direction it is facing (ignoring power slides).
-             */
-
             // Apply steering acceleration
             applySteering(steeringOutput, deltaTime);
         }
 
         wrapAround(Gdx.graphics.getWidth() / Config.PPM, Gdx.graphics.getHeight() / Config.PPM);
-    }
-
-    public void irAporElJugador(Personaje personaje){
-//        Pursue<Vector2> pursue = new Pursue<Vector2>(this,personaje,3f);
-////                System.out.println(pursue.getTarget());
-//        System.out.println(personaje.steeringOutput.linear.toString());
-//        pursue.calculateSteering(personaje.steeringOutput);
     }
 
     protected void applySteering(SteeringAcceleration<Vector2> steering, float deltaTime) {
@@ -252,15 +181,39 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
         float k = Float.POSITIVE_INFINITY;
         Vector2 pos = body.getPosition();
 
-        if (pos.x > maxX) k = pos.x = 0.0f;
+        if (pos.x > maxX) {
+            k = pos.x = 0.0f;
+            direccion = Direccion.Izquerda;
+            setState(State.Caminando);
+        }
 
-        if (pos.x < 0) k = pos.x = maxX;
+        if (pos.x < 0){
+            k = pos.x = maxX;
+            direccion = Direccion.Derecha;
+            setState(State.Caminando);
 
-        if (pos.y < 0) k = pos.y = maxY;
 
-        if (pos.y > maxY) k = pos.y = 0.0f;
+        }
 
-        if (k != Float.POSITIVE_INFINITY) body.setTransform(pos, body.getAngle());
+        if (pos.y < 0){
+            k = pos.y = maxY;
+            direccion = Direccion.Abajo;
+            setState(State.Caminando);
+
+
+        }
+
+        if (pos.y > maxY){
+            k = pos.y = 0.0f;
+            direccion = Direccion.Arriba;
+            setState(State.Caminando);
+
+
+        }
+
+        if (k != Float.POSITIVE_INFINITY){
+            body.setTransform(pos, body.getAngle());
+        }
     }
 
     @Override

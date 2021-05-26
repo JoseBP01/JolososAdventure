@@ -83,6 +83,8 @@ public class Map extends Actor {
                     case "enemigo":
                         myWorld.addEnemigo(fixture, mapObject);
                         break;
+                    case "catedral":
+                        myWorld.addCatedral(fixture,mapObject);
                 }
             }
         });

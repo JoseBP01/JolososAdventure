@@ -16,6 +16,10 @@ public class MenuScreen extends MyScreen {
         this.nakamaSessionManager = nakamaSessionManager;
     }
 
+    public MenuScreen(JadventureMain game) {
+        super(game);
+    }
+
     @Override
     public void show(){
         table = new Table();

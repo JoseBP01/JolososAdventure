@@ -52,8 +52,8 @@ public class GameScreen extends MyScreen {
                 pausa = !pausa;
             }
 
-            if (pausa){
-                myWorld.showPausa();
+            if (myWorld.irAlmenuPrincipal){
+                setScreen(new MenuScreen(game,nakamaSessionManager));
             }
         }
     }

@@ -34,6 +34,9 @@ public class LoginScreen extends MyScreen {
         Label registroText = new Label("No tienes cuenta registrate ahora", Assets.uiSkin);
         TextButton buttonRegistro = new TextButton("Registrarse",Assets.uiSkin);
 
+        Label modoOfflineText = new Label("Modo Offline", Assets.uiSkin);
+        TextButton buttonOffline = new TextButton("Modo Offline",Assets.uiSkin);
+
         button.addListener(event -> {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
                 if (!emailText.getText().equals("") && !passwordText.getText().equals("")){
@@ -66,6 +69,16 @@ public class LoginScreen extends MyScreen {
             }
         });
 
+        buttonOffline.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                    setScreen(new MenuScreen(game));
+                }
+                return false;
+            }
+        });
+
         table.add(email);
         table.add(emailText);
         table.row();
@@ -77,6 +90,9 @@ public class LoginScreen extends MyScreen {
         table.add(registroText).colspan(2).spaceTop(20);
         table.row();
         table.add(buttonRegistro).colspan(2);
+        table.row();
+        table.add(modoOfflineText).spaceTop(20);
+        table.add(buttonOffline).spaceTop(20);
         table.setFillParent(true);
         stage.addActor(table);
         stage.act();
