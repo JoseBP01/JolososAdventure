@@ -53,6 +53,7 @@ public class MyWorld extends Group {
     public List<Body> enemigosContacto = new ArrayList<>();
     public List<PersonajeOnline> personajesOnline=new ArrayList<>();
     public List<Pozo> pozos = new ArrayList<>();
+    public Catedral catedral;
     public com.badlogic.gdx.scenes.scene2d.ui.List<String> mensajesOnline = new com.badlogic.gdx.scenes.scene2d.ui.List<>(Assets.uiSkin);
     MyStage myStage;
 
@@ -370,7 +371,7 @@ public class MyWorld extends Group {
 
     private void clearMyWorld() {
         //Lista de listas
-        List[] colecciones = {arboles, npcs, aguaList, sillasList, puertas,monedas/*,personajesOnline*/};
+        List[] colecciones = {arboles, npcs, aguaList, sillasList, puertas,monedas};
 
         //Borra las listas
         for(List coleccion:colecciones){
