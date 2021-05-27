@@ -2,18 +2,27 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.mygdx.game.Assets;
 import com.mygdx.game.JadventureMain;
 import com.mygdx.game.MyWidgets.MyScreen;
 import com.mygdx.game.NakamaController.NakamaSessionManager;
 
 public class LoginScreen extends MyScreen {
+    SpriteBatch spriteBatch = new SpriteBatch();
     NakamaSessionManager nakamaSessionManager;
     private boolean logeado = false;
     private boolean alRegistro;
+    Texture fondo =new Texture("backgound/battleback10.png");
+    Table table = new Table();
 
     public LoginScreen(JadventureMain game, NakamaSessionManager nakamaSessionManager) {
         super(game);
@@ -23,7 +32,7 @@ public class LoginScreen extends MyScreen {
     @Override
     public void show() {
         super.show();
-        Table table = new Table();
+
         table.setDebug(true);
         Label email = new Label("Email:",Assets.uiSkin);
         TextField emailText = new TextField("",Assets.uiSkin);
@@ -33,9 +42,6 @@ public class LoginScreen extends MyScreen {
         TextButton button = new TextButton("Iniciar sesion",Assets.uiSkin);
         Label registroText = new Label("No tienes cuenta registrate ahora", Assets.uiSkin);
         TextButton buttonRegistro = new TextButton("Registrarse",Assets.uiSkin);
-
-        Label modoOfflineText = new Label("Modo Offline", Assets.uiSkin);
-        TextButton buttonOffline = new TextButton("Modo Offline",Assets.uiSkin);
 
         button.addListener(event -> {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
@@ -69,16 +75,6 @@ public class LoginScreen extends MyScreen {
             }
         });
 
-        buttonOffline.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
-                    setScreen(new MenuScreen(game));
-                }
-                return false;
-            }
-        });
-
         table.add(email);
         table.add(emailText);
         table.row();
@@ -90,17 +86,14 @@ public class LoginScreen extends MyScreen {
         table.add(registroText).colspan(2).spaceTop(20);
         table.row();
         table.add(buttonRegistro).colspan(2);
-        table.row();
-        table.add(modoOfflineText).spaceTop(20);
-        table.add(buttonOffline).spaceTop(20);
-        table.setFillParent(true);
+
         stage.addActor(table);
-        stage.act();
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        table.setPosition(320,240);
         if (logeado){
             setScreen(new MenuScreen( game,nakamaSessionManager));
         }
@@ -108,6 +101,15 @@ public class LoginScreen extends MyScreen {
         if (alRegistro){
             setScreen(new RegisterScreen(game,nakamaSessionManager));
         }
+
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        spriteBatch.begin();
+        spriteBatch.draw(fondo, 0, 0, 640, 480);
+        table.draw(spriteBatch,1f);
+        spriteBatch.end();
+
     }
 
     /**/

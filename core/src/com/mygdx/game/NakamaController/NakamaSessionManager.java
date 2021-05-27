@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NakamaSessionManager {
 
+    public String ip;
     public DefaultClient client;
     ExecutorService executor = Executors.newSingleThreadExecutor();
     public static Account account;
@@ -45,11 +46,11 @@ public class NakamaSessionManager {
         void loginError(String error);
     }
 
-    public NakamaSessionManager() {
+    public NakamaSessionManager(String ip) {
 //        client = new DefaultClient("mynewkey", "192.168.22.198", 7349, false);
 //        String host = "192.168.22.198";
-        client = new DefaultClient("mynewkey", "192.168.0.22", 7349, false);
-        String host = "192.168.0.22";
+        client = new DefaultClient("mynewkey", ip, 7349, false);
+        String host = ip;
         int port = 7350; // different port to the main API port
         socket = client.createSocket(host, port, false);
     }

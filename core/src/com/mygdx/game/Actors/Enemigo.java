@@ -66,11 +66,11 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
     public Enemigo(Fixture fixture, MapObject mapObject, boolean independentFacing, float boundingRadius) {
         super(fixture);
 
-        currentAnimation = animacionCaminarIzquierda;
+        currentAnimation = animacionCaminarAbajo;
         fixture.getFilterData().categoryBits = MyWorld.ENEMIGO_BIT;
         fixture.getFilterData().maskBits = MyWorld.PERSONAJE_BIT;
         estado = State.Caminando;
-        direccion = Direccion.Izquerda;
+        direccion = Direccion.Abajo;
         setHeight(((Float) mapObject.getProperties().get("height")* Config.UNIT_SCALE));
         setWidth((Float) mapObject.getProperties().get("width")* Config.UNIT_SCALE);
 
@@ -183,32 +183,18 @@ public class Enemigo extends MyActor implements Steerable<Vector2> {
 
         if (pos.x > maxX) {
             k = pos.x = 0.0f;
-            direccion = Direccion.Izquerda;
-            setState(State.Caminando);
         }
 
         if (pos.x < 0){
             k = pos.x = maxX;
-            direccion = Direccion.Derecha;
-            setState(State.Caminando);
-
-
         }
 
         if (pos.y < 0){
             k = pos.y = maxY;
-            direccion = Direccion.Abajo;
-            setState(State.Caminando);
-
-
         }
 
         if (pos.y > maxY){
             k = pos.y = 0.0f;
-            direccion = Direccion.Arriba;
-            setState(State.Caminando);
-
-
         }
 
         if (k != Float.POSITIVE_INFINITY){
